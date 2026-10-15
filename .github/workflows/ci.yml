@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build:
+    name: Build & Test
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Swift version
+        run: swift --version
+
+      - name: Zero external dependencies
+        run: |
+          DEPS=$(swift package show-dependencies --format json | jq '.dependencies | length')
+          [ "$DEPS" -eq 0 ] || { echo "❌ Found $DEPS external dependencies (should be zero)"; exit 1; }
+
+      - name: Test
+        run: swift test --enable-code-coverage
+
+      - name: App bundle builds
+        run: scripts/build-app.sh
+
+  swiftlint:
+    name: SwiftLint
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install swiftlint
+      # --strict: warnings fail the build too (run `swiftlint lint --strict` locally before pushing)
+      - run: swiftlint lint --strict --reporter github-actions-logging

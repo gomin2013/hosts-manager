@@ -1,0 +1,42 @@
+name: Release
+
+# Push a version tag (e.g. `git tag v1.0.0 && git push origin v1.0.0`) to build the DMG
+# and open a DRAFT GitHub release — review the notes, then click Publish.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write   # create the release
+
+jobs:
+  dmg:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Tag must match Info.plist versions (app + helper)
+        run: |
+          for p in Sources/HostsManagerApp/Info.plist Sources/HostsManagerHelper/Info.plist; do
+            VERSION=$(/usr/libexec/PlistBuddy -c 'Print CFBundleShortVersionString' "$p")
+            [ "v$VERSION" = "$GITHUB_REF_NAME" ] || { echo "Tag $GITHUB_REF_NAME != $p $VERSION"; exit 1; }
+          done
+
+      - name: Test
+        run: swift test
+
+      # Ad-hoc signed (no Developer ID yet). With a certificate, add SIGN_ID / NOTARY_PROFILE secrets here.
+      - name: Build DMG
+        run: scripts/make-dmg.sh
+
+      - name: Checksum
+        run: cd build && shasum -a 256 HostsManager-*.dmg | tee SHA256SUMS.txt
+
+      - name: Draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Notes = the first "## " section of CHANGELOG.md (the version being released)
+          awk '/^## /{n++} n==1' CHANGELOG.md > notes.md
+          gh release create "$GITHUB_REF_NAME" build/HostsManager-*.dmg build/SHA256SUMS.txt \
+            --verify-tag --draft --title "Hosts Manager $GITHUB_REF_NAME" --notes-file notes.md
