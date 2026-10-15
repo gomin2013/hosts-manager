@@ -59,6 +59,14 @@
 "chat.noApiKey" = "⚠️ กรุณาตั้งค่า AI API ใน Settings ก่อน";
 "ai.notConfigured" = "ยังไม่ตั้งค่า";
 "settings.title" = "ตั้งค่า AI API";
+"settings.provider" = "ผู้ให้บริการ";
+"settings.apiKey" = "API Key";
+"settings.model" = "โมเดล";
+"settings.loadModels" = "โหลดรายชื่อโมเดล";
+"settings.noModels" = "ไม่พบโมเดล";
+"settings.appleNote" = "ทำงานบนเครื่องด้วย Apple Intelligence (macOS 26 ขึ้นไป) ไม่ต้องใช้ API key หรือเลือกโมเดล";
+"settings.keychainNote" = "API key ถูกเก็บไว้ใน Keychain ของ macOS";
+"settings.privacyNote" = "คำถามของคุณจะแนบเนื้อหา /etc/hosts ไปยังผู้ให้บริการนี้ด้วย";
 "quick.explain" = "อธิบายว่ารายการตอนนี้ทำอะไรบ้าง";
 "quick.conflicts" = "มีรายการซ้ำหรือขัดกันไหม?";
 "quick.block" = "บล็อกโดเมนต้องทำอย่างไร?";

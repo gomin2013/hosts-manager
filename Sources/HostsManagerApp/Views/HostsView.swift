@@ -20,7 +20,7 @@ struct HostsView: View {
                 hostsPanel
                     .frame(minWidth: 400)
                 VStack(spacing: 0) {
-                    ChatPanel(isCollapsed: $chatCollapsed)
+                    ChatPanel(hostsText: vm.rawText, isCollapsed: $chatCollapsed)
                     Divider()
                     HelpPanel(isCollapsed: $helpCollapsed)
                     // Nothing expanded that can grow: keep the headers at the top

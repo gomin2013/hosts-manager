@@ -33,11 +33,21 @@ struct CollapseToggle: View {
 
 // MARK: - AI Agent
 
-/// Chat about this Mac's hosts file. Phase 1: layout only — provider settings and AIService land in Phase 3.
+/// Chat with the configured AI provider about this Mac's hosts file (ported from git-exclude-manager).
+/// The AI never edits the file — it only answers; changes go through the editor (ADR-009).
 struct ChatPanel: View {
+    /// Current file text, sent as context with each question.
+    let hostsText: String
     @Binding var isCollapsed: Bool
 
+    @State private var turns: [ChatTurn] = []
     @State private var input = ""
+    @State private var isAsking = false
+    @State private var chatError: String?
+    /// Cached so the body doesn't hit the Keychain on every render; reloaded when the settings sheet closes.
+    @State private var aiSettings = AISettings.load()
+    @State private var models: [String] = []
+    @State private var showingSettings = false
 
     static let quickMessageKeys = [
         "quick.explain", "quick.conflicts", "quick.block", "quick.localDev", "quick.organize"
@@ -55,26 +65,27 @@ struct ChatPanel: View {
             }
         }
         .background(Color(.windowBackgroundColor))
+        .sheet(isPresented: $showingSettings, onDismiss: reloadSettings) {
+            AISettingsView { showingSettings = false }
+        }
     }
 
     private var header: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 2) {
                 CollapseToggle(title: localized("chat.title"), isCollapsed: $isCollapsed)
-                Text(localized("ai.notConfigured"))
-                    .font(.system(.caption, design: .monospaced))
-                    .foregroundStyle(.orange)
+                modelMenu
                     .padding(.leading, 16)  // align under the title, past the chevron
             }
             Spacer()
-            Button(action: {}, label: { Image(systemName: "gearshape") })
+            Button(action: { showingSettings = true }, label: { Image(systemName: "gearshape") })
                 .buttonStyle(.borderless)
-                .disabled(true)
                 .help(localized("settings.title"))
                 .accessibilityLabel(localized("settings.title"))
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 10)
+        .task(id: aiSettings.provider.rawValue + aiSettings.apiKey) { await loadModels() }
     }
 
     private var transcript: some View {
@@ -85,20 +96,48 @@ struct ChatPanel: View {
                     .foregroundStyle(.secondary)
                     .padding(12)
                     .frame(maxWidth: .infinity, alignment: .center)
-                Text(localized("chat.noApiKey"))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+
+                ForEach(Array(turns.enumerated()), id: \.offset) { _, turn in
+                    bubble(turn)
+                }
+                if isAsking {
+                    ProgressView().controlSize(.small).padding(.leading, 6)
+                }
+                if let chatError {
+                    Text(chatError).font(.caption).foregroundStyle(.red).textSelection(.enabled)
+                }
+                if !aiSettings.isConfigured {
+                    Button(localized("chat.noApiKey")) { showingSettings = true }
+                        .buttonStyle(.link)
+                        .font(.caption)
+                }
             }
             .padding(10)
         }
+        .defaultScrollAnchor(.bottom)
         .frame(maxHeight: .infinity)
+    }
+
+    private func bubble(_ turn: ChatTurn) -> some View {
+        let isUser = turn.role == .user
+        return Text(turn.text)
+            .font(.callout)
+            .textSelection(.enabled)
+            .padding(8)
+            .background(isUser ? Color.accentColor.opacity(0.85) : Color.secondary.opacity(0.15))
+            .foregroundStyle(isUser ? Color.white : Color.primary)
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .frame(maxWidth: .infinity, alignment: isUser ? .trailing : .leading)
     }
 
     /// One-tap example prompts above the input.
     private var quickMessages: some View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .leading, spacing: 6) {
             ForEach(Self.quickMessageKeys, id: \.self) { key in
-                Button(action: {}, label: {
+                Button(action: {
+                    input = localized(key)
+                    send()
+                }, label: {
                     // plain + custom background: bordered macOS buttons never wrap
                     Text(localized(key))
                         .font(.caption)
@@ -112,8 +151,8 @@ struct ChatPanel: View {
                         .contentShape(Rectangle())
                 })
                 .buttonStyle(.plain)
-                .disabled(true)
-                .opacity(0.5)
+                .disabled(isAsking || !aiSettings.isConfigured)
+                .opacity(isAsking || !aiSettings.isConfigured ? 0.5 : 1)
             }
         }
         .padding(.horizontal, 10)
@@ -124,13 +163,102 @@ struct ChatPanel: View {
         HStack(spacing: 8) {
             TextField(localized("chat.placeholder"), text: $input)
                 .textFieldStyle(.roundedBorder)
+                .onSubmit(send)
                 .accessibilityLabel(localized("chat.placeholder"))
-            Button(localized("btn.send")) {}
+
+            Button(localized("btn.send"), action: send)
                 .buttonStyle(.borderedProminent)
                 .controlSize(.small)
+                .disabled(isAsking || input.trimmingCharacters(in: .whitespaces).isEmpty)
         }
-        .disabled(true)
         .padding(10)
+    }
+
+    /// Current model under the "AI Agent" title; click to switch models of the same provider.
+    private var modelMenu: some View {
+        Menu {
+            if aiSettings.provider.needsModel {
+                ForEach(models, id: \.self) { model in
+                    Button(action: { selectModel(model) }, label: {
+                        if model == aiSettings.model {
+                            Label(model, systemImage: "checkmark")
+                        } else {
+                            Text(model)
+                        }
+                    })
+                }
+                if models.isEmpty {
+                    Text(localized("settings.noModels"))
+                }
+                Divider()
+            }
+            Button(localized("settings.title") + "…") { showingSettings = true }
+        } label: {
+            Text(modelLabel)
+                .font(.system(.caption, design: .monospaced))
+                .foregroundStyle(aiSettings.isConfigured ? Color.primary : Color.orange)
+        }
+        .menuStyle(.borderlessButton)
+        .fixedSize()
+        .help(aiSettings.provider.displayName)
+    }
+
+    private var modelLabel: String {
+        guard aiSettings.isConfigured else { return localized("ai.notConfigured") }
+        return aiSettings.provider.needsModel ? aiSettings.model : aiSettings.provider.displayName
+    }
+
+    /// Gives the model this Mac's hosts file so answers are about *these* entries.
+    static func systemPrompt(hostsFile: String, language: LanguageService.Language) -> String {
+        """
+        You are the assistant inside Hosts Manager, a macOS app that edits /etc/hosts. Each line is \
+        "<ip> <hostname> [<hostname>…] [# comment]"; a line starting with "#" is a comment, and a commented-out \
+        entry is disabled. A blank line followed by "# heading" starts a section. localhost and broadcasthost \
+        are system entries that must not change. Help the user understand, fix and organize their entries. \
+        You cannot edit the file — tell the user exactly which lines to add or change. Be concise. \
+        Reply in \(language == .thai ? "Thai" : "English").
+
+        Current /etc/hosts:
+        \(hostsFile.isEmpty ? "(empty)" : hostsFile)
+        """
+    }
+
+    private func send() {
+        let question = input.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !question.isEmpty, !isAsking else { return }
+        turns.append(ChatTurn(role: .user, text: question))
+        input = ""
+        chatError = nil
+        isAsking = true
+        let history = turns, settings = aiSettings
+        let system = Self.systemPrompt(hostsFile: hostsText, language: LanguageService.shared.current)
+        Task {
+            do {
+                let reply = try await AIService.complete(settings, system: system, turns: history)
+                turns.append(ChatTurn(role: .assistant, text: reply))
+            } catch {
+                chatError = error.localizedDescription
+            }
+            isAsking = false
+        }
+    }
+
+    private func loadModels() async {
+        let settings = aiSettings
+        guard settings.provider.needsModel, !settings.provider.needsAPIKey || !settings.apiKey.isEmpty else {
+            models = []
+            return
+        }
+        models = (try? await AIService.listModels(settings.provider, apiKey: settings.apiKey)) ?? []
+    }
+
+    private func selectModel(_ model: String) {
+        aiSettings.model = model
+        aiSettings.save()
+    }
+
+    private func reloadSettings() {
+        aiSettings = AISettings.load()
     }
 }
 

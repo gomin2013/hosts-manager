@@ -59,6 +59,14 @@
 "chat.noApiKey" = "⚠️ Please configure AI API in Settings first.";
 "ai.notConfigured" = "Not Set";
 "settings.title" = "AI API Settings";
+"settings.provider" = "Provider";
+"settings.apiKey" = "API Key";
+"settings.model" = "Model";
+"settings.loadModels" = "Load models";
+"settings.noModels" = "No models found.";
+"settings.appleNote" = "Runs on-device with Apple Intelligence (macOS 26+). No API key or model needed.";
+"settings.keychainNote" = "The API key is stored in your macOS Keychain.";
+"settings.privacyNote" = "Your questions include the contents of /etc/hosts, which is sent to this provider.";
 "quick.explain" = "Explain what my current entries do";
 "quick.conflicts" = "Are any entries duplicated or conflicting?";
 "quick.block" = "How do I block a domain?";

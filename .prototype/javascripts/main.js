@@ -266,7 +266,7 @@ function renderPanels() {
   quick.innerHTML = "";
   QUICK_KEYS.forEach(key => {
     const b = el("button", "", L(key));
-    b.disabled = true;   // needs an AI provider (Phase 3)
+    b.disabled = true;   // mock: the SwiftUI app sends these to the configured provider
     quick.append(b);
   });
 
