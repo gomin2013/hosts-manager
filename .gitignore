@@ -1,0 +1,110 @@
+# Xcode
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.playground
+xcuserdata/
+*.xcworkspace/xcuserdata/
+
+# Build
+.build/
+build/
+DerivedData/
+*.swiftmodule
+*.swiftdoc
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# Carthage
+Carthage/
+Cartfile.resolved
+
+# Swift Package Manager
+.swiftpm/
+*.xcodeproj/
+
+# Compiled
+*.o
+*.a
+*.so
+*.dylib
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+
+# Testing
+.coverage
+*.gcda
+*.gcno
+coverage.lcov
+
+# Temporary
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+.#*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Node
+node_modules/
+dist/
+package-lock.json
+
+# Ruby
+.ruby-version
+Gemfile.lock
+
+# Documentation
+docs/_build/
+site/
+
+# OS
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+.TemporaryItems
+
+# Project Specific
+*.xcarchive
+Archive.zip
+Release/
+
+# Distribution
+*.pkg
+*.dmg
+*.app
+
+# Secrets
+secrets.yml
+credentials.json
+*.pem
+*.key
