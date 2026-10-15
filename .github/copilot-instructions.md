@@ -2,8 +2,9 @@
 
 ## Project Context
 
-Native macOS **menu bar app** for editing `/etc/hosts` safely. SwiftUI popover (`MenuBarExtra(.window)`, no Dock
-icon) + a root **LaunchDaemon helper** reached over XPC that is the only code allowed to write `/etc/hosts`.
+Native macOS **app** (Dock / Launchpad, `WindowGroup`) for editing `/etc/hosts` safely — same app type as
+git-exclude-manager — plus a root **LaunchDaemon helper** reached over XPC, the only code allowed to write
+`/etc/hosts`. Standard app menu provides ⌘Q / ⌘W; one main window (`CommandGroup(replacing: .newItem)` → Add Entry).
 
 | Item | Value |
 |---|---|
@@ -34,8 +35,12 @@ Tests/HostsManagerTests/     one file per concern, Fixtures/ for hosts samples
 - **Models:** `struct` + `Codable, Hashable, Sendable`.
 - **Reads:** the app reads `/etc/hosts` directly (world-readable).
 - **Writes:** only via `XPCService.writeHosts(content, expectedSHA256:)` → helper.
-- **Line model:** `HostsLine` = `.entry / .comment / .blank / .unknown`. Comment lines are section headers.
-  A `#` line whose remainder is a valid entry is a *disabled* entry.
+- **Line model:** `HostsLine` = `.entry / .comment / .blank / .unknown`. A `#` line whose remainder is a valid
+  entry is a *disabled* entry.
+- **Rows (same as git-exclude-manager):** a blank line is a section; exactly one `# heading` right after it is the
+  section title. Other comment runs are verbatim comment blocks (`HostsViewModel.rows(from:)`).
+- **UI layout mirrors git-exclude-manager:** toolbar + ⚙ Settings, action row (Add · Section · Import · Export ·
+  Restore Previous · Preview Raw), right-column panels (AI Agent, Help) in `SidePanels.swift`.
 - **Round-trip is lossless:** `serialize(parse(x)) == x` for untouched files.
 
 ```swift
@@ -91,4 +96,4 @@ Tests/HostsManagerTests/     one file per concern, Fixtures/ for hosts samples
 ## Context Documents
 
 Local planning docs live in `.claude/` (not committed): `steering/` (product, tech, constraints, roadmap),
-`specs/` (requirements, design, decisions, phases), `plugins/*/skills/` (parser, privileged helper, menu bar patterns).
+`specs/` (requirements, design, decisions, phases), `plugins/*/skills/` (parser, privileged helper, window app patterns).
