@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hosts Manager</title>
+  <link rel="stylesheet" href="stylesheets/app.css">
+</head>
+<body>
+  <!-- ── Window (SwiftUI: WindowGroup → HostsView) — same layout as git-exclude-manager ── -->
+  <main class="window" id="appWindow">
+
+    <!-- Title bar (native in SwiftUI — drawn here for context only) -->
+    <div class="titlebar">
+      <span class="traffic" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="titlebar-title" data-i18n="app.title"></span>
+    </div>
+
+    <!-- Toolbar (SwiftUI: HostsView.toolbar) -->
+    <header class="toolbar">
+      <strong data-i18n="app.title"></strong>
+      <div class="menu-wrap">
+        <button class="link-btn" id="settingsButton">⚙ <span data-i18n="btn.settings"></span> ▾</button>
+        <!-- SwiftUI: SettingsMenu -->
+        <div class="dropdown" id="settingsDropdown" role="menu">
+          <div class="dropdown-label" data-i18n="settings.language"></div>
+          <button class="dropdown-item" data-lang="en">🇺🇸 English</button>
+          <button class="dropdown-item" data-lang="th">🇹🇭 ไทย</button>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-label" data-i18n="settings.appearance"></div>
+          <button class="dropdown-item" data-theme="system">💻 <span data-i18n="appearance.system"></span></button>
+          <button class="dropdown-item" data-theme="light">☀️ <span data-i18n="appearance.light"></span></button>
+          <button class="dropdown-item" data-theme="dark">🌙 <span data-i18n="appearance.dark"></span></button>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item" id="aboutItem">ⓘ <span data-i18n="menu.about"></span></button>
+        </div>
+      </div>
+    </header>
+
+    <div class="columns">
+      <!-- ── Left: hosts panel ─────────────────────────────── -->
+      <section class="hosts-panel">
+        <div class="file-info">
+          <strong class="mono-title">/etc/hosts</strong>
+          <small data-i18n="helper.notInstalled"></small>
+        </div>
+
+        <div class="search">
+          <span class="search-icon">⌕</span>
+          <input id="searchInput" type="search" data-i18n-placeholder="placeholder.search" autocomplete="off">
+        </div>
+
+        <div class="actions">
+          <button class="btn primary small" id="addButton">⊕ <span data-i18n="btn.add"></span></button>
+          <button class="btn small" disabled data-i18n-title="hint.addSection">☰ <span data-i18n="btn.addSection"></span></button>
+          <button class="btn small" disabled>⤓ <span data-i18n="btn.import"></span></button>
+          <button class="btn small" disabled>⤒ <span data-i18n="btn.export"></span></button>
+          <span class="spacer"></span>
+          <button class="btn small" disabled data-i18n-title="hint.restore">↶ <span data-i18n="btn.restore"></span></button>
+          <button class="btn small" id="rawButton">👁 <span data-i18n="btn.previewRaw"></span></button>
+        </div>
+
+        <!-- SwiftUI: List of HostsRowView (comment block / section / entry) -->
+        <div class="list" id="entryList" aria-live="polite"></div>
+
+        <footer class="status" id="statusText"></footer>
+      </section>
+
+      <!-- ── Right: side panels (SwiftUI: SidePanels.swift) ── -->
+      <aside class="side">
+        <section class="panel grow" id="chatPanel">
+          <div class="panel-header">
+            <div>
+              <button class="collapse" data-panel="chat" aria-expanded="true">
+                <span class="chev">›</span><strong data-i18n="chat.title"></strong>
+              </button>
+              <div class="model mono" data-i18n="ai.notConfigured"></div>
+            </div>
+            <button class="icon" disabled data-i18n-title="settings.title">⚙</button>
+          </div>
+          <div class="panel-body chat">
+            <div class="transcript">
+              <p class="welcome" data-i18n="chat.welcome"></p>
+              <p class="hint" data-i18n="chat.noApiKey"></p>
+            </div>
+            <div class="quick" id="quickMessages"></div>
+            <div class="chat-input">
+              <input disabled data-i18n-placeholder="chat.placeholder">
+              <button class="btn primary small" disabled data-i18n="btn.send"></button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="helpPanel">
+          <div class="panel-header">
+            <button class="collapse" data-panel="help" aria-expanded="false">
+              <span class="chev">›</span><strong data-i18n="menu.help"></strong>
+            </button>
+          </div>
+          <div class="panel-body"><ul class="help" id="helpList"></ul></div>
+        </section>
+      </aside>
+    </div>
+
+    <!-- Editor sheet (SwiftUI: EditorSheet) -->
+    <div class="sheet-backdrop" id="editorSheet" hidden>
+      <form class="sheet" id="editorForm" novalidate>
+        <h2 id="editorTitle"></h2>
+        <label><span data-i18n="label.ip"></span>
+          <input id="ipInput" class="mono" data-i18n-placeholder="placeholder.ip" autocomplete="off">
+          <small class="error" id="ipError"></small>
+        </label>
+        <label><span data-i18n="label.hostnames"></span>
+          <input id="hostnamesInput" class="mono" data-i18n-placeholder="placeholder.hostnames" autocomplete="off">
+          <small class="hint" data-i18n="editor.hostnamesHint"></small>
+          <small class="error" id="hostnamesError"></small>
+        </label>
+        <label><span data-i18n="label.comment"></span>
+          <input id="commentInput" data-i18n-placeholder="placeholder.comment" autocomplete="off">
+        </label>
+        <div class="sheet-actions">
+          <button type="button" class="btn" id="editorCancel" data-i18n="btn.cancel"></button>
+          <button type="submit" class="btn primary" id="editorSave" data-i18n="btn.save"></button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Delete confirmation (SwiftUI: .alert) -->
+    <div class="sheet-backdrop" id="deleteSheet" hidden>
+      <div class="sheet small">
+        <h2 data-i18n="confirm.deleteTitle"></h2>
+        <p id="deleteMessage"></p>
+        <div class="sheet-actions">
+          <button class="btn" id="deleteCancel" data-i18n="btn.cancel"></button>
+          <button class="btn destructive" id="deleteConfirm" data-i18n="btn.delete"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Raw preview (SwiftUI: RawPreviewView) -->
+    <div class="sheet-backdrop" id="rawSheet" hidden>
+      <div class="sheet wide flush">
+        <div class="sheet-head">
+          <h2 data-i18n="raw.title"></h2>
+          <button class="circle" id="rawCopy" data-i18n-title="btn.copy">⧉</button>
+          <button class="circle sheet-close" data-i18n-title="btn.close">✕</button>
+        </div>
+        <div class="raw-path mono">/etc/hosts</div>
+        <pre class="raw mono" id="rawContent"></pre>
+      </div>
+    </div>
+
+    <!-- About (SwiftUI: AboutView) -->
+    <div class="sheet-backdrop" id="aboutSheet" hidden>
+      <div class="sheet small center">
+        <button class="circle sheet-close corner" data-i18n-title="btn.close">✕</button>
+        <div class="app-icon" aria-hidden="true">🌐</div>
+        <h2 data-i18n="app.title"></h2>
+        <small class="hint" id="aboutVersion"></small>
+        <p data-i18n="about.desc"></p>
+      </div>
+    </div>
+  </main>
+
+  <script src="javascripts/shared.js"></script>
+  <script src="javascripts/main.js"></script>
+</body>
+</html>
