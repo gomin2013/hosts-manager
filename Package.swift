@@ -34,6 +34,13 @@ let package = Package(
             dependencies: ["Shared"],
             path: "Sources/HostsManagerHelper",
             exclude: ["Info.plist"]
+        ),
+
+        // MARK: - Tests
+        .testTarget(
+            name: "HostsManagerTests",
+            dependencies: ["Shared", "HostsManagerApp"],
+            path: "Tests/HostsManagerTests"
         )
     ]
 )
