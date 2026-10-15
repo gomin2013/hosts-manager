@@ -49,7 +49,8 @@ cd .prototype && python3 -m http.server 8080   # → http://localhost:8080
 - **Delete** — confirmation sheet for entries, sections and comment blocks.
 - **Drag** — any row except system ones, also across sections.
 - **Preview Raw** — the file exactly as it would be written, with Copy.
-- **Side panels** — AI Agent (layout only, needs a provider — Phase 3) and Help; ▸/▾ folds, remembered.
+- **Side panels** — AI Agent (mock here; works in the app — ⚙ picks Apple / Ollama / OpenAI / Gemini / Claude) and
+  Help; ▸/▾ folds, remembered.
 - **Settings** (⚙) — language en / th, appearance system / light / dark, About.
 - Import / Export / Restore Previous are disabled here (they need file panels / the helper) — they work in the app.
 - Esc closes any sheet. The title bar is drawn for context only — ⌘Q / ⌘W come from the native app menu.
