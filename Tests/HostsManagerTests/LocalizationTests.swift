@@ -36,6 +36,21 @@ final class LocalizationTests: XCTestCase {
         }
     }
 
+    func testEveryLiteralKeyUsedInSourcesExists() throws {
+        let english = try keys("en")
+        let sources = Self.root.appendingPathComponent("Sources")
+        let files = try XCTUnwrap(FileManager.default.enumerator(at: sources, includingPropertiesForKeys: nil))
+            .compactMap { $0 as? URL }
+            .filter { $0.pathExtension == "swift" }
+        var used = Set<String>()
+        for file in files {
+            let code = try String(contentsOf: file, encoding: .utf8)
+            used.formUnion(code.matches(of: /localized\("([a-z]+\.[A-Za-z.]+)"/).map { String($0.output.1) })
+        }
+        XCTAssertGreaterThan(used.count, 40)
+        XCTAssertEqual(used.subtracting(english), [])
+    }
+
     func testHelpTopicsAndQuickMessagesExist() throws {
         let english = try keys("en")
         let helpKeys = HelpList.items.flatMap { [$0.key + ".title", $0.key + ".desc"] }
