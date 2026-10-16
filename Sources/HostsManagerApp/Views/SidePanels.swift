@@ -285,12 +285,14 @@ struct HelpPanel: View {
     }
 }
 
-/// Help topics. Order follows the workflow: build content, edit rows, whole-file actions, then helpers.
+/// Help topics in workflow order: setup (helper) → add / edit → organize → whole-file actions → AI.
 struct HelpList: View {
     static let items: [(icon: String, key: String)] = [
+        ("lock.shield", "help.helper"),
         ("plus.circle", "help.add"),
-        ("text.badge.plus", "help.sections"),
         ("checkmark.circle", "help.toggle"),
+        ("magnifyingglass", "help.search"),
+        ("text.badge.plus", "help.sections"),
         ("line.3.horizontal", "help.reorder"),
         ("lock", "help.system"),
         ("arrow.down.doc", "help.import"),

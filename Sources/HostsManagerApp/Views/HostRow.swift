@@ -4,27 +4,42 @@ import Shared
 /// One list row — entry, section break or comment block (same three kinds as git-exclude-manager's PatternRow).
 struct HostsRowView: View {
     let row: HostsRow
+    /// False while the helper isn't ready or a save is in flight — toggle / delete are disabled.
+    var canWrite = false
     var onEdit: (HostEntry) -> Void = { _ in }
+    var onToggle: (HostEntry) -> Void = { _ in }
+    var onDelete: (HostsRow) -> Void = { _ in }
+    var onRename: (HostsRow, String) -> Void = { _, _ in }
 
     var body: some View {
         switch row {
-        case .entry(_, let entry): HostRow(entry: entry) { onEdit(entry) }
-        case .section(_, let title): SectionRow(title: title)
-        case .comment(_, let text, let isSystem): CommentRow(text: text, isSystem: isSystem)
+        case .entry(_, let entry):
+            HostRow(
+                entry: entry, canWrite: canWrite,
+                onEdit: { onEdit(entry) }, onToggle: { onToggle(entry) }, onDelete: { onDelete(row) }
+            )
+        case .section(_, let title):
+            SectionRow(
+                title: title, canWrite: canWrite, onDelete: { onDelete(row) }, onRename: { onRename(row, $0) }
+            )
+        case .comment(_, let text, let isSystem):
+            CommentRow(text: text, isSystem: isSystem, canWrite: canWrite) { onDelete(row) }
         }
     }
 }
 
-/// Trash button shared by all row kinds. Phase 2: confirmation dialog + delete.
+/// Trash button shared by all row kinds; the list asks for confirmation before deleting.
 private struct DeleteButton: View {
     let name: String
+    let canWrite: Bool
+    let action: () -> Void
 
     var body: some View {
-        Button(role: .destructive, action: {}, label: {
+        Button(role: .destructive, action: action, label: {
             Image(systemName: "trash").foregroundStyle(.red)
         })
         .buttonStyle(.borderless)
-        .disabled(true)
+        .disabled(!canWrite)
         .help(localized("btn.delete"))
         .accessibilityLabel(localized("btn.delete") + " " + name)
     }
@@ -32,19 +47,21 @@ private struct DeleteButton: View {
 
 struct HostRow: View {
     let entry: HostEntry
+    var canWrite = false
     let onEdit: () -> Void
+    var onToggle: () -> Void = {}
+    var onDelete: () -> Void = {}
 
     private var name: String { entry.hostnames.joined(separator: " ") }
 
     var body: some View {
         HStack(spacing: 12) {
-            // Phase 2: toggling writes /etc/hosts.
-            Button(action: {}, label: {
+            Button(action: onToggle, label: {
                 Image(systemName: entry.isEnabled ? "checkmark.circle.fill" : "circle")
                     .foregroundStyle(entry.isEnabled ? .green : .gray)
             })
             .buttonStyle(.plain)
-            .disabled(true)
+            .disabled(!canWrite || entry.isSystem)
             .help(localized("hint.toggle"))
             .accessibilityLabel(localized(entry.isEnabled ? "label.enabled" : "label.disabled") + ": " + name)
 
@@ -79,7 +96,7 @@ struct HostRow: View {
                     Button(action: onEdit, label: { Image(systemName: "pencil") })
                         .help(localized("btn.edit"))
                         .accessibilityLabel(localized("btn.edit") + " " + name)
-                    DeleteButton(name: name)
+                    DeleteButton(name: name, canWrite: canWrite, action: onDelete)
                 }
                 .buttonStyle(.borderless)
                 .foregroundStyle(.secondary)
@@ -90,13 +107,18 @@ struct HostRow: View {
         .background(Color(.controlBackgroundColor))
         .clipShape(RoundedRectangle(cornerRadius: 6))
         .contentShape(Rectangle())
-        .onTapGesture(count: 2) { onEdit() }
+        .onTapGesture(count: 2) { if !entry.isSystem { onEdit() } }
     }
 }
 
-/// Section break: a blank line with an optional `# heading`. Phase 2: inline rename + drag.
+/// Section break: a blank line with an optional `# heading` the user types inline (saved on Return / focus loss).
 private struct SectionRow: View {
     let title: String
+    let canWrite: Bool
+    let onDelete: () -> Void
+    let onRename: (String) -> Void
+
+    @FocusState private var isFocused: Bool
 
     @State private var text = ""
 
@@ -110,10 +132,15 @@ private struct SectionRow: View {
                 .textFieldStyle(.plain)
                 .font(.headline)
                 .fixedSize()
-                .disabled(true)
+                .focused($isFocused)
+                .onSubmit { onRename(text) }
+                .onChange(of: isFocused) { _, focused in if !focused { onRename(text) } }
+                .disabled(!canWrite)
                 .accessibilityLabel(localized("section.placeholder"))
             VStack { Divider() }
-            DeleteButton(name: title.isEmpty ? localized("btn.addSection") : title)
+            DeleteButton(
+                name: title.isEmpty ? localized("btn.addSection") : title, canWrite: canWrite, action: onDelete
+            )
         }
         .padding(.top, 10)
         .padding(.bottom, 2)
@@ -127,6 +154,8 @@ private struct SectionRow: View {
 private struct CommentRow: View {
     let text: String
     let isSystem: Bool
+    let canWrite: Bool
+    let onDelete: () -> Void
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
@@ -136,7 +165,9 @@ private struct CommentRow: View {
                 .textSelection(.enabled)
                 .frame(maxWidth: .infinity, alignment: .leading)
             if !isSystem {
-                DeleteButton(name: text.components(separatedBy: "\n").first ?? "")
+                DeleteButton(
+                    name: text.components(separatedBy: "\n").first ?? "", canWrite: canWrite, action: onDelete
+                )
             }
         }
         .padding(.vertical, 6)

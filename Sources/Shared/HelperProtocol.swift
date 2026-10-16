@@ -5,6 +5,8 @@ public enum HelperConstants {
     public static let appBundleIdentifier = "com.hostsmanager.app"
     public static let daemonPlistName = "com.hostsmanager.helper.plist"
     public static let hostsPath = "/etc/hosts"
+    /// Root-owned; the helper writes `hosts-<ISO8601>` here before every change, the app reads them (0644).
+    public static let backupsPath = "/Library/Application Support/HostsManager/Backups"
 }
 
 /// XPC contract between the app and the root helper. The helper only *writes*; the app reads `/etc/hosts` itself.

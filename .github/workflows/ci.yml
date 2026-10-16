@@ -11,7 +11,7 @@ jobs:
     name: Build & Test
     runs-on: macos-15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Swift version
         run: swift --version
@@ -31,7 +31,7 @@ jobs:
     name: SwiftLint
     runs-on: macos-15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: brew install swiftlint
       # --strict: warnings fail the build too (run `swiftlint lint --strict` locally before pushing)
       - run: swiftlint lint --strict --reporter github-actions-logging

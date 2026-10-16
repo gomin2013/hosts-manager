@@ -1,8 +1,10 @@
 import Foundation
-import os
 import Shared
 
-// Phase 1 placeholder. Phase 2: NSXPCListener(machServiceName: HelperConstants.machServiceName) with a
-// code-signing requirement, plus the write pipeline (validate → SHA check → backup → atomic write → DNS flush).
-let logger = Logger(subsystem: "com.hostsmanager", category: "helper")
-logger.info("HostsManagerHelper placeholder for \(HelperConstants.machServiceName, privacy: .public)")
+// Root LaunchDaemon registered by the app with SMAppService.daemon; launchd starts it on demand when the app
+// connects to the Mach service.
+let delegate = HelperListenerDelegate()
+let listener = NSXPCListener(machServiceName: HelperConstants.machServiceName)
+listener.delegate = delegate
+listener.resume()
+RunLoop.main.run()
