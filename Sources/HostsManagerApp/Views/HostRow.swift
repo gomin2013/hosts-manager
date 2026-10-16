@@ -107,7 +107,6 @@ struct HostRow: View {
         .background(Color(.controlBackgroundColor))
         .clipShape(RoundedRectangle(cornerRadius: 6))
         .contentShape(Rectangle())
-        .onTapGesture(count: 2) { if !entry.isSystem { onEdit() } }
     }
 }
 

@@ -224,7 +224,9 @@ struct HostsView: View {
                 .foregroundStyle(.secondary)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {
-            List {
+            @Bindable var vm = vm
+            // Native selection: ⌘-click / ⇧-click; dragging any selected row moves all of them (git-exclude-manager).
+            List(selection: $vm.selection) {
                 ForEach(rows) { row in
                     HostsRowView(
                         row: row,
@@ -242,6 +244,20 @@ struct HostsView: View {
                 .onMove(perform: vm.moveRows)
             }
             .listStyle(.plain)
+            // Double-click = primary action (a row-wide tap gesture would swallow the drag).
+            .contextMenu(forSelectionType: Int.self) { ids in
+                if let row = Self.single(ids, in: rows) {
+                    if case .entry(_, let entry) = row, !entry.isSystem {
+                        Button(localized("btn.edit")) { vm.beginEdit(entry) }
+                    }
+                    if !row.isSystem {
+                        Button(localized("btn.delete"), role: .destructive) { pendingDelete = row }
+                            .disabled(!canWrite)
+                    }
+                }
+            } primaryAction: { ids in
+                if case .entry(_, let entry)? = Self.single(ids, in: rows) { vm.beginEdit(entry) }
+            }
         }
     }
 
@@ -287,6 +303,12 @@ struct HostsView: View {
 
     /// Writes need the approved helper and no save in flight.
     private var canWrite: Bool { installer.status == .ready && !vm.isSaving }
+
+    /// The row when exactly one is targeted by a right-click / double-click.
+    private static func single(_ ids: Set<Int>, in rows: [HostsRow]) -> HostsRow? {
+        guard ids.count == 1, let id = ids.first else { return nil }
+        return rows.first { $0.id == id }
+    }
 
     private static func deleteName(_ row: HostsRow) -> String {
         switch row {

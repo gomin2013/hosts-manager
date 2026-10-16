@@ -23,7 +23,12 @@ enum HostsRow: Identifiable, Equatable {
 final class HostsViewModel {
     /// The file as last read (or as changed by the user, while a save is in flight).
     private(set) var file: HostsFile
-    var searchText = ""
+    var searchText = "" {
+        didSet { if searchText != oldValue { selection = [] } }
+    }
+    /// Selected row ids (⌘-click / ⇧-click). Ids are line positions, so anything that adds or removes lines clears
+    /// it; a move re-selects the moved rows at their new positions.
+    var selection = Set<Int>()
     /// Non-nil while the editor sheet is open.
     var editor: EditorViewModel?
     /// Localized message for the last failed load/save; the view shows it in an alert.
@@ -93,7 +98,9 @@ final class HostsViewModel {
             errorMessage = localized("err.readFailed", hostsURL.path)
             return
         }
-        file = HostsParser.parse(text)
+        let parsed = HostsParser.parse(text)
+        if parsed.text != file.text { selection = [] }
+        file = parsed
         diskHash = data.sha256Hex
     }
 
@@ -109,6 +116,7 @@ final class HostsViewModel {
         let before = file
         change(&file)
         guard file != before else { return }
+        if file.lines.count != before.lines.count { selection = [] }
         let content = file.text, expected = diskHash
         isSaving = true
         Task {
@@ -182,16 +190,24 @@ final class HostsViewModel {
         mutate { $0.replaceSubrange(range, with: [.blank] + (title.isEmpty ? [] : [.comment(" " + title)])) }
     }
 
-    /// `List.onMove` offsets are row positions; each row moves with all its lines. Not while searching.
+    /// `List.onMove` offsets are row positions — one row, or every selected row at once (multi-select drag); each
+    /// row moves with all its lines and keeps its order. System rows never move. Not while searching.
     func moveRows(from source: IndexSet, to destination: Int) {
-        guard !isSearching else { return }
+        guard !isSearching, !isSaving else { return }
+        let rows = Self.rows(from: lines)
+        let movable = IndexSet(source.filter { rows.indices.contains($0) && !rows[$0].isSystem })
+        guard !movable.isEmpty else { return }
+        let insertAt = destination - movable.filter { $0 < destination }.count
         mutate { lines in
-            var chunks = Self.rows(from: lines).map { Array(lines[Self.lineRange(of: $0, in: lines)]) }
-            let moving = source.map { chunks[$0] }
-            for index in source.sorted(by: >) { chunks.remove(at: index) }
-            chunks.insert(contentsOf: moving, at: destination - source.filter { $0 < destination }.count)
+            var chunks = rows.map { Array(lines[Self.lineRange(of: $0, in: lines)]) }
+            let moving = movable.map { chunks[$0] }
+            for index in movable.sorted(by: >) { chunks.remove(at: index) }
+            chunks.insert(contentsOf: moving, at: insertAt)
             lines = chunks.flatMap { $0 }
         }
+        // ponytail: row positions = chunk positions, so the moved rows are rows insertAt..<insertAt+count
+        let moved = Self.rows(from: lines)
+        selection = Set((insertAt..<min(insertAt + movable.count, moved.count)).map { moved[$0].id })
     }
 
     // MARK: - Import / export / restore

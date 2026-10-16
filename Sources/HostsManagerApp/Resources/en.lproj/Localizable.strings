@@ -99,7 +99,7 @@
 "help.sections.title" = "Sections";
 "help.sections.desc" = "Click Section to add a blank-line break, then type its heading (Return saves it as # heading). Clear the heading to remove it.";
 "help.reorder.title" = "Reorder";
-"help.reorder.desc" = "Drag rows to reorder — a section moves together with its heading. Dragging is off while searching; system rows stay put.";
+"help.reorder.desc" = "Drag rows to reorder — a section moves together with its heading. ⌘-click or ⇧-click to select several rows (sections and entries) and drag them together. Dragging is off while searching; system rows stay put.";
 "help.system.title" = "System Entries";
 "help.system.desc" = "localhost and broadcasthost come with macOS and are locked 🔒 so the system keeps working. The helper refuses any file without 127.0.0.1 localhost.";
 "help.import.title" = "Import / Export";

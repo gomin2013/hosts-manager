@@ -10,7 +10,9 @@ const state = {
   panels: JSON.parse(loadStored(STORAGE_PANELS, '{"chat":true,"help":false}')),
   editingIndex: null,   // null = add, number = index into state.lines
   deletingRow: null,
-  dragIndex: null
+  selected: new Set(),   // row.index (first line) of selected rows — ⌘/Ctrl-click toggles, ⇧-click extends
+  anchor: null,          // last plainly clicked row, for ⇧-click ranges
+  dragging: false
 };
 
 const QUICK_KEYS = ["quick.explain", "quick.conflicts", "quick.block", "quick.localDev", "quick.organize"];
@@ -83,9 +85,9 @@ function render() {
 
   rows.forEach(row => {
     const node = row.kind === "entry" ? entryRow(row) : row.kind === "section" ? sectionRow(row) : commentRow(row);
-    if (!searching && !(row.kind === "comment" && row.isSystem) && !(row.kind === "entry" && isSystemEntry(row.entry))) {
-      wireDrag(node, row);
-    }
+    node.classList.toggle("selected", state.selected.has(row.index));
+    wireSelect(node, row, rows);
+    if (!searching && !isSystemRow(row)) wireDrag(node, row);
     list.append(node);
   });
 
@@ -164,20 +166,56 @@ function renameSection(row, title) {
   render();
 }
 
-// ── Drag to reorder (moves the row's lines inside the flat line array) ──
+function isSystemRow(row) {
+  return (row.kind === "comment" && row.isSystem) || (row.kind === "entry" && isSystemEntry(row.entry));
+}
+
+// ── Selection (same as the native List in the app) ─────────
+function wireSelect(node, row, rows) {
+  node.addEventListener("click", e => {
+    if (e.target.closest("button, input")) return;            // row buttons / heading field keep working
+    if (e.metaKey || e.ctrlKey) {
+      state.selected.has(row.index) ? state.selected.delete(row.index) : state.selected.add(row.index);
+      state.anchor = row.index;
+    } else if (e.shiftKey && state.anchor !== null) {
+      const ids = rows.map(r => r.index);
+      const [a, b] = [ids.indexOf(state.anchor), ids.indexOf(row.index)].sort((x, y) => x - y);
+      ids.slice(a, b + 1).forEach(id => state.selected.add(id));
+    } else {
+      state.selected = new Set([row.index]);
+      state.anchor = row.index;
+    }
+    render();
+  });
+}
+
+// ── Drag to reorder: every selected row moves, in order, before the drop target ──
+// Mirrors Swift `HostsViewModel.moveRows`: rows are chunks of lines; system rows never move.
 function wireDrag(node, row) {
   node.draggable = true;
-  node.addEventListener("dragstart", () => { state.dragIndex = row; node.classList.add("dragging"); });
-  node.addEventListener("dragend", () => { state.dragIndex = null; render(); });
-  node.addEventListener("dragover", e => { if (state.dragIndex) { e.preventDefault(); node.classList.add("drop-target"); } });
+  node.addEventListener("dragstart", () => {
+    if (!state.selected.has(row.index)) state.selected = new Set([row.index]);
+    state.dragging = true;
+    node.classList.add("dragging");
+  });
+  node.addEventListener("dragend", () => { state.dragging = false; render(); });
+  node.addEventListener("dragover", e => { if (state.dragging) { e.preventDefault(); node.classList.add("drop-target"); } });
   node.addEventListener("dragleave", () => node.classList.remove("drop-target"));
   node.addEventListener("drop", e => {
     e.preventDefault();
-    const from = state.dragIndex;
-    if (!from || from.index === row.index) return;
-    const moved = state.lines.splice(from.index, from.span);
-    const to = from.index < row.index ? row.index - from.span : row.index;
-    state.lines.splice(to, 0, ...moved);
+    if (state.selected.has(row.index)) return;
+    const rows = buildRows(state.lines);
+    const chunk = r => state.lines.slice(r.index, r.index + r.span);
+    const moving = rows.filter(r => state.selected.has(r.index) && !isSystemRow(r));
+    if (moving.length === 0) return;
+    const rest = rows.filter(r => !moving.includes(r));
+    const at = rest.findIndex(r => r.index === row.index);
+    const ordered = [...rest.slice(0, at), ...moving, ...rest.slice(at)];
+    state.lines = ordered.flatMap(chunk);
+    // re-select the moved rows at their new positions
+    const moved = buildRows(state.lines);
+    state.selected = new Set(moved.slice(at, at + moving.length).map(r => r.index));
+    state.dragging = false;
     render();
   });
 }
@@ -233,6 +271,7 @@ function openDelete(row, name) {
 }
 
 function confirmDelete() {
+  state.selected.clear();
   state.lines.splice(state.deletingRow.index, state.deletingRow.span);
   closeSheets();
   render();
@@ -307,7 +346,7 @@ function applyTheme() {
 }
 
 // ── Wiring ─────────────────────────────────────────────────
-$("searchInput").addEventListener("input", e => { state.query = e.target.value.trim(); render(); });
+$("searchInput").addEventListener("input", e => { state.query = e.target.value.trim(); state.selected.clear(); render(); });
 $("addButton").addEventListener("click", () => openEditor());
 $("rawButton").addEventListener("click", openRaw);
 $("rawCopy").addEventListener("click", copyRaw);
