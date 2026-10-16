@@ -30,6 +30,13 @@ final class ModelTests: XCTestCase {
         XCTAssertEqual(entry.line, "# 10.0.0.5\tstaging.test\t# VPN")
     }
 
+    func testCommentCannotInjectAHostsLine() {
+        let entry = HostEntry(ip: "127.0.0.1", hostnames: ["a.test"], comment: "dev\n10.6.6.6 bank.example\r\u{0}# x")
+        XCTAssertFalse(entry.line.contains("\n"))
+        XCTAssertEqual(HostsParser.parse(entry.line + "\n").lines.count, 1, "still exactly one line")
+        XCTAssertEqual(entry.line, "127.0.0.1\ta.test\t# dev 10.6.6.6 bank.example   x")
+    }
+
     func testEmptyCommentIsOmitted() {
         XCTAssertEqual(HostEntry(ip: "::1", hostnames: ["a.test"], comment: "").line, "::1\ta.test")
     }

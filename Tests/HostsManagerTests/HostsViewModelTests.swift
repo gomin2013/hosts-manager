@@ -66,7 +66,7 @@ final class HostsViewModelTests: XCTestCase {
     // MARK: - Search
 
     func testSearchShowsOnlyMatchingEntries() {
-        let vm = HostsViewModel()
+        let vm = HostsViewModel(lines: MockData.lines)
         vm.searchText = "staging"
         let hosts = vm.filteredRows.compactMap { row -> String? in
             if case .entry(_, let found) = row { found.hostnames.first } else { nil }
@@ -76,12 +76,12 @@ final class HostsViewModelTests: XCTestCase {
     }
 
     func testEmptySearchShowsEverything() {
-        let vm = HostsViewModel()
+        let vm = HostsViewModel(lines: MockData.lines)
         XCTAssertEqual(vm.filteredRows, HostsViewModel.rows(from: vm.lines))
     }
 
     func testCounts() {
-        let vm = HostsViewModel()
+        let vm = HostsViewModel(lines: MockData.lines)
         XCTAssertEqual(vm.entries.count, 8)
         XCTAssertEqual(vm.enabledCount, 5)
     }
@@ -91,16 +91,26 @@ final class HostsViewModelTests: XCTestCase {
         XCTAssertEqual(vm.rawText, "# Dev\n127.0.0.1\ta.test\n\n")
     }
 
+    func testDemoModeNeverWrites() {
+        let vm = HostsViewModel(lines: MockData.lines)
+        let before = vm.rawText
+        vm.toggle(vm.entries[3])
+        vm.addSection()
+        vm.delete(vm.filteredRows[4])
+        XCTAssertFalse(vm.isSaving)
+        XCTAssertEqual(vm.rawText, before)
+    }
+
     // MARK: - Editor
 
     func testBeginEditRefusesSystemEntries() {
-        let vm = HostsViewModel()
+        let vm = HostsViewModel(lines: MockData.lines)
         vm.beginEdit(HostEntry(ip: "127.0.0.1", hostnames: ["localhost"]))
         XCTAssertNil(vm.editor)
     }
 
     func testEditorPrefillsAndSplitsHostnames() {
-        let vm = HostsViewModel()
+        let vm = HostsViewModel(lines: MockData.lines)
         vm.beginEdit(HostEntry(ip: "127.0.0.1", hostnames: ["a.test", "b.test"], comment: "dev"))
         XCTAssertEqual(vm.editor?.ip, "127.0.0.1")
         XCTAssertEqual(vm.editor?.hostnamesText, "a.test b.test")
@@ -110,8 +120,14 @@ final class HostsViewModelTests: XCTestCase {
         XCTAssertEqual(vm.editor?.hostnames, ["x.test", "y.test"])
     }
 
+    func testGenerateCommentPromptSendsOnlyThisEntry() {
+        let prompt = EditorViewModel.commentPrompt(ip: "10.0.0.5", hostnames: ["staging.test", "api.test"])
+        XCTAssertEqual(prompt.question, "10.0.0.5 staging.test api.test")
+        XCTAssertFalse(prompt.system.contains("/etc/hosts:"), "the rest of the file is not sent")
+    }
+
     func testBeginAddOpensEmptyEditor() {
-        let vm = HostsViewModel()
+        let vm = HostsViewModel(lines: MockData.lines)
         vm.beginAdd()
         XCTAssertEqual(vm.editor?.isEditing, false)
         XCTAssertEqual(vm.editor?.titleKey, "editor.addTitle")
