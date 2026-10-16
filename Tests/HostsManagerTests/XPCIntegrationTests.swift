@@ -232,6 +232,47 @@ final class XPCIntegrationTests: XCTestCase {
         XCTAssertFalse(vm.isSaving, "no reordering while searching")
     }
 
+    // rows: 0 header · 1 localhost · 2 §Dev · 3 api · 4 web · 5 §Staging · 6 staging
+    private let twoSections = "##\n# Host Database\n##\n127.0.0.1\tlocalhost\n\n# Dev\n127.0.0.1\tapi.test\n"
+        + "127.0.0.1\tweb.test\n\n# Staging\n10.0.0.5\tstaging.test\n"
+
+    func testMultiSelectDragMovesRowsTogetherInOrder() async throws {
+        try twoSections.write(to: hostsURL, atomically: true, encoding: .utf8)
+        let vm = makeViewModel()
+        vm.moveRows(from: [3, 4], to: 7)   // api + web below staging
+        try await waitUntilSaved(vm)
+        XCTAssertTrue(contents.hasSuffix(
+            "# Staging\n10.0.0.5\tstaging.test\n127.0.0.1\tapi.test\n127.0.0.1\tweb.test\n"
+        ))
+        let selected = vm.filteredRows.filter { vm.selection.contains($0.id) }.compactMap { row -> String? in
+            if case .entry(_, let entry) = row { entry.hostnames[0] } else { nil }
+        }
+        XCTAssertEqual(selected, ["api.test", "web.test"], "the moved rows stay selected")
+    }
+
+    func testDragMovesASectionWithItsEntry() async throws {
+        try twoSections.write(to: hostsURL, atomically: true, encoding: .utf8)
+        let vm = makeViewModel()
+        vm.moveRows(from: [5, 6], to: 2)   // Staging section + entry above Dev
+        try await waitUntilSaved(vm)
+        XCTAssertEqual(contents, "##\n# Host Database\n##\n127.0.0.1\tlocalhost\n\n# Staging\n10.0.0.5\tstaging.test\n"
+            + "\n# Dev\n127.0.0.1\tapi.test\n127.0.0.1\tweb.test\n")
+    }
+
+    func testSelectedSystemRowsDoNotMove() async throws {
+        try twoSections.write(to: hostsURL, atomically: true, encoding: .utf8)
+        let vm = makeViewModel()
+        vm.moveRows(from: [0, 1, 3], to: 7)   // header + localhost + api → only api moves
+        try await waitUntilSaved(vm)
+        XCTAssertTrue(contents.hasPrefix(
+            "##\n# Host Database\n##\n127.0.0.1\tlocalhost\n\n# Dev\n127.0.0.1\tweb.test\n"
+        ))
+        XCTAssertTrue(contents.hasSuffix("10.0.0.5\tstaging.test\n127.0.0.1\tapi.test\n"))
+
+        vm.moveRows(from: [0, 1], to: 5)      // only system rows → nothing happens
+        XCTAssertFalse(vm.isSaving)
+    }
+
     func testImportMergeSkipsDuplicatesAndSystemEntries() async throws {
         let vm = makeViewModel()
         vm.beginImport("127.0.0.1 localhost\n127.0.0.1 api.test\n10.0.0.1 new.test\n")
