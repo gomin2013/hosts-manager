@@ -39,7 +39,7 @@ let package = Package(
         // MARK: - Tests
         .testTarget(
             name: "HostsManagerTests",
-            dependencies: ["Shared", "HostsManagerApp"],
+            dependencies: ["Shared", "HostsManagerApp", "HostsManagerHelper"],
             path: "Tests/HostsManagerTests"
         )
     ]
