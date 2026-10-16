@@ -18,7 +18,8 @@ you already know the other.
 ## Features
 
 - **Visual editor** — Add, edit, enable/disable (`# 127.0.0.1 api.test`), search and delete entries.
-- **Sections** — a blank line + optional `# heading` is a draggable section; drag anything to reorder.
+- **Sections** — a blank line + optional `# heading` is a draggable section; ⌘-click / ⇧-click to select several
+  rows (sections and entries) and drag them together.
 - **Safe by default** — IPv4/IPv6 and hostname (RFC 1123) validation, system entries (`localhost`,
   `broadcasthost`) are locked, your file's comments and spacing are written back byte-for-byte.
 - **Restore Previous** — every save keeps a backup; one click undoes the last save.

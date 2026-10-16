@@ -12,8 +12,9 @@ Extension / menu bar versions of this repository: a regular app you open from La
   (`# 127.0.0.1 api.test`), search (⌘F) and delete entries. `localhost` / `broadcasthost` are locked 🔒.
 - **Your file stays yours** — untouched lines keep their exact spacing, tabs, comments and line endings; the macOS
   header is shown as-is at the top.
-- **Sections** — a blank line plus an optional `# heading` is a section; type the heading inline and drag rows (a
-  section moves with its heading) to organize entries.
+- **Sections & drag** — a blank line plus an optional `# heading` is a section; type the heading inline and drag
+  rows (a section moves with its heading). **⌘-click / ⇧-click** selects several rows — sections and entries — to
+  drag them together. Double-click or right-click → Edit.
 - **Safe writes** — a small root helper (LaunchDaemon via `SMAppService`) is the only thing that writes the file.
   It validates the content (must keep `127.0.0.1 localhost`), refuses to overwrite a file another app changed,
   keeps the last 20 backups, writes atomically (0644) and flushes the DNS cache. It only accepts the exact app it
