@@ -40,7 +40,9 @@ final class HostsViewModel {
     private let hostsURL: URL
     private let backupsURL: URL
     /// Previews, tests and `-demo` screenshots: fixed lines, never read from or written to disk.
-    private let isDemo: Bool
+    let isDemo: Bool
+    /// `-demo` only: the file before the last in-memory edit, so Restore Previous works without backups.
+    private var demoPrevious: HostsFile?
     private let xpc: XPCService
     /// SHA-256 of the file on disk the current `file` is based on; the helper refuses to overwrite anything else.
     private var diskHash = Data().sha256Hex
@@ -59,7 +61,7 @@ final class HostsViewModel {
         load()
     }
 
-    /// Previews / tests: fixed lines, nothing read or written.
+    /// Previews / tests / `-demo`: fixed lines, edits stay in memory, nothing read or written.
     init(lines: [HostsLine]) {
         self.hostsURL = URL(fileURLWithPath: "/dev/null")
         self.backupsURL = URL(fileURLWithPath: "/dev/null")
@@ -112,11 +114,12 @@ final class HostsViewModel {
     }
 
     private func mutateFile(_ change: (inout HostsFile) -> Void) {
-        guard !isSaving, !isDemo else { return }
+        guard !isSaving else { return }
         let before = file
         change(&file)
         guard file != before else { return }
         if file.lines.count != before.lines.count { selection = [] }
+        if isDemo { demoPrevious = before; return }  // ponytail: demo edits stay in memory, nothing is written
         let content = file.text, expected = diskHash
         isSaving = true
         Task {
@@ -254,8 +257,14 @@ final class HostsViewModel {
         return names.filter { $0.hasPrefix("hosts-") }.max().map { backupsURL.appendingPathComponent($0) }
     }
 
+    var canRestore: Bool { isDemo ? demoPrevious != nil : latestBackupURL != nil }
+
     /// Writes the newest backup back. That write backs up the current file first, so clicking again undoes it.
     func restorePrevious() {
+        if isDemo {
+            if let demoPrevious { mutateFile { $0 = demoPrevious } }
+            return
+        }
         guard let url = latestBackupURL, let data = try? Data(contentsOf: url),
               let text = String(bytes: data, encoding: .utf8) else {
             errorMessage = localized("hint.noBackup")

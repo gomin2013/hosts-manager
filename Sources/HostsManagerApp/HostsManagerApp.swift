@@ -2,7 +2,7 @@ import SwiftUI
 
 @main
 struct HostsManagerApp: App {
-    /// `open HostsManager.app --args -demo` shows MockData read-only — README screenshots without real hostnames.
+    /// `open HostsManager.app --args -demo` shows MockData; edits stay in memory — screenshots and recordings without real hostnames.
     @State private var hostsVM = CommandLine.arguments.contains("-demo")
         ? HostsViewModel(lines: MockData.lines)
         : HostsViewModel()
