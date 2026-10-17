@@ -1,5 +1,26 @@
 # Changelog
 
+## v1.0.2 — 2026-10-17
+
+### Website
+
+- **New site:** [gomin2013.github.io/hosts-manager](https://gomin2013.github.io/hosts-manager/) — features, a
+  download and install guide, Privacy Policy and Terms of Use, in English and Thai.
+- README links to the website.
+
+### App
+
+- No changes since v1.0.0 apart from the version number — if you already run 1.0.0 there is nothing to update.
+
+### Installation
+
+Same as v1.0.0: download `HostsManager-1.0.2.dmg` (and `SHA256SUMS.txt`), drag **Hosts Manager** to
+**Applications**, allow the first launch in **System Settings → Privacy & Security → Open Anyway** (or
+`xattr -dr com.apple.quarantine "/Applications/HostsManager.app"`), then allow the helper once in
+**System Settings → General → Login Items & Extensions**. Requires an Apple silicon Mac with macOS 14 or later.
+
+_v1.0.1 was never published; this release replaces it._
+
 ## v1.0.0 — 2026-10-16
 
 First release of the **rewritten Hosts Manager** — a native macOS app for editing `/etc/hosts`, built on the same
