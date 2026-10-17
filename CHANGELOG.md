@@ -10,7 +10,9 @@
 
 ### App
 
-- No changes since v1.0.0 apart from the version number — if you already run 1.0.0 there is nothing to update.
+- Nothing changes in normal use — if you already run 1.0.0 there is nothing to update.
+- For screenshots and recordings: `open HostsManager.app --args -demo` now lets you toggle, add, drag and
+  Restore Previous on sample data. Edits stay in memory; `/etc/hosts` is never read or written.
 
 ### Installation
 
