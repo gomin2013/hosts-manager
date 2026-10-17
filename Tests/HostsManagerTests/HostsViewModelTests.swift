@@ -91,14 +91,20 @@ final class HostsViewModelTests: XCTestCase {
         XCTAssertEqual(vm.rawText, "# Dev\n127.0.0.1\ta.test\n\n")
     }
 
-    func testDemoModeNeverWrites() {
+    func testDemoModeEditsInMemoryAndNeverSaves() {
         let vm = HostsViewModel(lines: MockData.lines)
         let before = vm.rawText
+        XCTAssertFalse(vm.canRestore)
         vm.toggle(vm.entries[3])
-        vm.addSection()
-        vm.delete(vm.filteredRows[4])
-        XCTAssertFalse(vm.isSaving)
+        XCTAssertFalse(vm.isSaving, "demo never starts a helper write")
+        XCTAssertNotEqual(vm.rawText, before)
+        let toggled = vm.rawText
+
+        XCTAssertTrue(vm.canRestore)
+        vm.restorePrevious()
         XCTAssertEqual(vm.rawText, before)
+        vm.restorePrevious()
+        XCTAssertEqual(vm.rawText, toggled, "clicking again undoes the restore, like the real backups")
     }
 
     // MARK: - Editor
