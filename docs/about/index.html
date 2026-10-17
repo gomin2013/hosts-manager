@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About Hosts Manager · Why and how it works</title>
+  <meta name="description" content="Why Hosts Manager exists, how its root helper writes /etc/hosts safely, and the open-source projects behind it, including Git Exclude Manager.">
+  <link rel="canonical" href="https://gomin2013.github.io/hosts-manager/about/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Hosts Manager">
+  <meta property="og:title" content="About Hosts Manager">
+  <meta property="og:description" content="Why it exists, how it writes /etc/hosts safely, and who makes it.">
+  <meta property="og:url" content="https://gomin2013.github.io/hosts-manager/about/">
+  <meta property="og:image" content="https://gomin2013.github.io/hosts-manager/assets/img/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" href="../favicon.png">
+  <link rel="apple-touch-icon" href="../assets/img/hm-icon.png">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script>try{var l=localStorage.getItem("hm.lang")||((navigator.language||"").slice(0,2)==="th"?"th":"en");if(l==="th"){document.documentElement.classList.add("th");document.documentElement.lang="th"}}catch(e){}</script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="../"><img src="../assets/img/hm-icon.png" alt="" width="30" height="30">Hosts Manager</a>
+      <nav class="nav-links" aria-label="Main">
+        <a href="../#features" class="hide-sm"><span class="en">Features</span><span class="th">ฟีเจอร์</span></a>
+        <a href="../download/"><span class="en">Download</span><span class="th">ดาวน์โหลด</span></a>
+        <a href="./" aria-current="page"><span class="en">About</span><span class="th">เกี่ยวกับ</span></a>
+        <a href="https://github.com/gomin2013/hosts-manager" target="_blank" rel="noopener" class="hide-sm">GitHub</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="th" aria-pressed="false">TH</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="wrap">
+        <h1 class="reveal"><span class="en">A small tool for a file everyone edits</span><span class="th">เครื่องมือเล็กๆ สำหรับไฟล์ที่ทุกคนต้องแก้</span></h1>
+        <p class="lede reveal" data-d="1"><span class="en">Every web developer edits /etc/hosts sooner or later. Usually with sudo, a terminal editor and a bit of hope.</span><span class="th">นักพัฒนาเว็บทุกคนต้องแก้ /etc/hosts สักวัน ส่วนใหญ่ใช้ sudo กับ editor ใน Terminal แล้วก็ลุ้นว่าจะไม่พัง</span></p>
+      </div>
+    </section>
+
+    <section style="padding-top:16px">
+      <div class="wrap split-2">
+        <div class="prose reveal">
+          <h2><span class="en">Why it exists</span><span class="th">ทำไมถึงสร้างแอปนี้</span></h2>
+          <p><span class="en">One typo in /etc/hosts can break localhost, and there is no undo. Hosts Manager puts the file in a normal Mac window: check what you type, keep a backup of every save, and let you go back with one click.</span><span class="th">พิมพ์ผิดตัวเดียวใน /etc/hosts ก็ทำให้ localhost พังได้ และไม่มีปุ่ม undo Hosts Manager จึงเปิดไฟล์นี้ในหน้าต่าง Mac ธรรมดา ตรวจสิ่งที่พิมพ์ สำรองทุกครั้งที่บันทึก และย้อนกลับได้ในคลิกเดียว</span></p>
+          <p><span class="en">It also respects the file you already have. Comments, spacing, tabs and line endings that you didn't touch are written back byte for byte.</span><span class="th">แอปยังเคารพไฟล์เดิมของคุณ comment ช่องว่าง tab และการขึ้นบรรทัดที่ไม่ได้แก้ จะถูกเขียนกลับเหมือนเดิมทุกไบต์</span></p>
+
+          <h2><span class="en">How it works</span><span class="th">ทำงานอย่างไร</span></h2>
+          <p><span class="en">The app itself never runs as root. A tiny helper, registered with macOS as a LaunchDaemon, is the only part allowed to write /etc/hosts. The app sends it the new content over XPC, and the helper validates it, checks nobody else changed the file, backs up the old one, writes atomically and flushes the DNS cache.</span><span class="th">ตัวแอปไม่เคยรันด้วยสิทธิ์ root มีเพียง helper ตัวเล็กที่ลงทะเบียนกับ macOS เป็น LaunchDaemon เท่านั้นที่เขียน /etc/hosts ได้ แอปส่งเนื้อหาใหม่ผ่าน XPC แล้ว helper จะตรวจความถูกต้อง เช็กว่าไม่มีใครแก้ไฟล์ไปก่อน สำรองไฟล์เดิม เขียนแบบ atomic และล้าง DNS cache</span></p>
+          <p><span class="en">The helper checks the code signature of whoever connects, down to the exact build it shipped with. Another app on your Mac can't borrow it.</span><span class="th">helper ตรวจ code signature ของผู้ที่เชื่อมต่อเข้ามา ต้องตรงกับ build ที่มาด้วยกันเท่านั้น แอปอื่นในเครื่องจึงยืมใช้ไม่ได้</span></p>
+
+          <h2><span class="en">Open source</span><span class="th">โอเพนซอร์ส</span></h2>
+          <p><span class="en">Hosts Manager is written in Swift and SwiftUI and released under the MIT License. Bug reports, ideas and pull requests are welcome on</span><span class="th">Hosts Manager เขียนด้วย Swift และ SwiftUI เผยแพร่ภายใต้สัญญาอนุญาต MIT แจ้งบั๊ก เสนอไอเดีย หรือส่ง pull request ได้ที่</span> <a href="https://github.com/gomin2013/hosts-manager" target="_blank" rel="noopener">GitHub</a>.</p>
+        </div>
+        <figure class="reveal" data-d="1" style="margin:0">
+          <picture>
+            <source srcset="../assets/img/hm-main-dark.png" media="(prefers-color-scheme: dark)">
+            <img class="shot" src="../assets/img/hm-main-light.png" width="1432" height="972" loading="lazy"
+                 alt="Hosts Manager main window with sections, entries and the AI Agent panel" style="border-radius:12px;box-shadow:var(--shadow)">
+          </picture>
+          <img src="../assets/img/hm-editor-crop.png" width="424" height="236" loading="lazy"
+               alt="Add Entry sheet with live IP and hostname validation" style="margin-top:24px;border-radius:12px;box-shadow:var(--shadow);max-width:80%">
+        </figure>
+      </div>
+    </section>
+
+    <section id="git-exclude-manager">
+      <div class="wrap">
+        <div class="sibling reveal">
+          <div>
+            <p class="eyebrow"><span class="en">Sibling app</span><span class="th">แอปพี่น้อง</span></p>
+            <div class="who">
+              <img src="../assets/img/gem-icon.png" width="56" height="56" alt="">
+              <h2 style="font-size:30px">Git Exclude Manager</h2>
+            </div>
+            <p><span class="en">Hosts Manager started as a copy of Git Exclude Manager, which edits .git/info/exclude for every repository on your Mac. Same window, same sections and drag, same AI Agent.</span><span class="th">Hosts Manager เริ่มจากการต่อยอด Git Exclude Manager ซึ่งแก้ .git/info/exclude ของทุก repository ในเครื่อง หน้าต่างเดียวกัน แบ่งหมวดและลากได้เหมือนกัน มี AI Agent เหมือนกัน</span></p>
+            <div class="cta-row" style="margin-top:22px">
+              <a class="btn btn-ghost" href="https://github.com/gomin2013/git-exclude-manager"><i class="ph ph-arrow-square-out" aria-hidden="true"></i><span class="en">Explore Git Exclude Manager</span><span class="th">ดู Git Exclude Manager</span></a>
+            </div>
+          </div>
+          <img class="shot" src="../assets/img/gem-main.png" width="1582" height="1161" loading="lazy"
+               alt="Git Exclude Manager window with repository tabs and ignore patterns grouped into sections">
+        </div>
+      </div>
+    </section>
+
+    <section class="closing">
+      <div class="wrap">
+        <div class="closing-inner reveal">
+          <img src="../assets/img/hm-mascot.png" width="512" height="512" alt="" loading="lazy">
+          <div>
+            <h2><span class="en">Made by Watthajak Jinasam</span><span class="th">พัฒนาโดย Watthajak Jinasam</span></h2>
+            <p class="lede"><span class="en">Built so nobody has to type sudo vim /etc/hosts again. The fennec fox has big ears, so it hears every host.</span><span class="th">สร้างขึ้นเพื่อให้ไม่มีใครต้องพิมพ์ sudo vim /etc/hosts อีก จิ้งจอกเฟนเนกหูใหญ่ เลยได้ยินทุกโฮสต์</span></p>
+            <div class="cta-row">
+              <a class="btn btn-primary" href="../download/"><i class="ph ph-download-simple" aria-hidden="true"></i><span class="en">Download for Mac</span><span class="th">ดาวน์โหลดสำหรับ Mac</span></a>
+              <a class="btn btn-ghost" href="https://github.com/gomin2013"><i class="ph ph-github-logo" aria-hidden="true"></i>@gomin2013</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap foot">
+      <a class="brand" href="../"><img src="../assets/img/hm-icon.png" alt="" width="30" height="30">Hosts Manager</a>
+      <nav aria-label="Footer">
+        <a href="../download/"><span class="en">Download</span><span class="th">ดาวน์โหลด</span></a>
+        <a href="./"><span class="en">About</span><span class="th">เกี่ยวกับ</span></a>
+        <a href="../privacy-policy/"><span class="en">Privacy Policy</span><span class="th">นโยบายความเป็นส่วนตัว</span></a>
+        <a href="../terms-of-use/"><span class="en">Terms of Use</span><span class="th">ข้อกำหนดการใช้งาน</span></a>
+        <a href="https://github.com/gomin2013/hosts-manager" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+      <small><span class="en">© 2026 Watthajak Jinasam. Released under the MIT License. Not affiliated with Apple.</span><span class="th">© 2026 Watthajak Jinasam เผยแพร่ภายใต้สัญญาอนุญาต MIT ไม่มีส่วนเกี่ยวข้องกับ Apple</span></small>
+    </div>
+  </footer>
+  <script src="../assets/site.js" defer></script>
+</body>
+</html>
