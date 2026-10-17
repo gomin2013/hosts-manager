@@ -203,8 +203,8 @@ struct HostsView: View {
             Button(action: vm.restorePrevious, label: {
                 Label(localized("btn.restore"), systemImage: "arrow.uturn.backward")
             })
-            .disabled(!canWrite || vm.latestBackupURL == nil)
-            .help(localized(vm.latestBackupURL == nil ? "hint.noBackup" : "hint.restore"))
+            .disabled(!canWrite || !vm.canRestore)
+            .help(localized(!vm.canRestore ? "hint.noBackup" : "hint.restore"))
 
             Button(action: { showingRawPreview = true }, label: {
                 Label(localized("btn.previewRaw"), systemImage: "eye")
@@ -302,7 +302,7 @@ struct HostsView: View {
     }
 
     /// Writes need the approved helper and no save in flight.
-    private var canWrite: Bool { installer.status == .ready && !vm.isSaving }
+    private var canWrite: Bool { (installer.status == .ready || vm.isDemo) && !vm.isSaving }
 
     /// The row when exactly one is targeted by a right-click / double-click.
     private static func single(_ ids: Set<Int>, in rows: [HostsRow]) -> HostsRow? {
