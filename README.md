@@ -8,6 +8,8 @@ A native macOS app for editing **`/etc/hosts`** — toggle, add, edit and group 
 Every change is validated, backed up, written atomically by a small privileged helper, and the DNS cache is
 flushed for you. Opens from Launchpad / Applications like any other app. English and Thai UI.
 
+**Website & download:** [gomin2013.github.io/hosts-manager](https://gomin2013.github.io/hosts-manager/)
+
 <p align="center">
   <img src="docs/images/screenshot.png" alt="Hosts Manager: /etc/hosts entries grouped into sections, the AI Agent panel and the action toolbar">
 </p>
