@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   dmg:
-    runs-on: macos-15
+    runs-on: macos-26
     steps:
       - uses: actions/checkout@v5
 
@@ -21,6 +21,12 @@ jobs:
             VERSION=$(/usr/libexec/PlistBuddy -c 'Print CFBundleShortVersionString' "$p")
             [ "v$VERSION" = "$GITHUB_REF_NAME" ] || { echo "Tag $GITHUB_REF_NAME != $p $VERSION"; exit 1; }
           done
+
+      # Liquid Glass needs the macOS 26 SDK (compiler 6.2+); an older runner would ship a DMG without it
+      - name: SDK must be macOS 26 or later
+        run: |
+          SDK=$(xcrun --show-sdk-version); echo "SDK $SDK"
+          [ "${SDK%%.*}" -ge 26 ] || { echo "SDK $SDK < 26: no Liquid Glass"; exit 1; }
 
       - name: Test
         run: swift test
