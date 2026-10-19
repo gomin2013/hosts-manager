@@ -7,7 +7,7 @@
   <meta name="robots" content="noindex">
   <link rel="icon" type="image/png" href="/hosts-manager/favicon.png">
   <link rel="stylesheet" href="/hosts-manager/assets/site.css">
-  <script>try{var l=localStorage.getItem("hm.lang")||((navigator.language||"").slice(0,2)==="th"?"th":"en");if(l==="th"){document.documentElement.classList.add("th");document.documentElement.lang="th"}}catch(e){}</script>
+  <script>try{var d=document.documentElement,n=(navigator.language||"").toLowerCase(),l=localStorage.getItem("hm.lang")||(/^zh-(hant|tw|hk|mo)/.test(n)?"zh-Hant":/^zh/.test(n)?"zh-Hans":/^fil/.test(n)?"tl":n.slice(0,2));if("en th ja ko vi id ms tl zh-Hans zh-Hant es ru".split(" ").indexOf(l)<0)l="en";d.lang=l;if(l==="th")d.classList.add("th");else if(l!=="en")d.classList.add("i18n-wait")}catch(e){}</script>
 </head>
 <body>
   <main id="main">
@@ -24,5 +24,6 @@
       </div>
     </section>
   </main>
+  <script src="/hosts-manager/assets/site.js" defer></script>
 </body>
 </html>
