@@ -19,7 +19,7 @@ const QUICK_KEYS = ["quick.explain", "quick.conflicts", "quick.block", "quick.lo
 // Same order as Swift `HelpList.items`: setup → add → organize → whole file → helpers
 const HELP_ITEMS = [
   ["🛡", "help.helper"], ["⊕", "help.add"], ["✓", "help.toggle"], ["⌕", "help.search"], ["☰", "help.sections"],
-  ["≡", "help.reorder"], ["🔒", "help.system"], ["⤓", "help.import"], ["↶", "help.restore"], ["👁", "help.preview"],
+  ["≡", "help.reorder"], ["🔒", "help.system"], ["⤓", "help.import"], ["🕘", "help.restore"], ["👁", "help.preview"],
   ["✨", "help.ai"]
 ];
 
