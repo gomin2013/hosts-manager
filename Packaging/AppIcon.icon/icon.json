@@ -1,4 +1,4 @@
 {
-  "groups" : [ { "layers" : [ { "image-name" : "fox.png", "name" : "fox" } ] } ],
+  "groups" : [ { "layers" : [ { "image-name" : "robot.png", "name" : "robot" } ] } ],
   "supported-platforms" : { "squares" : "shared" }
 }
