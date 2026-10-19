@@ -15,12 +15,38 @@ struct HostsManagerApp: App {
                 .environment(hostsVM)
                 .environment(installer)
                 .frame(minWidth: 760, minHeight: 540)
-                .task { installer.registerIfNeeded() }
+                .task {
+                    // `-demo` never writes, so it never registers the helper either: a demo run of a build copy
+                    // can't replace the installed app's LaunchDaemon registration.
+                    if !hostsVM.isDemo { installer.registerIfNeeded() }
+                    // 1432×972 near the top-left for scripts/capture-screenshots.sh — the size the website's (and
+                    // gomin2013.github.io's) <img width/height> expect. Moving another app's window from a script
+                    // would need Accessibility access. After a beat: on attach the window isn't visible yet and window
+                    // restoration would put the old frame back.
+                    if hostsVM.isDemo { try? await Task.sleep(for: .milliseconds(300)) }
+                    if hostsVM.isDemo, let window = NSApp.windows.first(where: \.isVisible),
+                       let screen = window.screen ?? NSScreen.main {
+                        let frame = NSRect(x: screen.visibleFrame.minX + 60, y: screen.visibleFrame.maxY - 992,
+                                           width: 1432, height: 972)
+                        window.setFrame(frame, display: true)
+                    }
+                    #if DEBUG
+                    hostsVM.seedDemoHistory()
+                    hostsVM.openDemoEditor()
+                    #endif
+                }
         }
         .windowResizability(.contentMinSize)
         .commands {
             // One main window: drop File › New Window so ⌘N belongs to "Add Entry" (on its button in HostsView).
             CommandGroup(replacing: .newItem) {}
+            // Help › Hosts Manager Help (⌘?) opens the Help panel instead of an empty Help Book search
+            CommandGroup(replacing: .help) {
+                Button(localized("menu.helpWindow")) {
+                    UserDefaults.standard.set(ToolPanel.help.rawValue, forKey: "ui.toolPanel")
+                }
+                .keyboardShortcut("?", modifiers: .command)
+            }
         }
     }
 }

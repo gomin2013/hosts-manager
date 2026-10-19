@@ -15,7 +15,7 @@ public struct HostsFile: Equatable, Sendable {
 
     /// The file text. For a file read with `HostsParser.parse` and not modified, this equals the original.
     public var text: String {
-        lines.map(\.text).joined(separator: lineEnding) + (endsWithNewline && !lines.isEmpty ? lineEnding : "")
+        lines.flatMap(\.textLines).joined(separator: lineEnding) + (endsWithNewline && !lines.isEmpty ? lineEnding : "")
     }
 }
 
@@ -27,7 +27,27 @@ public enum HostsParser {
         let endsWithNewline = text.hasSuffix(lineEnding)
         if endsWithNewline { rawLines.removeLast() }
         if text.isEmpty { rawLines = [] }
-        return HostsFile(lines: rawLines.map(parseLine), lineEnding: lineEnding, endsWithNewline: endsWithNewline)
+        return HostsFile(lines: attachCommentLines(rawLines), lineEnding: lineEnding, endsWithNewline: endsWithNewline)
+    }
+
+    /// `## text` directly above an entry (on or off) is that entry's comment; anywhere else it's a plain comment.
+    /// (`##` alone, as in the stock macOS header, has no text and stays a comment.)
+    static func attachCommentLines(_ rawLines: [String]) -> [HostsLine] {
+        var lines: [HostsLine] = []
+        var index = 0
+        while index < rawLines.count {
+            let raw = rawLines[index]
+            let text = raw.hasPrefix("## ") ? raw.dropFirst(3).trimmingCharacters(in: .whitespaces) : ""
+            if !text.isEmpty, index + 1 < rawLines.count, case .entry(var entry) = parseLine(rawLines[index + 1]) {
+                entry.attachCommentLine(raw, text: text)
+                lines.append(.entry(entry))
+                index += 2
+            } else {
+                lines.append(parseLine(raw))
+                index += 1
+            }
+        }
+        return lines
     }
 
     static func parseLine(_ raw: String) -> HostsLine {

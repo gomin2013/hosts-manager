@@ -12,13 +12,11 @@
 "btn.send" = "Send";
 "btn.import" = "Import";
 "btn.export" = "Export";
-"btn.restore" = "Restore Previous";
 "btn.previewRaw" = "Preview Raw";
 "btn.merge" = "Merge";
 "btn.replace" = "Replace";
 "btn.generateComment" = "Generate Comment";
 "hint.generateComment" = "Suggest a comment with AI — only this entry is sent";
-"hint.noBackup" = "No previous version yet — one is kept after the first save.";
 "dialog.importTitle" = "Import hosts file";
 "dialog.importConfirm" = "%ld entries found. Merge adds only new entries; Replace swaps all of yours (system entries stay).";
 "btn.settings" = "Settings";
@@ -58,8 +56,9 @@
 "section.placeholder" = "Add heading...";
 "hint.addSection" = "Add a blank-line section break. Drag it into place and type a heading (saved as # heading).";
 "hint.dragSection" = "Drag to move this section";
-"hint.restore" = "Revert /etc/hosts to the version before the last save. Click again to undo the restore.";
+"hint.renameSection" = "Double-click or press Return to rename";
 "hint.system" = "System entry — read-only";
+"hint.inlineComment" = "This comment is on the same line as the hostnames, so macOS also treats its words as hostnames. Your next save moves it to its own line.";
 "hint.toggle" = "Enable or disable this entry";
 "empty.noResults" = "No entries match “%@”";
 "confirm.deleteTitle" = "Delete this entry?";
@@ -70,6 +69,13 @@
 "chat.placeholder" = "Ask AI...";
 "chat.welcome" = "👋 Hi! I'm your AI assistant. Ask me about your hosts entries.";
 "chat.noApiKey" = "⚠️ Please configure AI API in Settings first.";
+"chat.step.attached" = "Attached /etc/hosts · %ld lines";
+"chat.step.waiting" = "Waiting for %@";
+"chat.step.thinking" = "Thinking";
+"chat.step.writing" = "Writing the answer";
+"chat.thought" = "Thought for %ld s";
+"chat.seconds" = "%ld s";
+"btn.stop" = "Stop";
 "ai.notConfigured" = "Not Set";
 "settings.title" = "AI API Settings";
 "settings.provider" = "Provider";
@@ -104,8 +110,8 @@
 "help.system.desc" = "localhost and broadcasthost come with macOS and are locked 🔒 so the system keeps working. The helper refuses any file without 127.0.0.1 localhost.";
 "help.import.title" = "Import / Export";
 "help.import.desc" = "Import any hosts file — Merge adds only new entries, Replace swaps yours (this Mac's system entries stay). Export saves exactly what Preview Raw shows.";
-"help.restore.title" = "Restore Previous";
-"help.restore.desc" = "Every save keeps a backup (the last 20, in /Library/Application Support/HostsManager/Backups). Restore Previous reverts the last save; click again to undo.";
+"help.restore.title" = "History";
+"help.restore.desc" = "Every save is a step in History (the last 30, newest first), named after what changed. Double-click a step or use its ↩ button to go back — going back is a new step too, so nothing is lost. Pin a version to keep it; the version from when the app opened is pinned for you. Click a step's trash button to remove it from the list.";
 "help.preview.title" = "Preview Raw";
 "help.preview.desc" = "See exactly what will be written to /etc/hosts, including your comment lines. Copy with ⇧⌘C.";
 "help.ai.title" = "AI Agent";
@@ -115,3 +121,95 @@
 "err.staleFile" = "/etc/hosts was changed by another app. Reloaded — please try again.";
 "err.invalidContent" = "The helper rejected the file content.";
 "err.writeFailed" = "Could not write /etc/hosts. Nothing was changed.";
+
+
+/* History */
+"history.title" = "History";
+"history.pinned" = "Pinned";
+"history.recent" = "Recent";
+"history.opened" = "When Opened";
+"history.now" = "Now";
+"history.restore" = "Restore This Version";
+"history.pin" = "Pin Current Version";
+"history.pinThis" = "Pin This Version";
+"history.unpin" = "Unpin";
+"history.rename" = "Rename…";
+"history.renameTitle" = "Rename Pin";
+"history.pinName" = "Name";
+"history.pinDefault" = "Pinned at %@";
+"history.earliest" = "Earlier version";
+"history.turnedOn" = "Turned on %@";
+"history.turnedOff" = "Turned off %@";
+"history.added" = "Added %@";
+"history.removed" = "Deleted %@";
+"history.edited" = "Edited %@";
+"history.sectionAdded" = "Added section %@";
+"history.sectionAddedUntitled" = "Added a section";
+"history.sectionRemoved" = "Deleted section %@";
+"history.sectionRemovedUntitled" = "Deleted a section";
+"history.sectionRenamed" = "Named section %@";
+"history.moved" = "Moved rows";
+"history.comments" = "Changed comments";
+"history.reverted" = "Restored the %@ version";
+"history.revertedEarlier" = "Restored an earlier version";
+"history.revertedToPin" = "Restored “%@”";
+"history.revertedToOpened" = "Restored the version when opened";
+"history.several" = "%@ and %ld more";
+
+/* v1.1 — look & feel, tool window, rows */
+"theme.accent" = "Accent Color";
+"theme.gradient" = "Gradient Theme";
+"theme.noGradient" = "No Gradient";
+"accent.system" = "System";
+"accent.followSystem" = "System (follow macOS)";
+"hint.withShortcut" = "%@ (%@)";
+"btn.hide" = "Hide";
+"a11y.hidePanel" = "Hide %@";
+"btn.clear" = "Clear";
+"btn.turnOn" = "Turn On";
+"btn.turnOff" = "Turn Off";
+"a11y.editNamed" = "Edit %@";
+"a11y.deleteNamed" = "Delete %@";
+"label.macHeader" = "macOS header";
+"banner.approve.title" = "Allow Hosts Manager to edit /etc/hosts";
+"banner.approve.desc" = "Turn on Hosts Manager in Login Items. Until then you can view entries but not change them.";
+"banner.missing.title" = "Hosts Manager can't edit /etc/hosts yet";
+"banner.missing.desc" = "Its helper isn't installed. Quit and open Hosts Manager again from Applications.";
+"empty.noEntries.title" = "No Entries";
+"empty.noEntries.desc" = "Add an entry to point a hostname at an IP address on this Mac.";
+"accent.red" = "Red";
+"accent.orange" = "Orange";
+"accent.amber" = "Amber";
+"accent.olive" = "Olive";
+"accent.lime" = "Lime";
+"accent.green" = "Green";
+"accent.emerald" = "Emerald";
+"accent.teal" = "Teal";
+"accent.cyan" = "Cyan";
+"accent.blue" = "Blue";
+"accent.indigo" = "Indigo";
+"accent.violet" = "Violet";
+"accent.purple" = "Purple";
+"accent.magenta" = "Magenta";
+"accent.pink" = "Pink";
+"accent.graphite" = "Graphite";
+"gradient.none" = "None";
+"gradient.ocean" = "Ocean";
+"gradient.ember" = "Ember";
+"gradient.lavender" = "Lavender";
+"gradient.watermelon" = "Watermelon";
+"gradient.lagoon" = "Lagoon";
+"gradient.meadow" = "Meadow";
+"gradient.dusk" = "Dusk";
+"gradient.peach" = "Peach";
+
+/* v1.1 — AI Agent start page, Help menu */
+"chat.intro" = "Ask about your hosts entries. Your /etc/hosts file is sent along with each question.";
+"chat.tryAsking" = "Try asking";
+"chat.setUp" = "Set Up AI Provider…";
+"menu.helpWindow" = "Hosts Manager Help";
+
+/* History remove · Language panel (v1.1) */
+"history.remove" = "Remove from History";
+"language.search" = "Search languages";
+"language.noResults" = "No languages match “%@”";

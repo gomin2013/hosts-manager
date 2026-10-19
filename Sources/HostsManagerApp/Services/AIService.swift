@@ -28,7 +28,23 @@ enum AIProvider: String, CaseIterable, Identifiable, Sendable {
 struct ChatTurn: Equatable, Sendable {
     enum Role: String, Sendable { case user, assistant }
     let role: Role
-    let text: String
+    var text: String
+    /// Assistant only: reasoning the provider streamed (display only — never sent back).
+    var thinking = ""
+    /// Assistant only: how long the reply took, once it finished.
+    var seconds: Int?
+
+    /// Appends streamed answer text. Reasoning models sometimes put thinking in the answer itself — all of it inside
+    /// `<think>…</think>` (no native thinking) or just its tail and a stray `</think>` (qwen3 on Ollama) — so whatever
+    /// comes before a `</think>` moves to `thinking`.
+    mutating func appendText(_ chunk: String) {
+        text += chunk
+        guard let end = text.range(of: "</think>") else { return }
+        let leaked = text[..<end.lowerBound].replacing("<think>", with: "")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        if !leaked.isEmpty { thinking += (thinking.isEmpty ? "" : "\n\n") + leaked }
+        text = String(text[end.upperBound...].drop(while: \.isWhitespace))
+    }
 }
 
 enum AIError: LocalizedError, Equatable {
@@ -288,12 +304,15 @@ enum AIService {
             guard SystemLanguageModel.default.isAvailable else {
                 throw AIError.unavailable("Apple Intelligence is not available or not enabled on this Mac.")
             }
-            // ponytail: history folded into one prompt; keep a LanguageModelSession per chat if context matters
-            let prompt = turns.map { "\($0.role.rawValue): \($0.text)" }.joined(separator: "\n\n")
             let session = LanguageModelSession(instructions: system)
-            return try await session.respond(to: prompt).content
+            return try await session.respond(to: foldedPrompt(turns)).content
         }
         #endif
         throw AIError.unavailable("Apple Foundation Models needs macOS 26 or later.")
+    }
+
+    // ponytail: history folded into one prompt; keep a LanguageModelSession per chat if context matters
+    static func foldedPrompt(_ turns: [ChatTurn]) -> String {
+        turns.map { "\($0.role.rawValue): \($0.text)" }.joined(separator: "\n\n")
     }
 }

@@ -87,10 +87,8 @@ struct CloseButton: View {
     }
 }
 
-/// About sheet from the Settings menu.
+/// Shown in the About panel of the tool window (Settings is split into Language / About for now).
 struct AboutView: View {
-    var onDismiss: () -> Void = {}
-
     private var version: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "dev"
     }
@@ -109,7 +107,6 @@ struct AboutView: View {
                 .multilineTextAlignment(.center)
         }
         .padding(24)
-        .frame(width: 360)
-        .overlay(alignment: .topTrailing) { CloseButton(action: onDismiss).padding(12) }
+        .frame(maxWidth: .infinity)
     }
 }

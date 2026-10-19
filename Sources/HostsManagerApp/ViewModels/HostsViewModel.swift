@@ -31,6 +31,9 @@ final class HostsViewModel {
     var selection = Set<Int>()
     /// Non-nil while the editor sheet is open.
     var editor: EditorViewModel?
+    /// Row id of the section whose heading is being typed. List(selection:) swallows clicks on an always-visible
+    /// TextField, so the field only appears (focused) for this one: a new section, double-click or Return.
+    var editingSectionID: Int?
     /// Localized message for the last failed load/save; the view shows it in an alert.
     var errorMessage: String?
     private(set) var isSaving = false
@@ -38,11 +41,10 @@ final class HostsViewModel {
     var pendingImport: [HostsLine]?
 
     private let hostsURL: URL
-    private let backupsURL: URL
     /// Previews, tests and `-demo` screenshots: fixed lines, never read from or written to disk.
     let isDemo: Bool
-    /// `-demo` only: the file before the last in-memory edit, so Restore Previous works without backups.
-    private var demoPrevious: HostsFile?
+    /// History panel: recent saves (from the helper's backups), the file as opened, and the user's pins.
+    let history: HostsHistory
     private let xpc: XPCService
     /// SHA-256 of the file on disk the current `file` is based on; the helper refuses to overwrite anything else.
     private var diskHash = Data().sha256Hex
@@ -51,23 +53,28 @@ final class HostsViewModel {
     init(
         hostsURL: URL = URL(fileURLWithPath: HelperConstants.hostsPath),
         backupsURL: URL = URL(fileURLWithPath: HelperConstants.backupsPath, isDirectory: true),
+        pinsURL: URL? = HostsHistory.defaultPinsURL,
         xpc: XPCService = XPCService()
     ) {
         self.hostsURL = hostsURL
-        self.backupsURL = backupsURL
         self.xpc = xpc
         self.isDemo = false
         self.file = HostsFile()
+        // Removed steps live next to the pins (nil pinsURL in tests = nothing written to Application Support)
+        self.history = HostsHistory(backupsURL: backupsURL, pinsURL: pinsURL,
+                                    hiddenURL: pinsURL?.deletingLastPathComponent()
+                                        .appendingPathComponent("history-hidden.json"))
         load()
     }
 
     /// Previews / tests / `-demo`: fixed lines, edits stay in memory, nothing read or written.
     init(lines: [HostsLine]) {
         self.hostsURL = URL(fileURLWithPath: "/dev/null")
-        self.backupsURL = URL(fileURLWithPath: "/dev/null")
         self.xpc = XPCService()
         self.isDemo = true
         self.file = HostsFile(lines: lines)
+        self.history = HostsHistory(backupsURL: nil, pinsURL: nil)
+        history.reload(current: file.text)
     }
 
     var lines: [HostsLine] { file.lines }
@@ -104,6 +111,7 @@ final class HostsViewModel {
         if parsed.text != file.text { selection = [] }
         file = parsed
         diskHash = data.sha256Hex
+        history.reload(current: file.text)
     }
 
     // ponytail: one save at a time (mutations are ignored while saving); queue them if users hit it
@@ -119,13 +127,17 @@ final class HostsViewModel {
         change(&file)
         guard file != before else { return }
         if file.lines.count != before.lines.count { selection = [] }
-        if isDemo { demoPrevious = before; return }  // ponytail: demo edits stay in memory, nothing is written
+        if isDemo {  // ponytail: demo edits stay in memory, nothing is written
+            history.recordDemoEdit(replaced: before.text)
+            history.reload(current: file.text)
+            return
+        }
         let content = file.text, expected = diskHash
         isSaving = true
         Task {
             do {
                 try await xpc.writeHosts(content, expectedSHA256: expected)
-                diskHash = Data(content.utf8).sha256Hex
+                load()  // re-read what was written: same-line comments the save just moved stop being flagged
             } catch {
                 errorMessage = localized((error as? HelperError)?.localizationKey ?? "err.writeFailed")
                 load()
@@ -179,9 +191,11 @@ final class HostsViewModel {
 
     // MARK: - Sections & ordering
 
-    /// Section button: a blank line at the end; the user drags it into place and types a heading.
+    /// Section button: a blank line at the end with its heading open for typing; the user drags it into place.
     func addSection() {
+        let before = lines.count
         mutate { $0.append(.blank) }
+        if lines.count > before { editingSectionID = lines.count - 1 }  // not while a save is in flight
     }
 
     /// Heading = one `# heading` line after the section's blank line; an empty title removes it.
@@ -251,25 +265,10 @@ final class HostsViewModel {
         }
     }
 
-    /// The newest backup the helper made (the file before the last save), if any.
-    var latestBackupURL: URL? {
-        let names = (try? FileManager.default.contentsOfDirectory(atPath: backupsURL.path)) ?? []
-        return names.filter { $0.hasPrefix("hosts-") }.max().map { backupsURL.appendingPathComponent($0) }
-    }
-
-    var canRestore: Bool { isDemo ? demoPrevious != nil : latestBackupURL != nil }
-
-    /// Writes the newest backup back. That write backs up the current file first, so clicking again undoes it.
-    func restorePrevious() {
-        if isDemo {
-            if let demoPrevious { mutateFile { $0 = demoPrevious } }
-            return
-        }
-        guard let url = latestBackupURL, let data = try? Data(contentsOf: url),
-              let text = String(bytes: data, encoding: .utf8) else {
-            errorMessage = localized("hint.noBackup")
-            return
-        }
+    /// History panel: writes an earlier state back through the normal save path (helper validation + backup), so
+    /// the restore is itself a new history step and can be undone the same way.
+    func restore(_ text: String) {
+        guard text != rawText else { return }
         mutateFile { $0 = HostsParser.parse(text) }
     }
 

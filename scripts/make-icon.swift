@@ -1,4 +1,4 @@
-// Builds app artwork from Packaging/source/ (AI renders, see .claude/docs/design/logo.md):
+// Builds app artwork from Packaging/source/ (AI renders, see .claude/docs/design/logo/v1.1.0.md):
 //   Packaging/AppIcon.icon  — Icon Composer document (open/edit in Xcode's Icon Composer.app)
 //   Packaging/Assets.car    — compiled from AppIcon.icon by actool; macOS 26+ (CFBundleIconName)
 //   Packaging/AppIcon.icns  — macOS 14–15 (CFBundleIconFile): mascot 128–1024 px, flat globe 16–64 px
@@ -69,7 +69,7 @@ func renderMascotIcon(_ size: Int) -> CGImage {
     return ctx.makeImage()!
 }
 
-/// The original flat icon: network-blue squircle + white `network` globe. Legible at 16–64 px.
+/// Flat version for 16–64 px, where the glass robot is unreadable: its tile colours + the visor's `network` globe.
 func renderFlatIcon(_ size: Int) -> CGImage {
     let rep = NSBitmapImageRep(
         bitmapDataPlanes: nil, pixelsWide: size, pixelsHigh: size, bitsPerSample: 8, samplesPerPixel: 4,
@@ -80,8 +80,8 @@ func renderFlatIcon(_ size: Int) -> CGImage {
     let scale = CGFloat(size) / 1024
     let body = NSRect(x: 100, y: 100, width: 824, height: 824).applying(.init(scaleX: scale, y: scale))
     NSGradient(
-        starting: NSColor(red: 0.20, green: 0.56, blue: 1.00, alpha: 1),   // #338FFF
-        ending: NSColor(red: 0.05, green: 0.27, blue: 0.75, alpha: 1)      // #0D45BF
+        starting: NSColor(red: 0.18, green: 0.59, blue: 1.00, alpha: 1),   // #2E96FF — the robot tile's sky blue
+        ending: NSColor(red: 0.18, green: 0.29, blue: 0.81, alpha: 1)      // #2D4BCF — its indigo corner
     )!.draw(in: NSBezierPath(roundedRect: body, xRadius: 185 * scale, yRadius: 185 * scale), angle: -90)
     let symbol = NSImage(systemSymbolName: "network", accessibilityDescription: nil)!
         .withSymbolConfiguration(NSImage.SymbolConfiguration(pointSize: 440 * scale, weight: .semibold)
@@ -121,10 +121,10 @@ let fullBleed = makeContext(1024, 1024)
 fullBleed.interpolationQuality = .high
 fullBleed.draw(mascotTile.cropping(to: CGRect(x: 0, y: 0, width: mascotTile.width, height: mascotTile.height)
     .insetBy(dx: cornerTrim, dy: cornerTrim))!, in: CGRect(x: 0, y: 0, width: 1024, height: 1024))
-try png(fullBleed.makeImage()!, iconDocument.appendingPathComponent("Assets/fox.png"))
+try png(fullBleed.makeImage()!, iconDocument.appendingPathComponent("Assets/robot.png"))
 try Data("""
 {
-  "groups" : [ { "layers" : [ { "image-name" : "fox.png", "name" : "fox" } ] } ],
+  "groups" : [ { "layers" : [ { "image-name" : "robot.png", "name" : "robot" } ] } ],
   "supported-platforms" : { "squares" : "shared" }
 }
 
