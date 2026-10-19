@@ -21,8 +21,8 @@ final class HostsParserTests: XCTestCase {
         let fixtures = [
             Self.stockMacOS,
             "127.0.0.1 a.test\r\n# comment\r\n\r\n",                         // CRLF
-            "127.0.0.1\t\ta.test   b.test\t# spaced  comment\n",            // tabs + multiple spaces
-            "#127.0.0.1 off.test\n#  10.0.0.1 off2.test # why\n",            // disabled entries
+            "## spaced  comment\n127.0.0.1\t\ta.test   b.test\n",           // tabs + multiple spaces, `##` comment
+            "#127.0.0.1 off.test\n## why\n#  10.0.0.1 off2.test\n",          // disabled entries
             "fe80::1%lo0 localhost\n2001:db8::1 v6.test\n",                  // IPv6 + zone id
             "garbage line here\n  # indented comment\n1.2.3 not.ip\n",      // unknown lines
             "127.0.0.1 a.test",                                              // no trailing newline
@@ -32,6 +32,7 @@ final class HostsParserTests: XCTestCase {
         for text in fixtures {
             XCTAssertEqual(HostsParser.parse(text).text, text, text.debugDescription)
         }
+        // The one exception: a same-line `# comment` is moved to its own line (testSameLineCommentIsFlagged…).
     }
 
     // MARK: - Classification
@@ -83,7 +84,7 @@ final class HostsParserTests: XCTestCase {
         guard case .entry(var entry) = HostsParser.parseLine("10.0.0.1\t\tb.test") else { return XCTFail("entry") }
         entry.isEnabled = false
         entry.isEnabled = true
-        XCTAssertEqual(entry.line, "10.0.0.1\t\tb.test")
+        XCTAssertEqual(entry.lines, ["10.0.0.1\t\tb.test"])
     }
 
     // MARK: - Validation
@@ -95,6 +96,44 @@ final class HostsParserTests: XCTestCase {
         for invalid in ["256.0.0.1", "1.2.3", "1.2.3.4.5", "abc", "", "%lo0", "127.0.0.1%lo0", "::1::2"] {
             XCTAssertFalse(Validation.isIP(invalid), invalid)
         }
+    }
+
+    // MARK: - Entry comments: `## text` above the entry
+
+    /// macOS resolves every word after the IP — `127.0.0.1 a.test # dev` made `#` and `dev` resolve too (seen with
+    /// dscacheutil 2026-10-21). So the comment lives on its own `##` line, and that round-trips byte-for-byte.
+    func testCommentLineAboveAnEntryIsItsCommentAndRoundTrips() {
+        let text = "# Local\n## Elasticsearch  \n127.0.0.1     elasticsearch\n##   off for now\n# 127.0.0.1\tkibana\r\n"
+            .replacingOccurrences(of: "\r\n", with: "\n")
+        let file = HostsParser.parse(text)
+        let entries = file.lines.compactMap { if case .entry(let entry) = $0 { entry } else { nil } }
+
+        XCTAssertEqual(entries.map(\.comment), ["Elasticsearch", "off for now"])
+        XCTAssertEqual(entries.map(\.hostnames), [["elasticsearch"], ["kibana"]])
+        XCTAssertFalse(entries.contains(where: \.hasInlineComment))
+        XCTAssertEqual(file.text, text, "untouched file is written back unchanged")
+        let crlf = text.replacingOccurrences(of: "\n", with: "\r\n")
+        XCTAssertEqual(HostsParser.parse(crlf).text, crlf, "two-line entries keep CRLF too")
+    }
+
+    func testSameLineCommentIsFlaggedAndMovedOnTheNextWrite() {
+        let file = HostsParser.parse("127.0.0.1 a.test # dev box\n# 10.0.0.5 b.test # VPN\n")
+        guard case .entry(let enabled) = file.lines[0], case .entry(let disabled) = file.lines[1] else {
+            return XCTFail("expected two entries")
+        }
+
+        XCTAssertEqual(enabled.comment, "dev box")
+        XCTAssertTrue(enabled.hasInlineComment, "on disk, macOS also resolves `#`, `dev` and `box`")
+        XCTAssertFalse(disabled.hasInlineComment, "the whole line is a comment anyway")
+        XCTAssertEqual(file.text, "## dev box\n127.0.0.1\ta.test\n## VPN\n# 10.0.0.5\tb.test\n")
+    }
+
+    func testDoubleHashLineWithoutAnEntryBelowStaysAComment() {
+        let text = "##\n## orphan\n\n127.0.0.1 a.test\n"
+        let file = HostsParser.parse(text)
+
+        XCTAssertEqual(file.lines, [.comment("#"), .comment("# orphan"), .blank, file.lines[3]])
+        XCTAssertEqual(file.text, text)
     }
 
     func testHostnameValidation() {

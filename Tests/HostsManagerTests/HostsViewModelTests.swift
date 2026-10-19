@@ -37,6 +37,17 @@ final class HostsViewModelTests: XCTestCase {
         XCTAssertEqual(rows[1], .section(id: 1, title: ""))
     }
 
+    /// A new section opens its heading for typing — List(selection:) never focuses an always-visible TextField,
+    /// so before this the new row just sat there with "Add heading…" and looked frozen.
+    func testNewSectionStartsEditingItsHeading() {
+        let vm = HostsViewModel(lines: MockData.lines)
+
+        vm.addSection()
+
+        XCTAssertEqual(vm.editingSectionID, vm.filteredRows.last?.id)
+        XCTAssertEqual(vm.filteredRows.last, .section(id: MockData.lines.count, title: ""))
+    }
+
     func testBlankBeforeACommentRunKeepsTheRunVerbatim() {
         let rows = HostsViewModel.rows(from: [.blank, .comment(" one"), .comment(" two")])
         XCTAssertEqual(rows, [.section(id: 0, title: ""), .comment(id: 1, text: "# one\n# two", isSystem: false)])
@@ -91,20 +102,20 @@ final class HostsViewModelTests: XCTestCase {
         XCTAssertEqual(vm.rawText, "# Dev\n127.0.0.1\ta.test\n\n")
     }
 
-    func testDemoModeEditsInMemoryAndNeverSaves() {
+    func testDemoModeEditsInMemoryAndHistoryCanGoBack() {
         let vm = HostsViewModel(lines: MockData.lines)
         let before = vm.rawText
-        XCTAssertFalse(vm.canRestore)
+        XCTAssertEqual(vm.history.recent.count, 1, "just the current file")
         vm.toggle(vm.entries[3])
         XCTAssertFalse(vm.isSaving, "demo never starts a helper write")
-        XCTAssertNotEqual(vm.rawText, before)
-        let toggled = vm.rawText
+        XCTAssertEqual(vm.history.recent.first?.change, .turnedOff("api.test"))
 
-        XCTAssertTrue(vm.canRestore)
-        vm.restorePrevious()
+        vm.restore(vm.history.recent[1].text)
         XCTAssertEqual(vm.rawText, before)
-        vm.restorePrevious()
-        XCTAssertEqual(vm.rawText, toggled, "clicking again undoes the restore, like the real backups")
+        XCTAssertEqual(vm.history.recent.count, 3, "going back is a new step — nothing is discarded")
+        XCTAssertEqual(vm.history.recent.first?.change, .revertedToOpened)
+        XCTAssertEqual(vm.history.recent.last?.change, .opened)
+        XCTAssertEqual(vm.history.opened?.text, before)
     }
 
     // MARK: - Editor
@@ -137,5 +148,16 @@ final class HostsViewModelTests: XCTestCase {
         vm.beginAdd()
         XCTAssertEqual(vm.editor?.isEditing, false)
         XCTAssertEqual(vm.editor?.titleKey, "editor.addTitle")
+    }
+
+    func testCommentLineAfterABlankIsTheEntrysCommentNotTheSectionHeading() {
+        let lines = HostsParser.parse("127.0.0.1 a.test\n\n## dev box\n127.0.0.1 b.test\n").lines
+        let rows = HostsViewModel.rows(from: lines)
+
+        guard case .section(_, let title) = rows[1], case .entry(_, let entry) = rows[2] else {
+            return XCTFail("expected entry, untitled section, entry — got \(rows)")
+        }
+        XCTAssertEqual(title, "")
+        XCTAssertEqual(entry.comment, "dev box")
     }
 }
