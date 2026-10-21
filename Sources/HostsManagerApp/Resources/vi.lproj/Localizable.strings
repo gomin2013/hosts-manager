@@ -43,6 +43,7 @@
 "menu.about" = "Giới thiệu về Hosts Manager";
 "menu.help" = "Trợ giúp";
 "about.version" = "Phiên bản %@";
+"about.support" = "Ủng hộ trên Ko-fi";
 "about.desc" = "Chỉnh sửa /etc/hosts một cách an toàn — mọi thay đổi đều được xác thực, sao lưu và ghi bởi một trình hỗ trợ có đặc quyền.";
 "helper.notInstalled" = "Chưa cài đặt trình hỗ trợ";
 "helper.ready" = "Trình hỗ trợ sẵn sàng";

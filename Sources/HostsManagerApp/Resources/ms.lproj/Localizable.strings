@@ -43,6 +43,7 @@
 "menu.about" = "Perihal Hosts Manager";
 "menu.help" = "Bantuan";
 "about.version" = "Versi %@";
+"about.support" = "Sokong di Ko-fi";
 "about.desc" = "Edit /etc/hosts dengan selamat — setiap perubahan disahkan, disandarkan dan ditulis oleh pembantu berkeistimewaan.";
 "helper.notInstalled" = "Pembantu tidak dipasang";
 "helper.ready" = "Pembantu sedia";

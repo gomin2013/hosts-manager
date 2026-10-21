@@ -43,6 +43,7 @@
 "menu.about" = "Hosts Managerについて";
 "menu.help" = "ヘルプ";
 "about.version" = "バージョン%@";
+"about.support" = "Ko-fiで支援する";
 "about.desc" = "/etc/hostsを安全に編集できます。変更はすべて検証され、バックアップされたうえで、特権ヘルパーによって書き込まれます。";
 "helper.notInstalled" = "ヘルパーがインストールされていません";
 "helper.ready" = "ヘルパーの準備ができました";
