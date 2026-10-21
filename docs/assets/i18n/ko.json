@@ -49,7 +49,6 @@
  "The AI never edits the file. Every change goes through you.": "AI는 파일을 직접 수정하지 않습니다. 모든 변경은 사용자를 거칩니다.",
  "Also by the same author": "같은 개발자의 다른 앱",
  "The same window and the same ideas, for .git/info/exclude. Hide local files from git status without touching your team's .gitignore.": "같은 창, 같은 아이디어를 .git/info/exclude에 적용했습니다. 팀의 .gitignore는 건드리지 않고 로컬 파일을 git status에서 숨기세요.",
- "Explore Git Exclude Manager": "Git Exclude Manager 살펴보기",
  "Get Hosts Manager for your Mac": "내 Mac에 Hosts Manager 설치하기",
  "Free and open source. Setup takes about a minute.": "무료 오픈 소스이며, 설치에는 1분 정도 걸립니다.",
  "Privacy Policy": "개인정보 처리방침",
@@ -128,5 +127,6 @@
  "These terms may change with new versions. The date above shows the latest update, and the history is on": "이 약관은 새 버전과 함께 변경될 수 있습니다. 위의 날짜는 최신 업데이트 시점을 나타내며, 변경 이력은 다음에서 볼 수 있습니다:",
  "This host doesn't resolve.": "이 호스트는 확인되지 않습니다.",
  "The page you're looking for isn't here. Maybe it was commented out.": "찾으시는 페이지가 없습니다. 주석 처리되었을지도 모릅니다.",
- "Back to home": "홈으로 돌아가기"
+ "Back to home": "홈으로 돌아가기",
+ "Website": "웹사이트"
 }

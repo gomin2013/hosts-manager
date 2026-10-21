@@ -49,7 +49,6 @@
  "The AI never edits the file. Every change goes through you.": "AIがファイルを直接編集することはありません。変更はすべてあなたの確認を経ます。",
  "Also by the same author": "同じ作者のアプリ",
  "The same window and the same ideas, for .git/info/exclude. Hide local files from git status without touching your team's .gitignore.": "同じウィンドウ、同じ考え方で、.git/info/exclude を編集します。チームの .gitignore には触れずに、ローカルファイルを git status から隠せます。",
- "Explore Git Exclude Manager": "Git Exclude Manager を見る",
  "Get Hosts Manager for your Mac": "Hosts Manager を Mac に入手",
  "Free and open source. Setup takes about a minute.": "無料のオープンソースソフトウェアです。セットアップは1分ほどで完了します。",
  "Privacy Policy": "プライバシーポリシー",
@@ -128,5 +127,6 @@
  "These terms may change with new versions. The date above shows the latest update, and the history is on": "この規約は新しいバージョンに合わせて変更されることがあります。上の日付が最新の更新日で、履歴はこちらにあります:",
  "This host doesn't resolve.": "このホストは解決できません。",
  "The page you're looking for isn't here. Maybe it was commented out.": "お探しのページは見つかりません。コメントアウトされているのかもしれません。",
- "Back to home": "ホームに戻る"
+ "Back to home": "ホームに戻る",
+ "Website": "ウェブサイト"
 }

@@ -49,7 +49,6 @@
  "The AI never edits the file. Every change goes through you.": "La IA nunca edita el archivo. Todo cambio pasa por ti.",
  "Also by the same author": "Del mismo autor",
  "The same window and the same ideas, for .git/info/exclude. Hide local files from git status without touching your team's .gitignore.": "La misma ventana y las mismas ideas, para .git/info/exclude. Oculta archivos locales de git status sin tocar el .gitignore de tu equipo.",
- "Explore Git Exclude Manager": "Descubrir Git Exclude Manager",
  "Get Hosts Manager for your Mac": "Consigue Hosts Manager para tu Mac",
  "Free and open source. Setup takes about a minute.": "Gratis y de código abierto. La instalación lleva alrededor de un minuto.",
  "Privacy Policy": "Política de privacidad",
@@ -128,5 +127,6 @@
  "These terms may change with new versions. The date above shows the latest update, and the history is on": "Estos términos pueden cambiar con las nuevas versiones. La fecha de arriba indica la última actualización, y el historial está en",
  "This host doesn't resolve.": "Este host no se resuelve.",
  "The page you're looking for isn't here. Maybe it was commented out.": "La página que buscas no está aquí. Quizá se comentó.",
- "Back to home": "Volver al inicio"
+ "Back to home": "Volver al inicio",
+ "Website": "Sitio web"
 }

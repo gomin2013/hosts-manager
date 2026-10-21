@@ -49,7 +49,6 @@
  "The AI never edits the file. Every change goes through you.": "AI 不会自行编辑文件，每项更改都由你决定。",
  "Also by the same author": "同一作者的另一款应用",
  "The same window and the same ideas, for .git/info/exclude. Hide local files from git status without touching your team's .gitignore.": "同样的窗口，同样的理念，用于 .git/info/exclude。让本地文件不出现在 git status 中，无需改动团队的 .gitignore。",
- "Explore Git Exclude Manager": "了解 Git Exclude Manager",
  "Get Hosts Manager for your Mac": "在 Mac 上获取 Hosts Manager",
  "Free and open source. Setup takes about a minute.": "免费开源，大约一分钟即可装好。",
  "Privacy Policy": "隐私政策",
@@ -128,5 +127,6 @@
  "These terms may change with new versions. The date above shows the latest update, and the history is on": "这些条款可能随新版本变化。上方日期为最近更新日期，历史记录见",
  "This host doesn't resolve.": "此主机无法解析。",
  "The page you're looking for isn't here. Maybe it was commented out.": "你要找的页面不在这里，也许它被注释掉了。",
- "Back to home": "返回首页"
+ "Back to home": "返回首页",
+ "Website": "网站"
 }

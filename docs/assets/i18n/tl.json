@@ -49,7 +49,6 @@
  "The AI never edits the file. Every change goes through you.": "Hindi kailanman nag-eedit ng file ang AI. Dumadaan sa iyo ang bawat pagbabago.",
  "Also by the same author": "Mula rin sa parehong may-akda",
  "The same window and the same ideas, for .git/info/exclude. Hide local files from git status without touching your team's .gitignore.": "Parehong window at parehong ideya, para sa .git/info/exclude. Itago ang mga lokal na file sa git status nang hindi ginagalaw ang .gitignore ng team mo.",
- "Explore Git Exclude Manager": "Tuklasin ang Git Exclude Manager",
  "Get Hosts Manager for your Mac": "Kunin ang Hosts Manager para sa Mac mo",
  "Free and open source. Setup takes about a minute.": "Libre at open source. Mga isang minuto lang ang setup.",
  "Privacy Policy": "Patakaran sa Privacy",
@@ -128,5 +127,6 @@
  "These terms may change with new versions. The date above shows the latest update, and the history is on": "Maaaring magbago ang mga tuntuning ito kasabay ng mga bagong bersyon. Ipinapakita ng petsa sa itaas ang pinakabagong update, at ang history ay nasa",
  "This host doesn't resolve.": "Hindi nare-resolve ang host na ito.",
  "The page you're looking for isn't here. Maybe it was commented out.": "Wala rito ang page na hinahanap mo. Baka na-comment out ito.",
- "Back to home": "Bumalik sa home"
+ "Back to home": "Bumalik sa home",
+ "Website": "Website"
 }
