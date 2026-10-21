@@ -49,6 +49,7 @@
 "helper.needsApproval" = "Trình hỗ trợ cần được cho phép";
 "helper.unavailable" = "Trình hỗ trợ không khả dụng — hãy chạy ứng dụng .app được tạo bởi scripts/build-app.sh";
 "helper.openSettings" = "Mở Mục đăng nhập…";
+"helper.notResponding" = "Trình hỗ trợ không phản hồi";
 "btn.ok" = "OK";
 "err.title" = "Không thể cập nhật /etc/hosts";
 "err.readFailed" = "Không thể đọc %@.";
@@ -175,6 +176,8 @@
 "banner.approve.desc" = "Bật Hosts Manager trong Mục đăng nhập. Cho đến lúc đó, bạn có thể xem các mục nhưng không thể thay đổi chúng.";
 "banner.missing.title" = "Hosts Manager chưa thể chỉnh sửa /etc/hosts";
 "banner.missing.desc" = "Trình hỗ trợ của ứng dụng chưa được cài đặt. Hãy thoát và mở lại Hosts Manager từ thư mục Ứng dụng.";
+"banner.stalled.title" = "Cho phép lại Hosts Manager sau khi cập nhật";
+"banner.stalled.desc" = "macOS chưa khởi động trình hỗ trợ đã cập nhật. Hãy tắt rồi bật lại Hosts Manager trong Mục đăng nhập. Cho đến lúc đó, bạn có thể xem các mục nhưng không thể thay đổi chúng.";
 "empty.noEntries.title" = "Không có mục nào";
 "empty.noEntries.desc" = "Thêm một mục để trỏ tên máy chủ tới một địa chỉ IP trên Mac này.";
 "accent.red" = "Đỏ";

@@ -49,6 +49,7 @@
 "helper.needsApproval" = "輔助程式需要核准";
 "helper.unavailable" = "輔助程式無法使用 — 請執行由 scripts/build-app.sh 建立的 .app";
 "helper.openSettings" = "打開登入項目⋯";
+"helper.notResponding" = "輔助程式沒有回應";
 "btn.ok" = "好";
 "err.title" = "無法更新 /etc/hosts";
 "err.readFailed" = "無法讀取 %@。";
@@ -175,6 +176,8 @@
 "banner.approve.desc" = "請在登入項目中開啟 Hosts Manager。在此之前，你可以檢視項目，但無法變更。";
 "banner.missing.title" = "Hosts Manager 尚無法編輯 /etc/hosts";
 "banner.missing.desc" = "尚未安裝其輔助程式。請結束 Hosts Manager，並從「應用程式」中重新打開。";
+"banner.stalled.title" = "更新後再次允許 Hosts Manager";
+"banner.stalled.desc" = "macOS 尚未啟動更新後的輔助程式。請在登入項目中將 Hosts Manager 關閉後再開啟。在此之前，你可以檢視項目，但無法變更。";
 "empty.noEntries.title" = "沒有項目";
 "empty.noEntries.desc" = "加入項目，將主機名稱指向這部 Mac 上的 IP 位址。";
 "accent.red" = "紅色";

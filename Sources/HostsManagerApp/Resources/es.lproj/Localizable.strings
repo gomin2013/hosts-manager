@@ -49,6 +49,7 @@
 "helper.needsApproval" = "El ayudante necesita aprobación";
 "helper.unavailable" = "Ayudante no disponible: ejecuta la .app creada con scripts/build-app.sh";
 "helper.openSettings" = "Abrir ítems de inicio…";
+"helper.notResponding" = "El ayudante no responde";
 "btn.ok" = "OK";
 "err.title" = "No se pudo actualizar /etc/hosts";
 "err.readFailed" = "No se pudo leer %@.";
@@ -175,6 +176,8 @@
 "banner.approve.desc" = "Activa Hosts Manager en Ítems de inicio. Hasta entonces puedes ver las entradas, pero no cambiarlas.";
 "banner.missing.title" = "Hosts Manager aún no puede editar /etc/hosts";
 "banner.missing.desc" = "Su ayudante no está instalado. Sal de Hosts Manager y vuelve a abrirlo desde Aplicaciones.";
+"banner.stalled.title" = "Vuelve a permitir Hosts Manager tras la actualización";
+"banner.stalled.desc" = "macOS aún no ha iniciado el ayudante actualizado. Desactiva y vuelve a activar Hosts Manager en Ítems de inicio. Hasta entonces puedes ver las entradas, pero no cambiarlas.";
 "empty.noEntries.title" = "Sin entradas";
 "empty.noEntries.desc" = "Añade una entrada para que un nombre de host apunte a una dirección IP en este Mac.";
 "accent.red" = "Rojo";

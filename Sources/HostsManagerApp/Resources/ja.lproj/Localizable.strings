@@ -49,6 +49,7 @@
 "helper.needsApproval" = "ヘルパーの承認が必要です";
 "helper.unavailable" = "ヘルパーを利用できません。scripts/build-app.shで作成した.appを実行してください";
 "helper.openSettings" = "ログイン項目を開く…";
+"helper.notResponding" = "ヘルパーが応答しません";
 "btn.ok" = "OK";
 "err.title" = "/etc/hostsを更新できませんでした";
 "err.readFailed" = "%@を読み込めませんでした。";
@@ -175,6 +176,8 @@
 "banner.approve.desc" = "ログイン項目でHosts Managerをオンにしてください。それまでは、エントリの表示のみ可能で、変更はできません。";
 "banner.missing.title" = "Hosts Managerはまだ/etc/hostsを編集できません";
 "banner.missing.desc" = "ヘルパーがインストールされていません。Hosts Managerを終了し、「アプリケーション」からもう一度開いてください。";
+"banner.stalled.title" = "アップデート後にHosts Managerをもう一度許可";
+"banner.stalled.desc" = "アップデートしたヘルパーをmacOSがまだ起動していません。ログイン項目でHosts Managerを一度オフにしてからオンにしてください。それまでは、エントリの表示のみ可能で、変更はできません。";
 "empty.noEntries.title" = "エントリなし";
 "empty.noEntries.desc" = "このMac上で、ホスト名をIPアドレスに割り当てるエントリを追加します。";
 "accent.red" = "レッド";

@@ -13,16 +13,25 @@ final class HelperInstaller {
         case unavailable
         case notRegistered
         case requiresApproval
+        /// Allowed, but launchd won't start it (after an update) — the user turns it off and on in Login Items.
+        case notResponding
         case ready
     }
 
     private(set) var status: Status = .unavailable
+    private let xpc: XPCService
+    private var isChecking = false
+
+    init(xpc: XPCService = XPCService()) {
+        self.xpc = xpc
+    }
 
     var statusKey: String {
         switch status {
         case .unavailable: "helper.unavailable"
         case .notRegistered: "helper.notInstalled"
         case .requiresApproval: "helper.needsApproval"
+        case .notResponding: "helper.notResponding"
         case .ready: "helper.ready"
         }
     }
@@ -51,10 +60,23 @@ final class HelperInstaller {
     /// The user may approve in System Settings at any time — re-read when the app becomes active.
     func refresh() {
         guard let service else { return status = .unavailable }
-        status = switch service.status {
-        case .enabled: .ready
-        case .requiresApproval: .requiresApproval
-        default: .notRegistered
+        switch service.status {
+        case .enabled: confirmResponding()
+        case .requiresApproval: status = .requiresApproval
+        default: status = .notRegistered
+        }
+    }
+
+    /// `.enabled` only means registered and allowed. Ready optimistically (a working helper answers in well under a
+    /// second), then ask it — macOS gives no other sign that it won't start the helper.
+    private func confirmResponding() {
+        if status != .notResponding { status = .ready }
+        guard !isChecking else { return }
+        isChecking = true
+        Task {
+            let responding = await xpc.isResponding()
+            isChecking = false
+            status = responding ? .ready : .notResponding
         }
     }
 

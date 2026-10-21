@@ -5,24 +5,32 @@ import SwiftUI
 struct HelperBanner: View {
     @Environment(HelperInstaller.self) private var installer
 
+    private var text: (title: String, desc: String) {
+        switch installer.status {
+        case .requiresApproval: ("banner.approve.title", "banner.approve.desc")
+        case .notResponding: ("banner.stalled.title", "banner.stalled.desc")
+        case .unavailable: ("banner.missing.title", "helper.unavailable")
+        default: ("banner.missing.title", "banner.missing.desc")
+        }
+    }
+
     var body: some View {
-        let needsApproval = installer.status == .requiresApproval
+        let fixInSettings = installer.status == .requiresApproval || installer.status == .notResponding
         HStack(spacing: 12) {
-            Image(systemName: needsApproval ? "lock.shield.fill" : "exclamationmark.shield.fill")
+            Image(systemName: fixInSettings ? "lock.shield.fill" : "exclamationmark.shield.fill")
                 .font(.title2)
                 .foregroundStyle(.orange)
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 2) {
-                Text(localized(needsApproval ? "banner.approve.title" : "banner.missing.title"))
+                Text(localized(text.title))
                     .font(.app(13, .semibold))
-                Text(localized(needsApproval ? "banner.approve.desc"
-                               : installer.status == .unavailable ? "helper.unavailable" : "banner.missing.desc"))
+                Text(localized(text.desc))
                     .font(.app(12))
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
             Spacer(minLength: 8)
-            if needsApproval {
+            if fixInSettings {
                 Button(localized("helper.openSettings"), action: installer.openLoginItems)
             }
         }

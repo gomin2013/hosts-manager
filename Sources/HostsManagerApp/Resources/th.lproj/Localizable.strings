@@ -49,6 +49,7 @@
 "helper.needsApproval" = "Helper รอการอนุญาต";
 "helper.unavailable" = "ใช้ Helper ไม่ได้ — ให้เปิดแอปที่สร้างจาก scripts/build-app.sh";
 "helper.openSettings" = "เปิด Login Items…";
+"helper.notResponding" = "Helper ไม่ตอบสนอง";
 "btn.ok" = "ตกลง";
 "err.title" = "แก้ไข /etc/hosts ไม่สำเร็จ";
 "err.readFailed" = "อ่าน %@ ไม่ได้";
@@ -175,6 +176,8 @@
 "banner.approve.desc" = "เปิด Hosts Manager ใน Login Items ก่อน จนกว่าจะเปิด ดูรายการได้แต่แก้ไขไม่ได้";
 "banner.missing.title" = "Hosts Manager ยังแก้ไข /etc/hosts ไม่ได้";
 "banner.missing.desc" = "ยังไม่ได้ติดตั้งตัวช่วย ปิดแล้วเปิด Hosts Manager จากโฟลเดอร์ Applications อีกครั้ง";
+"banner.stalled.title" = "อนุญาต Hosts Manager อีกครั้งหลังอัปเดต";
+"banner.stalled.desc" = "macOS ยังไม่เปิด helper ตัวใหม่ ปิดแล้วเปิด Hosts Manager อีกครั้งใน Login Items จนกว่าจะทำ ดูรายการได้แต่แก้ไขไม่ได้";
 "empty.noEntries.title" = "ยังไม่มีรายการ";
 "empty.noEntries.desc" = "เพิ่มรายการเพื่อชี้ชื่อโฮสต์ไปยัง IP บนเครื่องนี้";
 "accent.red" = "แดง";
