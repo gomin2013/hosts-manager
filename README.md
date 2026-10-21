@@ -31,6 +31,8 @@ you already know the other.
 - **Import / Export** — load a hosts file (merge or replace) or save the current one.
 - **AI Agent (optional)** — ask about your entries with Apple Foundation Models, Ollama, OpenAI, Gemini or Claude;
   answers stream in with live steps and the model's thinking, as Markdown with copyable code blocks.
+  **Load models** lists only the recommended low-cost picks per provider (e.g. Gemini Flash-Lite, GPT mini,
+  Claude Haiku).
 - **Tool window** — History · AI Agent · Help, plus Appearance · Settings, on an icon rail (⌥⌘1…5), one panel at
   a time; ⌘? opens Help.
 - **Your look** — Liquid Glass on macOS 26, light / dark / system, 16 accent colours and 8 gradient themes,
@@ -113,6 +115,10 @@ scripts/gen-strings.js       v1.0 tool (en/th from .prototype) — outdated, run
 
 - macOS 14 Sonoma or later
 - No third-party dependencies
+
+## Support
+
+Hosts Manager is free. If it saves you time, you can [buy me a coffee on Ko-fi](https://ko-fi.com/gomin2013).
 
 ## License
 
