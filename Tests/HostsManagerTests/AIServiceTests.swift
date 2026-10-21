@@ -121,6 +121,25 @@ final class AIServiceTests: XCTestCase {
         XCTAssertEqual(try AIService.parseModels(.gemini, data: Data(gemini.utf8)), ["gemini-a"])
     }
 
+    func testCuratedModelsKeepNewestCheapFamilies() {
+        let gemini = ["gemini-2.5-flash", "gemini-3.8-flash", "gemini-3.8-flash-preview-tts", "gemini-2.5-flash-lite",
+                      "gemini-3.1-flash-lite", "gemini-3.8-pro", "imagen-4"]
+        XCTAssertEqual(AIService.curatedModels(.gemini, gemini), ["gemini-3.1-flash-lite", "gemini-3.8-flash"])
+        let openAI = ["gpt-5.4", "gpt-5.4-mini", "gpt-5-mini", "gpt-5.4-nano", "gpt-5.4-mini-2026-03-01", "gpt-4o-mini"]
+        XCTAssertEqual(AIService.curatedModels(.openAI, openAI), ["gpt-5.4-mini", "gpt-5.4-nano"])
+        let claude = ["claude-haiku-4-5-20251001", "claude-haiku-5-5", "claude-sonnet-5-5", "claude-opus-5-5"]
+        XCTAssertEqual(AIService.curatedModels(.claude, claude), ["claude-haiku-5-5", "claude-sonnet-5-5"])
+        XCTAssertEqual(AIService.curatedModels(.ollama, ["b", "a"]), ["a", "b"])
+        XCTAssertEqual(AIService.curatedModels(.openAI, ["new-scheme"]), ["new-scheme"])  // no match → show all
+    }
+
+    @MainActor
+    func testModelLabelMarksRecommended() {
+        XCTAssertNotEqual(AIService.modelLabel("claude-haiku-5-5", provider: .claude), "claude-haiku-5-5")
+        XCTAssertEqual(AIService.modelLabel("claude-sonnet-5-5", provider: .claude), "claude-sonnet-5-5")
+        XCTAssertEqual(AIService.modelLabel("llama3.2", provider: .ollama), "llama3.2")
+    }
+
     func testIsConfigured() {
         let apple = AISettings(provider: .apple, model: "", apiKey: "")
         XCTAssertEqual(apple.isConfigured, AIService.isAppleModelAvailable)
