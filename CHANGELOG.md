@@ -1,6 +1,24 @@
 # Changelog
 
-## v1.1.0 — 2026-10-24
+## v1.1.1 — 2026-10-21
+
+Fixes on top of 1.1.0 for anyone updating from an earlier version — everything in 1.1.0 below is included.
+
+### Fixed
+
+- **After an update, saves could hang for 30 s with no message** — macOS keeps the helper allowed but doesn't start
+  the new one until you turn it off and on in Login Items. The app now checks at launch and when you come back to
+  it, and if the helper doesn't answer it says so (with an Open Login Items… button) instead of letting you edit.
+
+### Installation
+
+Download `HostsManager-1.1.1.dmg` (and `SHA256SUMS.txt`), drag **Hosts Manager** to **Applications** (replace the
+old copy) and allow the first launch in **System Settings → Privacy & Security → Open Anyway** (or
+`xattr -dr com.apple.quarantine "/Applications/HostsManager.app"`). Updating: macOS may not start the new helper
+until you turn Hosts Manager **off and on again** in **System Settings → General → Login Items & Extensions** — a
+banner tells you when. Requires an Apple silicon Mac with macOS 14 or later; Liquid Glass needs macOS 26.
+
+## v1.1.0 — 2026-10-21
 
 A redesign of the main window — same layout as before (and as
 [Git Exclude Manager](https://github.com/gomin2013/git-exclude-manager) 1.1), modernised.

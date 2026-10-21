@@ -127,7 +127,6 @@ html.i18n-wait body { visibility: hidden; animation: i18n-show 0s 1.5s forwards;
 }
 @media (max-width: 400px) { .brand:has(img) { font-size: 0; } }  /* icon only; the name stays for screen readers */
 @media (max-width: 270px) { .lang-btn .lang-code { display: none; } .lang-btn { padding: 7px; } }  /* globe only */
-@media (max-width: 361px) { .brand:not(:has(img)) ~ .lang-btn .lang-code { display: none; } .brand:not(:has(img)) ~ .lang-btn { padding: 7px; } }  /* gomin index */
 @media (max-width: 480px) { .btn { white-space: normal; } }
 html:has(.lang-dialog[open]) { overflow: hidden; }
 .lang-dialog {

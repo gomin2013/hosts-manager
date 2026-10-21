@@ -49,6 +49,7 @@
 "helper.needsApproval" = "Kailangan ng pag-apruba ng helper";
 "helper.unavailable" = "Hindi available ang helper — patakbuhin ang .app na ginawa ng scripts/build-app.sh";
 "helper.openSettings" = "Buksan ang Login Items…";
+"helper.notResponding" = "Hindi tumutugon ang helper";
 "btn.ok" = "OK";
 "err.title" = "Hindi ma-update ang /etc/hosts";
 "err.readFailed" = "Hindi mabasa ang %@.";
@@ -175,6 +176,8 @@
 "banner.approve.desc" = "I-on ang Hosts Manager sa Login Items. Hanggang noon, makikita mo ang mga entry pero hindi mo mababago ang mga ito.";
 "banner.missing.title" = "Hindi pa makapag-edit ng /etc/hosts ang Hosts Manager";
 "banner.missing.desc" = "Hindi naka-install ang helper nito. Isara ang Hosts Manager at buksan itong muli mula sa Applications.";
+"banner.stalled.title" = "Payagan muli ang Hosts Manager pagkatapos ng update";
+"banner.stalled.desc" = "Hindi pa sinisimulan ng macOS ang na-update na helper. I-off at i-on muli ang Hosts Manager sa Login Items. Hanggang noon, makikita mo ang mga entry pero hindi mo mababago ang mga ito.";
 "empty.noEntries.title" = "Walang Entry";
 "empty.noEntries.desc" = "Magdagdag ng entry para ituro ang isang hostname sa isang IP address sa Mac na ito.";
 "accent.red" = "Pula";

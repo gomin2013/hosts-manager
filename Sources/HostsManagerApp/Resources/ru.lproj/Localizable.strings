@@ -49,6 +49,7 @@
 "helper.needsApproval" = "Помощнику нужно разрешение";
 "helper.unavailable" = "Помощник недоступен — запустите .app, собранное с помощью scripts/build-app.sh";
 "helper.openSettings" = "Открыть «Объекты входа»…";
+"helper.notResponding" = "Помощник не отвечает";
 "btn.ok" = "OK";
 "err.title" = "Не удалось обновить /etc/hosts";
 "err.readFailed" = "Не удалось прочитать %@.";
@@ -175,6 +176,8 @@
 "banner.approve.desc" = "Включите Hosts Manager в объектах входа. Пока это не сделано, записи можно только просматривать.";
 "banner.missing.title" = "Hosts Manager пока не может изменять /etc/hosts";
 "banner.missing.desc" = "Его помощник не установлен. Завершите Hosts Manager и снова откройте его из папки «Программы».";
+"banner.stalled.title" = "Снова разрешите Hosts Manager после обновления";
+"banner.stalled.desc" = "macOS ещё не запустила обновлённого помощника. Выключите и снова включите Hosts Manager в объектах входа. Пока это не сделано, записи можно только просматривать.";
 "empty.noEntries.title" = "Нет записей";
 "empty.noEntries.desc" = "Добавьте запись, чтобы связать имя хоста с IP-адресом на этом Mac.";
 "accent.red" = "Красный";

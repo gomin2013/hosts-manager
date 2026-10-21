@@ -151,6 +151,15 @@
     reveal.forEach(function (el) { el.classList.add("in"); });
   }
 
+  // "v1.0.2" < "v1.1.1": compares the numbers, not the text
+  function isOlder(a, b) {
+    var x = (a.match(/\d+/g) || []).map(Number), y = (b.match(/\d+/g) || []).map(Number);
+    for (var i = 0; i < Math.max(x.length, y.length); i++) {
+      if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) < (y[i] || 0);
+    }
+    return false;
+  }
+
   // ── Latest release: version + direct DMG link. Links already point at /releases/latest if this fails. ──
   var dl = document.querySelectorAll("[data-dmg]");
   var release = document.querySelectorAll("[data-release]");
@@ -160,6 +169,10 @@
   })
     .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
     .then(function (rel) {
+      // Never step back: right after a merge this page already names the new version while its release may still be
+      // a draft, so GitHub's "latest" is the previous one. Keep the page's own version, file and date then.
+      var page = document.querySelector('[data-release="version"]');
+      if (page && isOlder(rel.tag_name, page.textContent)) return;
       var dmg = (rel.assets || []).filter(function (a) { return /\.dmg$/.test(a.name); })[0];
       var sums = (rel.assets || []).filter(function (a) { return a.name === "SHA256SUMS.txt"; })[0];
       var values = {

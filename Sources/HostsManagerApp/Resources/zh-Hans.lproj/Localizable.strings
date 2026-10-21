@@ -49,6 +49,7 @@
 "helper.needsApproval" = "辅助工具需要批准";
 "helper.unavailable" = "辅助工具不可用 — 请运行由 scripts/build-app.sh 构建的 .app";
 "helper.openSettings" = "打开登录项…";
+"helper.notResponding" = "辅助工具无响应";
 "btn.ok" = "好";
 "err.title" = "无法更新 /etc/hosts";
 "err.readFailed" = "无法读取 %@。";
@@ -175,6 +176,8 @@
 "banner.approve.desc" = "请在登录项中开启 Hosts Manager。在此之前，你可以查看条目但无法更改。";
 "banner.missing.title" = "Hosts Manager 暂时无法编辑 /etc/hosts";
 "banner.missing.desc" = "其辅助工具尚未安装。请退出 Hosts Manager，然后从“应用程序”中重新打开。";
+"banner.stalled.title" = "更新后再次允许 Hosts Manager";
+"banner.stalled.desc" = "macOS 尚未启动更新后的辅助工具。请在登录项中将 Hosts Manager 关闭后再开启。在此之前，你可以查看条目但无法更改。";
 "empty.noEntries.title" = "无条目";
 "empty.noEntries.desc" = "添加条目，将主机名指向这台 Mac 上的某个 IP 地址。";
 "accent.red" = "红色";

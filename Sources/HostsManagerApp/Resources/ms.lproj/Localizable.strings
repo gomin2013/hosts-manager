@@ -49,6 +49,7 @@
 "helper.needsApproval" = "Pembantu memerlukan kelulusan";
 "helper.unavailable" = "Pembantu tidak tersedia — jalankan .app yang dibina oleh scripts/build-app.sh";
 "helper.openSettings" = "Buka Item Log Masuk…";
+"helper.notResponding" = "Pembantu tidak bertindak balas";
 "btn.ok" = "OK";
 "err.title" = "Tidak dapat mengemas kini /etc/hosts";
 "err.readFailed" = "Tidak dapat membaca %@.";
@@ -175,6 +176,8 @@
 "banner.approve.desc" = "Hidupkan Hosts Manager dalam Item Log Masuk. Sehingga itu anda boleh melihat entri tetapi tidak boleh mengubahnya.";
 "banner.missing.title" = "Hosts Manager belum boleh mengedit /etc/hosts";
 "banner.missing.desc" = "Pembantunya tidak dipasang. Keluar dan buka Hosts Manager sekali lagi daripada Applications.";
+"banner.stalled.title" = "Benarkan Hosts Manager semula selepas kemas kini";
+"banner.stalled.desc" = "macOS belum memulakan pembantu yang dikemas kini. Matikan dan hidupkan semula Hosts Manager dalam Item Log Masuk. Sehingga itu anda boleh melihat entri tetapi tidak boleh mengubahnya.";
 "empty.noEntries.title" = "Tiada Entri";
 "empty.noEntries.desc" = "Tambah entri untuk menuding nama hos ke alamat IP pada Mac ini.";
 "accent.red" = "Merah";

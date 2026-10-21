@@ -101,6 +101,38 @@ final class XPCIntegrationTests: XCTestCase {
         }
     }
 
+    /// Accepts the connection but never answers — what the app sees when launchd won't start an updated helper.
+    private final class SilentDelegate: NSObject, NSXPCListenerDelegate, HelperProtocol {
+        func listener(_ listener: NSXPCListener, shouldAcceptNewConnection connection: NSXPCConnection) -> Bool {
+            connection.exportedInterface = NSXPCInterface(with: HelperProtocol.self)
+            connection.exportedObject = self
+            connection.resume()
+            return true
+        }
+        func version(reply: @escaping @Sendable (String) -> Void) {}
+        func writeHosts(_ content: String, expectedSHA256: String, reply: @escaping @Sendable (NSError?) -> Void) {}
+    }
+
+    func testIsRespondingTellsAWorkingHelperFromASilentOrRejectingOne() async {
+        let isWorking = await xpc.isResponding(within: .seconds(2))
+        XCTAssertTrue(isWorking)
+
+        let silent = SilentDelegate(), quiet = NSXPCListener.anonymous()
+        quiet.delegate = silent
+        quiet.resume()
+        let rejecting = RejectingDelegate(), refusing = NSXPCListener.anonymous()
+        refusing.delegate = rejecting
+        refusing.resume()
+        defer { quiet.invalidate(); refusing.invalidate() }
+
+        let start = ContinuousClock.now
+        let isSilentOK = await XPCService(endpoint: quiet.endpoint).isResponding(within: .milliseconds(300))
+        XCTAssertFalse(isSilentOK, "no reply → not responding")
+        XCTAssertLessThan(ContinuousClock.now - start, .seconds(5), "the short timeout, not a save's 30 s")
+        let isRejectedOK = await XPCService(endpoint: refusing.endpoint).isResponding(within: .seconds(2))
+        XCTAssertFalse(isRejectedOK)
+    }
+
     // MARK: - Client pinning (ADR-010)
 
     func testCDHashMatchesCodesign() throws {

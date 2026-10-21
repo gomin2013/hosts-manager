@@ -49,6 +49,7 @@
 "helper.needsApproval" = "도우미 승인 필요";
 "helper.unavailable" = "도우미를 사용할 수 없음 — scripts/build-app.sh로 빌드한 .app을 실행하세요";
 "helper.openSettings" = "로그인 항목 열기…";
+"helper.notResponding" = "도우미가 응답하지 않음";
 "btn.ok" = "확인";
 "err.title" = "/etc/hosts를 업데이트할 수 없음";
 "err.readFailed" = "%@을(를) 읽을 수 없습니다.";
@@ -175,6 +176,8 @@
 "banner.approve.desc" = "로그인 항목에서 Hosts Manager를 켜세요. 그때까지는 항목을 볼 수만 있고 변경할 수 없습니다.";
 "banner.missing.title" = "Hosts Manager가 아직 /etc/hosts를 편집할 수 없음";
 "banner.missing.desc" = "도우미가 설치되지 않았습니다. 종료한 다음 응용 프로그램 폴더에서 Hosts Manager를 다시 여세요.";
+"banner.stalled.title" = "업데이트 후 Hosts Manager를 다시 허용";
+"banner.stalled.desc" = "macOS가 업데이트된 도우미를 아직 시작하지 않았습니다. 로그인 항목에서 Hosts Manager를 껐다가 다시 켜세요. 그때까지는 항목을 볼 수만 있고 변경할 수 없습니다.";
 "empty.noEntries.title" = "항목 없음";
 "empty.noEntries.desc" = "이 Mac에서 호스트 이름을 IP 주소로 연결하는 항목을 추가하세요.";
 "accent.red" = "빨강";

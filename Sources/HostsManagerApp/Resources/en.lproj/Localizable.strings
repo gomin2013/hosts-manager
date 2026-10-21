@@ -49,6 +49,7 @@
 "helper.needsApproval" = "Helper needs approval";
 "helper.unavailable" = "Helper unavailable — run the .app built by scripts/build-app.sh";
 "helper.openSettings" = "Open Login Items…";
+"helper.notResponding" = "Helper not responding";
 "btn.ok" = "OK";
 "err.title" = "Couldn't update /etc/hosts";
 "err.readFailed" = "Couldn't read %@.";
@@ -175,6 +176,8 @@
 "banner.approve.desc" = "Turn on Hosts Manager in Login Items. Until then you can view entries but not change them.";
 "banner.missing.title" = "Hosts Manager can't edit /etc/hosts yet";
 "banner.missing.desc" = "Its helper isn't installed. Quit and open Hosts Manager again from Applications.";
+"banner.stalled.title" = "Allow Hosts Manager again after the update";
+"banner.stalled.desc" = "macOS hasn't started the updated helper. Turn Hosts Manager off and on again in Login Items. Until then you can view entries but not change them.";
 "empty.noEntries.title" = "No Entries";
 "empty.noEntries.desc" = "Add an entry to point a hostname at an IP address on this Mac.";
 "accent.red" = "Red";

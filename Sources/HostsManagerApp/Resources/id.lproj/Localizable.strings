@@ -49,6 +49,7 @@
 "helper.needsApproval" = "Helper memerlukan persetujuan";
 "helper.unavailable" = "Helper tidak tersedia — jalankan .app yang dibuat oleh scripts/build-app.sh";
 "helper.openSettings" = "Buka Item Login…";
+"helper.notResponding" = "Helper tidak merespons";
 "btn.ok" = "OK";
 "err.title" = "Tidak dapat memperbarui /etc/hosts";
 "err.readFailed" = "Tidak dapat membaca %@.";
@@ -175,6 +176,8 @@
 "banner.approve.desc" = "Aktifkan Hosts Manager di Item Login. Sampai saat itu, Anda dapat melihat entri tetapi tidak dapat mengubahnya.";
 "banner.missing.title" = "Hosts Manager belum dapat mengedit /etc/hosts";
 "banner.missing.desc" = "Helper-nya belum terpasang. Keluar lalu buka Hosts Manager lagi dari Applications.";
+"banner.stalled.title" = "Izinkan Hosts Manager lagi setelah pembaruan";
+"banner.stalled.desc" = "macOS belum menjalankan helper yang diperbarui. Matikan lalu aktifkan lagi Hosts Manager di Item Login. Sampai saat itu, Anda dapat melihat entri tetapi tidak dapat mengubahnya.";
 "empty.noEntries.title" = "Tidak Ada Entri";
 "empty.noEntries.desc" = "Tambahkan entri untuk mengarahkan nama host ke alamat IP di Mac ini.";
 "accent.red" = "Merah";

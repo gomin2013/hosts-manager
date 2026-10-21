@@ -18,6 +18,13 @@ actor XPCService {
         try await call { helper, done in helper.version { done(.success($0)) } }
     }
 
+    /// Is the helper actually there? After an update of this ad-hoc signed app, launchd keeps the helper registered
+    /// but won't start the new binary until the user turns it off and on in Login Items (seen 2026-10-21): requests
+    /// get no answer and no error. Ask with a short timeout instead of finding out on a 30 s save.
+    func isResponding(within timeout: Duration = .seconds(5)) async -> Bool {
+        (try? await call(timeout: timeout) { helper, done in helper.version { done(.success($0)) } }) != nil
+    }
+
     /// Throws `HelperError` (`.staleFile` when /etc/hosts changed since `expectedSHA256` was computed).
     func writeHosts(_ content: String, expectedSHA256: String) async throws {
         try await call { helper, done in
@@ -36,11 +43,12 @@ actor XPCService {
 
     /// Runs one request; a broken connection fails it with `.connectionFailed` (helper not installed/approved).
     private func call<T: Sendable>(
+        timeout: Duration = XPCService.timeout,
         _ body: @escaping (any HelperProtocol, @escaping @Sendable (Result<T, HelperError>) -> Void) -> Void
     ) async throws -> T {
         let conn = connectIfNeeded()
         do {
-            return try await send(on: conn, body)
+            return try await send(on: conn, timeout: timeout, body)
         } catch HelperError.connectionFailed {
             // Invalidated (helper not approved / crashed / rejected us): drop it so the next call reconnects.
             // ponytail: no invalidation handlers — their closures aren't Sendable under Swift 6.1 (Xcode 16)
@@ -52,13 +60,14 @@ actor XPCService {
 
     private func send<T: Sendable>(
         on conn: NSXPCConnection,
+        timeout: Duration,
         _ body: @escaping (any HelperProtocol, @escaping @Sendable (Result<T, HelperError>) -> Void) -> Void
     ) async throws -> T {
         try await withCheckedThrowingContinuation { continuation in
             let once = ResumeOnce(continuation)
             // A registered-but-silent helper would otherwise leave the UI saving forever.
             Task {
-                try? await Task.sleep(for: Self.timeout)
+                try? await Task.sleep(for: timeout)
                 once.resume(.failure(.connectionFailed))
             }
             let proxy = conn.remoteObjectProxyWithErrorHandler { _ in once.resume(.failure(.connectionFailed)) }
