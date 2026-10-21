@@ -1,5 +1,26 @@
 # Changelog
 
+## v1.1.2 — 2026-10-22
+
+### Changed
+
+- **Shorter model lists** — **Load models** for OpenAI, Gemini and Claude now shows just the newest low-cost model of
+  each family (GPT mini / nano, Gemini Flash-Lite / Flash, Claude Haiku / Sonnet) instead of dozens of previews, TTS,
+  image models and dated snapshots; the first is marked **(Recommended)**. Ollama still lists every model you pulled,
+  and if a provider renames its models the full list comes back.
+
+### Added
+
+- **Support on Ko-fi** — a link in **About** (and in the website footer). Hosts Manager stays free.
+
+### Installation
+
+Download `HostsManager-1.1.2.dmg` (and `SHA256SUMS.txt`), drag **Hosts Manager** to **Applications** (replace the
+old copy) and allow the first launch in **System Settings → Privacy & Security → Open Anyway** (or
+`xattr -dr com.apple.quarantine "/Applications/HostsManager.app"`). Updating: macOS may not start the new helper
+until you turn Hosts Manager **off and on again** in **System Settings → General → Login Items & Extensions** — a
+banner tells you when. Requires an Apple silicon Mac with macOS 14 or later; Liquid Glass needs macOS 26.
+
 ## v1.1.1 — 2026-10-21
 
 Fixes on top of 1.1.0 for anyone updating from an earlier version — everything in 1.1.0 below is included.
