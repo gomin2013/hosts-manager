@@ -18,27 +18,29 @@ final class ModelTests: XCTestCase {
         XCTAssertFalse(HostEntry(ip: "0.0.0.0", hostnames: ["broadcasthost"]).isSystem)
     }
 
-    // MARK: - HostEntry.line
+    // MARK: - HostEntry.lines
 
     func testEnabledLine() {
         let entry = HostEntry(ip: "127.0.0.1", hostnames: ["api.test", "web.test"])
-        XCTAssertEqual(entry.line, "127.0.0.1\tapi.test web.test")
+        XCTAssertEqual(entry.lines, ["127.0.0.1\tapi.test web.test"])
     }
 
     func testDisabledLineWithCommentIsCommentedOut() {
         let entry = HostEntry(ip: "10.0.0.5", hostnames: ["staging.test"], comment: "VPN", isEnabled: false)
-        XCTAssertEqual(entry.line, "# 10.0.0.5\tstaging.test\t# VPN")
+        XCTAssertEqual(entry.lines, ["## VPN", "# 10.0.0.5\tstaging.test"])
     }
 
     func testCommentCannotInjectAHostsLine() {
         let entry = HostEntry(ip: "127.0.0.1", hostnames: ["a.test"], comment: "dev\n10.6.6.6 bank.example\r\u{0}# x")
-        XCTAssertFalse(entry.line.contains("\n"))
-        XCTAssertEqual(HostsParser.parse(entry.line + "\n").lines.count, 1, "still exactly one line")
-        XCTAssertEqual(entry.line, "127.0.0.1\ta.test\t# dev 10.6.6.6 bank.example   x")
+        XCTAssertEqual(entry.lines, ["## dev 10.6.6.6 bank.example   x", "127.0.0.1\ta.test"])
+        let parsed = HostsParser.parse(entry.lines.joined(separator: "\n") + "\n").lines
+        XCTAssertEqual(parsed.count, 1, "one entry, its comment on the line above")
+        guard case .entry(let back) = parsed.first else { return XCTFail("not an entry") }
+        XCTAssertEqual(back.hostnames, ["a.test"], "bank.example never becomes a name for 127.0.0.1")
     }
 
     func testEmptyCommentIsOmitted() {
-        XCTAssertEqual(HostEntry(ip: "::1", hostnames: ["a.test"], comment: "").line, "::1\ta.test")
+        XCTAssertEqual(HostEntry(ip: "::1", hostnames: ["a.test"], comment: "").lines, ["::1\ta.test"])
     }
 
     // MARK: - HostEntry.matches

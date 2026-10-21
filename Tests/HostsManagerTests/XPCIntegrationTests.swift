@@ -160,13 +160,13 @@ final class XPCIntegrationTests: XCTestCase {
         vm.editor?.comment = "VPN #1"
         vm.commitEditor()
         try await waitUntilSaved(vm)
-        XCTAssertTrue(contents.hasSuffix("10.0.0.5\tstaging.test\t# VPN 1\n"))
+        XCTAssertTrue(contents.hasSuffix("## VPN 1\n10.0.0.5\tstaging.test\n"))
 
         vm.beginEdit(vm.entries[2])
         vm.editor?.hostnamesText = "staging2.test"
         vm.commitEditor()
         try await waitUntilSaved(vm)
-        XCTAssertTrue(contents.hasSuffix("10.0.0.5\tstaging2.test\t# VPN 1\n"))
+        XCTAssertTrue(contents.hasSuffix("## VPN 1\n10.0.0.5\tstaging2.test\n"))
 
         let section = try XCTUnwrap(vm.filteredRows.first { if case .section = $0 { true } else { false } })
         vm.delete(section)
@@ -202,7 +202,8 @@ final class XPCIntegrationTests: XCTestCase {
     // MARK: - Feature completion (Phase 3)
 
     private func makeViewModel() -> HostsViewModel {
-        HostsViewModel(hostsURL: hostsURL, backupsURL: root.appendingPathComponent("Backups"), xpc: xpc)
+        HostsViewModel(hostsURL: hostsURL, backupsURL: root.appendingPathComponent("Backups"),
+                       pinsURL: root.appendingPathComponent("pins.json"), xpc: xpc)
     }
 
     func testAddRenameAndRemoveSection() async throws {
@@ -291,21 +292,20 @@ final class XPCIntegrationTests: XCTestCase {
         XCTAssertEqual(contents, "##\n# Host Database\n##\n127.0.0.1\tlocalhost\n\n10.0.0.1 new.test\n")
     }
 
-    func testRestorePreviousTogglesBetweenTheLastTwoVersions() async throws {
+    func testHistoryReadsTheHelpersBackupsAndRestoresThroughIt() async throws {
         let vm = makeViewModel()
-        XCTAssertNil(vm.latestBackupURL)
+        XCTAssertEqual(vm.history.recent.map(\.id), ["current"])
 
         vm.toggle(vm.entries[1])
         try await waitUntilSaved(vm)
-        let toggled = contents
+        XCTAssertEqual(vm.history.recent.first?.change, .turnedOff("api.test"))
+        XCTAssertEqual(vm.history.recent.last?.text, original, "the backup the helper made")
 
-        vm.restorePrevious()
+        vm.restore(try XCTUnwrap(vm.history.recent.last).text)
         try await waitUntilSaved(vm)
         XCTAssertEqual(contents, original)
-
-        vm.restorePrevious()
-        try await waitUntilSaved(vm)
-        XCTAssertEqual(contents, toggled, "clicking again undoes the restore")
+        XCTAssertEqual(vm.history.recent.count, 3, "the restore is a new step")
+        XCTAssertNotNil(vm.history.recent[1].date, "dated by the backup stamp of the save that replaced it")
     }
 
     func testExportIsByteIdentical() throws {

@@ -7,6 +7,8 @@ public enum HelperConstants {
     public static let hostsPath = "/etc/hosts"
     /// Root-owned; the helper writes `hosts-<ISO8601>` here before every change, the app reads them (0644).
     public static let backupsPath = "/Library/Application Support/HostsManager/Backups"
+    /// Backups the helper keeps = steps the History panel can show. One number for both sides.
+    public static let keptBackups = 30
 }
 
 /// XPC contract between the app and the root helper. The helper only *writes*; the app reads `/etc/hosts` itself.

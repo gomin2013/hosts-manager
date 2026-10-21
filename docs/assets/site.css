@@ -25,7 +25,7 @@
   --accent: #1f63d6;          /* white text on it: 5.6:1 */
   --accent-text: #1a56bd;     /* links on --bg: 6.4:1 */
   --accent-soft: #e6eefc;
-  --sand: #f3e2c4;            /* fennec fox fur, only as a tint */
+  --sand: #f3e2c4;            /* warm tint (v1.0 fox mascot) */
   --shadow: 0 1px 2px rgb(23 35 66 / .06), 0 12px 40px -12px rgb(23 35 66 / .18);
   --radius-card: 16px;
   --radius-img: 12px;
@@ -67,10 +67,14 @@ body {
 img { max-width: 100%; height: auto; display: block; }
 a { color: var(--accent-text); text-decoration-thickness: 1px; text-underline-offset: 3px; }
 code, kbd, pre { font-family: var(--mono); font-size: .9em; }
+code { overflow-wrap: anywhere; }  /* long paths (/Library/Application Support/…) on phones */
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
 
 /* Language: every string ships in both languages; the <html> class picks one (set before first paint). */
 html:not(.th) .th, html.th .en { display: none !important; }
+/* Other languages hide the page until site.js swaps their text in (at most 1.5 s), so English doesn't flash first */
+html.i18n-wait body { visibility: hidden; animation: i18n-show 0s 1.5s forwards; }
+@keyframes i18n-show { to { visibility: visible; } }
 
 .wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 24px; }
 .muted { color: var(--muted); }
@@ -91,7 +95,7 @@ html:not(.th) .th, html.th .en { display: none !important; }
 .brand { display: flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; font-weight: 600; letter-spacing: -.01em; }
 .brand img { width: 30px; height: 30px; border-radius: 7px; }
 .nav-links { display: flex; gap: 22px; margin-left: auto; }
-.nav-links a { color: var(--muted); text-decoration: none; font-size: 15px; }
+.nav-links a { color: var(--muted); text-decoration: none; font-size: 15px; white-space: nowrap; }
 .nav-links a:hover, .nav-links a[aria-current="page"] { color: var(--text); }
 .lang { display: flex; border: 1px solid var(--line); border-radius: 999px; padding: 2px; }
 .lang button {
@@ -99,7 +103,70 @@ html:not(.th) .th, html.th .en { display: none !important; }
   border-radius: 999px; padding: 4px 10px; cursor: pointer;
 }
 .lang button[aria-pressed="true"] { background: var(--surface-2); color: var(--text); }
-@media (max-width: 760px) {
+/* Language picker: header button + modal <dialog> with search (site.js builds the dialog for every page).
+   ponytail: the old .lang pill rules above stay until gomin2013.github.io (which borrows this file) ships the button. */
+.lang-btn {
+  display: flex; align-items: center; gap: 6px; cursor: pointer;
+  font: 500 13px var(--font); color: var(--muted); background: none;
+  border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px 5px 9px;
+}
+.lang-btn:hover { color: var(--text); }
+.lang-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.lang-btn .lang-code { display: none; }
+.nav-links a > i { display: none; }
+/* Phones: Download / About become icons (their text stays for screen readers), the language button shows its short
+   code. The app name and the code show only while they fit — breakpoints measured with the widest code, "zh-tw". */
+@media (max-width: 800px) {
+  .brand { white-space: nowrap; }
+  .nav-links:has(a > i) { gap: 4px; }
+  .nav-links a:has(> i) { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 999px; font-size: 0; }
+  .nav-links a > i { display: block; font-size: 20px; }
+  .nav-links a[aria-current="page"]:has(> i) { background: var(--surface-2); }
+  .lang-btn .lang-name { display: none; }
+  .lang-btn .lang-code { display: inline; }
+}
+@media (max-width: 400px) { .brand:has(img) { font-size: 0; } }  /* icon only; the name stays for screen readers */
+@media (max-width: 270px) { .lang-btn .lang-code { display: none; } .lang-btn { padding: 7px; } }  /* globe only */
+@media (max-width: 361px) { .brand:not(:has(img)) ~ .lang-btn .lang-code { display: none; } .brand:not(:has(img)) ~ .lang-btn { padding: 7px; } }  /* gomin index */
+@media (max-width: 480px) { .btn { white-space: normal; } }
+html:has(.lang-dialog[open]) { overflow: hidden; }
+.lang-dialog {
+  width: min(420px, calc(100vw - 32px)); max-height: min(580px, calc(100dvh - 48px)); padding: 0;
+  color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+}
+.lang-dialog[open] { display: flex; animation: lang-in .2s var(--ease); }
+.lang-dialog::backdrop { background: rgb(10 12 18 / .45); backdrop-filter: blur(4px); }
+.lang-panel { display: flex; flex-direction: column; gap: 12px; width: 100%; min-height: 0; padding: 16px; }
+.lang-head { display: flex; align-items: center; justify-content: space-between; padding-left: 4px; }
+.lang-head h2 { font-size: 18px; margin: 0; }
+.lang-close {
+  display: grid; place-items: center; width: 32px; height: 32px; cursor: pointer; font-size: 16px;
+  color: var(--muted); background: var(--surface-2); border: 0; border-radius: 999px;
+}
+.lang-close:hover { color: var(--text); }
+.lang-search {
+  display: flex; align-items: center; gap: 8px; padding: 0 14px; color: var(--faint);
+  background: var(--bg); border: 1px solid var(--line); border-radius: 999px;
+}
+.lang-search:focus-within { border-color: var(--accent); }
+.lang-search input {
+  flex: 1; min-width: 0; padding: 10px 0; border: 0; outline: 0; background: none;
+  font: 15px var(--font); color: var(--text);
+}
+.lang-options { list-style: none; margin: 0; padding: 0; min-height: 0; overflow-y: auto; display: grid; gap: 2px; }
+.lang-options button {
+  display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; cursor: pointer;
+  font: 500 15px var(--font); color: var(--text); background: none; border: 0; border-radius: 10px; padding: 10px 12px;
+}
+.lang-options button:hover, .lang-options button:focus-visible { background: var(--surface-2); outline: none; }
+.lang-options .flag { font-size: 20px; line-height: 1; }
+.lang-options small { color: var(--faint); font-size: 13px; font-weight: 400; }
+.lang-options [aria-current="true"]::after { content: "✓"; margin-left: auto; color: var(--accent-text); font-weight: 600; }
+.lang-empty { margin: 8px 0 12px; text-align: center; color: var(--muted); font-size: 14px; }
+@keyframes lang-in { from { opacity: 0; transform: translateY(8px) scale(.98); } }
+@media (prefers-reduced-motion: reduce) { .lang-dialog[open] { animation: none; } }
+@media (max-width: 800px) {  /* 800: the full header needs up to 784px (Russian) */
   .nav { gap: 14px; }
   .nav-links { gap: 14px; }
   .nav-links .hide-sm { display: none; }
@@ -122,11 +189,11 @@ html:not(.th) .th, html.th .en { display: none !important; }
 .cta-note { font-size: 14px; color: var(--muted); }
 
 /* ── Type ─────────────────────────────────────────────── */
-h1, h2, h3 { line-height: 1.1; letter-spacing: -.025em; margin: 0; font-weight: 650; }
+h1, h2, h3 { line-height: 1.1; letter-spacing: -.025em; margin: 0; font-weight: 650; overflow-wrap: break-word; hyphens: auto; }  /* long ru/vi/id words on phones */
 h1 { font-size: clamp(40px, 5.2vw, 64px); }
 h2 { font-size: clamp(30px, 3.6vw, 44px); }
 h3 { font-size: 20px; letter-spacing: -.01em; line-height: 1.3; }
-html.th h1, html.th h2, html.th h3 { line-height: 1.3; letter-spacing: 0; }
+html:is(.th, :lang(vi), :lang(ja), :lang(ko), :lang(zh)) :is(h1, h2, h3) { line-height: 1.3; letter-spacing: 0; }
 .lede { font-size: 19px; color: var(--muted); max-width: 52ch; margin: 18px 0 0; }
 .eyebrow { font: 500 13px var(--mono); color: var(--accent-text); letter-spacing: .02em; margin: 0 0 14px; }
 section { padding: 96px 0; }
@@ -141,7 +208,7 @@ section { padding: 96px 0; }
 .hero-copy .cta-note { margin-top: 14px; }
 .hero-shot { position: relative; margin-right: -120px; }
 .hero-shot .shot { width: 100%; }
-.hero-shot .fox {
+.hero-shot .fox {  /* mascot (glass robot since v1.1; class name kept) */
   position: absolute; width: 132px; left: -44px; bottom: -18px;
   filter: drop-shadow(0 10px 18px rgb(0 0 0 / .18));
 }
@@ -174,8 +241,13 @@ section { padding: 96px 0; }
 .cell-a { grid-column: span 4; grid-row: span 2; }
 .cell-a img { margin: 18px -28px -28px 0; border-radius: var(--radius-img) 0 0 0; border: 1px solid var(--line); border-right: 0; border-bottom: 0; }
 .cell-b, .cell-c { grid-column: span 2; }
-.cell-d { grid-column: span 3; background: linear-gradient(140deg, var(--accent-soft), var(--surface) 70%); }
-.cell-e { grid-column: span 3; }
+.cell-d { grid-column: span 3; grid-row: span 2; background: linear-gradient(140deg, var(--accent-soft), var(--surface) 70%); }
+.cell-d img { width: min(100%, 320px); margin-top: 8px; border-radius: var(--radius-img); border: 1px solid var(--line); }
+.cell-e, .cell-g { grid-column: span 3; }
+.swatches { display: grid; grid-template-columns: repeat(8, 22px); gap: 10px; margin-top: 16px; }
+.swatches span { width: 22px; height: 22px; border-radius: 50%; background: var(--c); }
+.gradients { display: grid; grid-template-columns: repeat(4, 56px); gap: 10px; margin-top: 14px; }
+.gradients span { height: 34px; border-radius: 9px; background: linear-gradient(135deg, var(--a), var(--b)); }
 .cell pre {
   margin: 8px 0 0; padding: 14px 16px; border-radius: var(--radius-img); background: var(--surface-2);
   font-size: 13px; line-height: 1.7; overflow-x: auto; color: var(--text);
@@ -188,12 +260,12 @@ kbd {
 }
 @media (max-width: 900px) {
   .bento { grid-template-columns: 1fr 1fr; }
-  .cell-a, .cell-d, .cell-e { grid-column: span 2; grid-row: auto; }
+  .cell-a, .cell-d, .cell-e, .cell-g { grid-column: span 2; grid-row: auto; }
   .cell-b, .cell-c { grid-column: span 1; }
 }
 @media (max-width: 560px) {
   .bento { grid-template-columns: 1fr; }
-  .cell-a, .cell-b, .cell-c, .cell-d, .cell-e { grid-column: auto; }
+  .cell-a, .cell-b, .cell-c, .cell-d, .cell-e, .cell-g { grid-column: auto; }
 }
 
 /* ── Save pipeline (horizontal flow) ──────────────────── */
@@ -253,7 +325,7 @@ kbd {
 .sibling p { color: var(--muted); }
 .sibling .shot { margin-right: -120px; border-radius: var(--radius-img); }
 @media (max-width: 900px) {
-  .sibling { grid-template-columns: 1fr; padding: 28px; }
+  .sibling { grid-template-columns: minmax(0, 1fr); padding: 28px; }
   .sibling .shot { margin-right: 0; }
 }
 
@@ -278,7 +350,7 @@ kbd {
 .prose { max-width: 720px; }
 .prose h2 { font-size: 26px; margin: 48px 0 12px; }
 .prose h3 { margin: 28px 0 8px; }
-.prose p, .prose li { color: var(--muted); }
+.prose p, .prose li { color: var(--muted); overflow-wrap: anywhere; }  /* plain-text paths like /Library/Application Support/… */
 .prose li { margin: 6px 0; }
 .prose strong { color: var(--text); }
 .prose .updated { font: 500 14px var(--mono); color: var(--faint); }
@@ -289,7 +361,7 @@ kbd {
 .install { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 56px; align-items: start; }
 .install-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
 .install-steps li {
-  display: grid; grid-template-columns: 40px 1fr; gap: 16px; padding: 20px; border-radius: var(--radius-card);
+  display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 16px; padding: 20px; border-radius: var(--radius-card);
   background: var(--surface); border: 1px solid var(--line);
 }
 .install-steps i { font-size: 26px; color: var(--accent-text); }
@@ -301,12 +373,12 @@ kbd {
 }
 .dl-card .app { display: flex; gap: 16px; align-items: center; margin-bottom: 22px; }
 .dl-card .app img { width: 64px; height: 64px; border-radius: 15px; }
-.dl-card dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 24px 0 0; font-size: 15px; }
+.dl-card dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 16px; margin: 24px 0 0; font-size: 15px; }
 .dl-card dt { color: var(--faint); }
-.dl-card dd { margin: 0; }
-.split-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.dl-card dd { margin: 0; overflow-wrap: anywhere; }
+.split-2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; }  /* minmax: long <pre> lines scroll */
 @media (max-width: 900px) {
-  .install, .split-2 { grid-template-columns: 1fr; gap: 32px; }
+  .install, .split-2 { grid-template-columns: minmax(0, 1fr); gap: 32px; }  /* minmax: long <pre> lines scroll instead of widening the page */
   .dl-card { position: static; }
 }
 

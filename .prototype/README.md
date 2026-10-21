@@ -8,7 +8,7 @@ SwiftUI app — change the design here first, then mirror it in Swift. The layou
 
 | File | Purpose | SwiftUI counterpart |
 |---|---|---|
-| `index.html` | Window: toolbar, hosts list, side panels; editor / delete / raw preview / about sheets | `HostsView`, `HostRow`, `SidePanels`, `EditorSheet`, `RawPreviewView`, `SettingsMenu` |
+| `index.html` | Window: toolbar, hosts list, side panels; editor / delete / raw preview / about sheets | `HostsView`, `HostRow`, `SidePanels`, `EditorSheet`, `RawPreviewView`, `SettingsPanels` |
 | `stylesheets/app.css` | macOS system look, light / dark | system semantic colors |
 | `javascripts/shared.js` | Mock lines, **i18n table (en / th)**, `lineText`, validation, system-entry rule | `Localizable.strings`, `HostsLine.text`, `HostEntry.isSystem` |
 | `javascripts/main.js` | Rows, search, toggle, editor, delete, drag, sections, panels, settings | `HostsViewModel`, `EditorViewModel` |

@@ -3,13 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hosts Manager · Edit /etc/hosts on your Mac, safely</title>
-  <meta name="description" content="A free, open-source macOS app for editing /etc/hosts. Validation, automatic backups, sections you can drag and an optional AI assistant. English and Thai.">
+  <title data-th="Hosts Manager · แก้ไฟล์ /etc/hosts บน Mac อย่างปลอดภัย">Hosts Manager · Edit /etc/hosts on your Mac, safely</title>
+  <meta name="description" data-th="แอป macOS ฟรีโอเพนซอร์สสำหรับแก้ /etc/hosts ตรวจความถูกต้อง สำรองไฟล์อัตโนมัติ ลากจัดหมวดได้ และมีผู้ช่วย AI" content="A free, open-source macOS app for editing /etc/hosts. Validation, automatic backups, sections you can drag and an optional AI assistant. 12 languages.">
   <link rel="canonical" href="https://gomin2013.github.io/hosts-manager/">
+  <link rel="alternate" hreflang="en" href="https://gomin2013.github.io/hosts-manager/">
+  <link rel="alternate" hreflang="th" href="https://gomin2013.github.io/hosts-manager/th/">
+  <link rel="alternate" hreflang="x-default" href="https://gomin2013.github.io/hosts-manager/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Hosts Manager">
-  <meta property="og:title" content="Hosts Manager · Edit /etc/hosts on your Mac, safely">
-  <meta property="og:description" content="Free and open source. Validation, automatic backups, draggable sections and an optional AI assistant.">
+  <meta property="og:title" data-th="Hosts Manager · แก้ไฟล์ /etc/hosts บน Mac อย่างปลอดภัย" content="Hosts Manager · Edit /etc/hosts on your Mac, safely">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="th_TH">
+  <meta property="og:description" data-th="ฟรีและโอเพนซอร์ส ตรวจความถูกต้อง สำรองไฟล์อัตโนมัติ ลากจัดหมวดได้ และมีผู้ช่วย AI" content="Free and open source. Validation, automatic backups, draggable sections and an optional AI assistant.">
   <meta property="og:url" content="https://gomin2013.github.io/hosts-manager/">
   <meta property="og:image" content="https://gomin2013.github.io/hosts-manager/assets/img/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -21,7 +26,7 @@
   <link rel="apple-touch-icon" href="assets/img/hm-icon.png">
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
   <link rel="stylesheet" href="assets/site.css">
-  <script>try{var l=localStorage.getItem("hm.lang")||((navigator.language||"").slice(0,2)==="th"?"th":"en");if(l==="th"){document.documentElement.classList.add("th");document.documentElement.lang="th"}}catch(e){}</script>
+  <script>try{var d=document.documentElement,n=(navigator.language||"").toLowerCase(),l=localStorage.getItem("hm.lang")||(/^zh-(hant|tw|hk|mo)/.test(n)?"zh-Hant":/^zh/.test(n)?"zh-Hans":/^fil/.test(n)?"tl":n.slice(0,2));if("en th ja ko vi id ms tl zh-Hans zh-Hant es ru".split(" ").indexOf(l)<0)l="en";d.lang=l;if(l==="th"){d.classList.add("th");document.querySelectorAll("[data-th]").forEach(function(e){e.tagName==="TITLE"?e.textContent=e.dataset.th:e.content=e.dataset.th})}else if(l!=="en")d.classList.add("i18n-wait")}catch(e){}</script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -34,7 +39,7 @@
     "downloadUrl": "https://github.com/gomin2013/hosts-manager/releases/latest",
     "image": "https://gomin2013.github.io/hosts-manager/assets/img/hm-icon.png",
     "screenshot": "https://gomin2013.github.io/hosts-manager/assets/img/hm-main-dark.png",
-    "softwareVersion": "1.0.2",
+    "softwareVersion": "1.1.0",
     "license": "https://opensource.org/licenses/MIT",
     "inLanguage": ["en", "th"],
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -50,14 +55,11 @@
       <a class="brand" href="./"><img src="assets/img/hm-icon.png" alt="" width="30" height="30">Hosts Manager</a>
       <nav class="nav-links" aria-label="Main">
         <a href="#features" class="hide-sm"><span class="en">Features</span><span class="th">ฟีเจอร์</span></a>
-        <a href="download/"><span class="en">Download</span><span class="th">ดาวน์โหลด</span></a>
-        <a href="about/"><span class="en">About</span><span class="th">เกี่ยวกับ</span></a>
+        <a href="download/"><i class="ph ph-download-simple" aria-hidden="true"></i><span class="en">Download</span><span class="th">ดาวน์โหลด</span></a>
+        <a href="about/"><i class="ph ph-info" aria-hidden="true"></i><span class="en">About</span><span class="th">เกี่ยวกับ</span></a>
         <a href="https://github.com/gomin2013/hosts-manager" target="_blank" rel="noopener" class="hide-sm">GitHub</a>
       </nav>
-      <div class="lang" role="group" aria-label="Language">
-        <button type="button" data-lang="en" aria-pressed="true">EN</button>
-        <button type="button" data-lang="th" aria-pressed="false">TH</button>
-      </div>
+      <button type="button" class="lang-btn" data-lang-open aria-haspopup="dialog" aria-label="Language"><i class="ph ph-globe" aria-hidden="true"></i><span class="lang-name">English</span><span class="lang-code">en</span></button>
     </div>
   </header>
 
@@ -97,12 +99,12 @@
           <li class="reveal"><i class="ph ph-code" aria-hidden="true"></i><span><strong><span class="en">Free and open source</span><span class="th">ฟรีและโอเพนซอร์ส</span></strong><span class="en">MIT license, no ads</span><span class="th">สัญญาอนุญาต MIT ไม่มีโฆษณา</span></span></li>
           <li class="reveal" data-d="1"><i class="ph ph-apple-logo" aria-hidden="true"></i><span><strong><span class="en">Native macOS app</span><span class="th">แอป macOS แท้</span></strong><span class="en">SwiftUI, macOS 14 or later</span><span class="th">SwiftUI รองรับ macOS 14 ขึ้นไป</span></span></li>
           <li class="reveal" data-d="2"><i class="ph ph-eye-slash" aria-hidden="true"></i><span><strong><span class="en">No account, no tracking</span><span class="th">ไม่ต้องสมัคร ไม่เก็บข้อมูล</span></strong><span class="en">Your entries stay on your Mac</span><span class="th">ข้อมูลอยู่ในเครื่องของคุณ</span></span></li>
-          <li class="reveal" data-d="3"><i class="ph ph-translate" aria-hidden="true"></i><span><strong><span class="en">English and Thai</span><span class="th">ภาษาไทยและอังกฤษ</span></strong><span class="en">Switch any time in Settings</span><span class="th">สลับได้ทุกเมื่อใน Settings</span></span></li>
+          <li class="reveal" data-d="3"><i class="ph ph-translate" aria-hidden="true"></i><span><strong><span class="en">12 languages</span><span class="th">12 ภาษา</span></strong><span class="en">Search and switch in the Language panel</span><span class="th">ค้นหาและสลับภาษาได้ในแผง Language</span></span></li>
         </ul>
       </div>
     </section>
 
-    <!-- Features: bento, 5 items = 5 cells -->
+    <!-- Features: bento, 6 items = 6 cells -->
     <section id="features">
       <div class="wrap">
         <div class="section-head reveal">
@@ -114,7 +116,7 @@
             <i class="ph ph-cursor-click ico" aria-hidden="true"></i>
             <h3><span class="en">Sections you can drag</span><span class="th">แบ่งหมวดแล้วลากจัดเรียงได้</span></h3>
             <p><span class="en">A blank line and a # heading make a section. <kbd>⌘</kbd>-click several rows and drag them together.</span><span class="th">บรรทัดว่างกับ # หัวข้อคือหนึ่งหมวด กด <kbd>⌘</kbd> แล้วคลิกเลือกหลายแถว ลากไปพร้อมกันได้เลย</span></p>
-            <img src="assets/img/hm-sections.png" width="960" height="380" loading="lazy"
+            <img src="assets/img/hm-sections.png" width="960" height="310" loading="lazy"
                  alt="Local dev, Staging and Blocked sections with enabled and disabled entries">
           </article>
           <article class="cell cell-b reveal" data-d="1">
@@ -128,17 +130,31 @@
             <p><span class="en"><kbd>⌘F</kbd> filters by IP or hostname as you type.</span><span class="th"><kbd>⌘F</kbd> กรองตาม IP หรือชื่อโฮสต์ขณะพิมพ์</span></p>
           </article>
           <article class="cell cell-d reveal">
-            <i class="ph ph-arrow-counter-clockwise ico" aria-hidden="true"></i>
-            <h3><span class="en">Undo the last save</span><span class="th">ย้อนการบันทึกล่าสุดได้</span></h3>
-            <p><span class="en">Every save keeps a backup. Restore Previous brings the last version back, and a second click redoes it.</span><span class="th">ทุกการบันทึกมีสำเนาสำรอง กด Restore Previous เพื่อย้อนกลับ กดอีกครั้งเพื่อทำซ้ำ</span></p>
+            <i class="ph ph-clock-counter-clockwise ico" aria-hidden="true"></i>
+            <h3><span class="en">Go back to any version</span><span class="th">ย้อนกลับไปเวอร์ชันไหนก็ได้</span></h3>
+            <p><span class="en">History lists your last 30 saves by what changed. Double-click one to go back, and pin the versions you want to keep.</span><span class="th">ประวัติแสดง 30 การบันทึกล่าสุดตามสิ่งที่เปลี่ยน ดับเบิลคลิกเพื่อย้อนกลับ และปักหมุดเวอร์ชันที่อยากเก็บไว้</span></p>
+            <img src="assets/img/hm-history.png" width="320" height="490" loading="lazy"
+                 alt="History panel: Before staging changes and When Opened pinned, recent saves from Turned on admin.test to Restored Before staging changes">
           </article>
           <article class="cell cell-e reveal" data-d="1">
             <i class="ph ph-eye ico" aria-hidden="true"></i>
             <h3><span class="en">See the exact file</span><span class="th">เห็นไฟล์จริงก่อนบันทึก</span></h3>
             <p><span class="en">Preview Raw shows what will be written. Import any hosts file, or export an identical copy.</span><span class="th">Preview Raw แสดงสิ่งที่จะถูกเขียนลงไฟล์ นำเข้าไฟล์ hosts อื่น หรือส่งออกสำเนาที่ตรงทุกตัวอักษรได้</span></p>
 <pre aria-label="Example hosts lines"><span class="c"># Local dev</span>
-127.0.0.1   api.test web.test   <span class="c"># docker compose</span>
+<span class="c">## docker compose</span>
+127.0.0.1   api.test web.test
 <span class="off"># 127.0.0.1   admin.test</span></pre>
+          </article>
+          <article class="cell cell-g reveal" data-d="2">
+            <i class="ph ph-palette ico" aria-hidden="true"></i>
+            <h3><span class="en">Make it yours</span><span class="th">ปรับให้เป็นสไตล์คุณ</span></h3>
+            <p><span class="en">Liquid Glass on macOS 26 and Sukhumvit Set type. Light, Dark or System, 16 accent colours and 8 gradient themes.</span><span class="th">Liquid Glass บน macOS 26 และฟอนต์ Sukhumvit Set เลือก Light, Dark หรือตามระบบ สี accent 16 สี และธีม gradient 8 แบบ</span></p>
+            <div class="swatches" aria-hidden="true">
+              <span style="--c:#E00219"></span><span style="--c:#B45403"></span><span style="--c:#9A6405"></span><span style="--c:#7F7002"></span><span style="--c:#557B04"></span><span style="--c:#028132"></span><span style="--c:#057F60"></span><span style="--c:#077D7A"></span><span style="--c:#027A8F"></span><span style="--c:#036AE4"></span><span style="--c:#5C55FF"></span><span style="--c:#8F3DFA"></span><span style="--c:#B424D8"></span><span style="--c:#CF01A6"></span><span style="--c:#DB045E"></span><span style="--c:#6F6F6F"></span>
+            </div>
+            <div class="gradients" aria-hidden="true">
+              <span style="--a:#007CBE;--b:#FFF7AE"></span><span style="--a:#E57A44;--b:#251351"></span><span style="--a:#F1FEC6;--b:#A882DD"></span><span style="--a:#DB5375;--b:#B3FFB3"></span><span style="--a:#02C3BD;--b:#4E148C"></span><span style="--a:#629460;--b:#F4D35E"></span><span style="--a:#414288;--b:#B0DB43"></span><span style="--a:#FFC145;--b:#EC368D"></span>
+            </div>
           </article>
         </div>
       </div>
@@ -160,7 +176,7 @@
             <p><span class="en">If another app changed the file, nothing is overwritten. The app reloads instead.</span><span class="th">ถ้าแอปอื่นแก้ไฟล์ไปแล้ว จะไม่เขียนทับ แอปจะโหลดไฟล์ใหม่แทน</span></p></li>
           <li class="reveal" data-d="2"><span class="dot"><i class="ph ph-clock-counter-clockwise" aria-hidden="true"></i></span>
             <h3><span class="en">Back up</span><span class="th">สำรองไฟล์</span></h3>
-            <p><span class="en">The previous file is saved first. The last 20 versions are kept.</span><span class="th">บันทึกไฟล์เดิมเก็บไว้ก่อน เก็บ 20 เวอร์ชันล่าสุด</span></p></li>
+            <p><span class="en">The previous file is saved first. The last 30 versions are kept.</span><span class="th">บันทึกไฟล์เดิมเก็บไว้ก่อน เก็บ 30 เวอร์ชันล่าสุด</span></p></li>
           <li class="reveal" data-d="3"><span class="dot"><i class="ph ph-floppy-disk" aria-hidden="true"></i></span>
             <h3><span class="en">Write atomically</span><span class="th">เขียนแบบ atomic</span></h3>
             <p><span class="en">A crash in the middle of a save can't leave a half-written file.</span><span class="th">แม้เครื่องค้างระหว่างบันทึก ไฟล์ก็ไม่เสียครึ่งๆ กลางๆ</span></p></li>
@@ -179,10 +195,10 @@
     <section class="ai" id="ai">
       <div class="wrap ai-grid">
         <div class="ai-visual reveal">
-          <img class="panel" src="assets/img/hm-ai-panel.png" width="340" height="740" loading="lazy"
-               alt="AI Agent panel with quick questions such as How do I block a domain">
-          <img class="editor" src="assets/img/hm-editor-crop.png" width="424" height="236" loading="lazy"
-               alt="Add Entry sheet with IP address, hostnames, a comment and the Generate Comment button">
+          <img class="panel" src="assets/img/hm-ai-panel.png" width="320" height="740" loading="lazy"
+               alt="AI Agent answering how to block two domains: its thinking folded away, then a hosts code block and where to add it">
+          <img class="editor" src="assets/img/hm-editor-crop.png" width="424" height="252" loading="lazy"
+               alt="Edit Entry sheet with IP address, hostnames, a comment and the Generate Comment button">
         </div>
         <div class="ai-copy">
           <p class="eyebrow reveal">AI Agent</p>
@@ -220,7 +236,7 @@
               <a class="btn btn-ghost" href="https://github.com/gomin2013/git-exclude-manager"><i class="ph ph-arrow-square-out" aria-hidden="true"></i><span class="en">Explore Git Exclude Manager</span><span class="th">ดู Git Exclude Manager</span></a>
             </div>
           </div>
-          <img class="shot" src="assets/img/gem-main.png" width="1582" height="1161" loading="lazy"
+          <img class="shot" src="assets/img/gem-main.png" width="1100" height="800" loading="lazy"
                alt="Git Exclude Manager window with repository tabs, ignore patterns grouped into sections and the AI Agent panel">
         </div>
       </div>

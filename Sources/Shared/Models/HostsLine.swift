@@ -9,15 +9,18 @@ public enum HostsLine: Codable, Hashable, Sendable {
     /// Not a valid entry or comment — preserved verbatim.
     case unknown(String)
 
-    /// The line as written to the file.
-    public var text: String {
+    /// The file line(s) for this item — two for an entry with a `## comment` line above it.
+    public var textLines: [String] {
         switch self {
-        case .entry(let entry): entry.line
-        case .comment(let text): "#" + text
-        case .blank: ""
-        case .unknown(let raw): raw
+        case .entry(let entry): entry.lines
+        case .comment(let text): ["#" + text]
+        case .blank: [""]
+        case .unknown(let raw): [raw]
         }
     }
+
+    /// `textLines` joined with `\n` (for display and comparisons; `HostsFile.text` uses the file's own line ending).
+    public var text: String { textLines.joined(separator: "\n") }
 
     // ponytail: no CRLF / trailing-newline preservation yet — the Phase 2 parser keeps the original line endings
     public static func serialize(_ lines: [HostsLine]) -> String {

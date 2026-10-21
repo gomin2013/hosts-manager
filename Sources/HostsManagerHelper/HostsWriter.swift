@@ -8,7 +8,7 @@ struct HostsWriter: Sendable {
     var hostsURL = URL(fileURLWithPath: "/private/etc/hosts")
     /// Root-owned, never world-writable (constraints.md: no /tmp, no /var/tmp).
     var backupsURL = URL(fileURLWithPath: HelperConstants.backupsPath, isDirectory: true)
-    var keepBackups = 20
+    var keepBackups = HelperConstants.keptBackups
     var flushDNS: @Sendable () -> Void = HostsWriter.flushDNSCache
 
     static let maxBytes = 1_048_576

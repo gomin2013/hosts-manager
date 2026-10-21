@@ -12,13 +12,11 @@
 "btn.send" = "ส่ง";
 "btn.import" = "นำเข้า";
 "btn.export" = "ส่งออก";
-"btn.restore" = "คืนค่าก่อนหน้า";
 "btn.previewRaw" = "ดูไฟล์จริง";
 "btn.merge" = "รวม";
 "btn.replace" = "แทนที่";
 "btn.generateComment" = "สร้างหมายเหตุ";
 "hint.generateComment" = "ให้ AI แนะนำหมายเหตุ — ส่งไปเฉพาะรายการนี้";
-"hint.noBackup" = "ยังไม่มีเวอร์ชันก่อนหน้า — จะมีหลังบันทึกครั้งแรก";
 "dialog.importTitle" = "นำเข้าไฟล์ hosts";
 "dialog.importConfirm" = "พบ %ld รายการ รวม จะเพิ่มเฉพาะรายการใหม่ แทนที่ จะแทนรายการของคุณทั้งหมด (รายการระบบยังอยู่)";
 "btn.settings" = "ตั้งค่า";
@@ -58,8 +56,9 @@
 "section.placeholder" = "เพิ่มหัวข้อ...";
 "hint.addSection" = "เพิ่มบรรทัดว่างคั่นหมวด ลากไปวางแล้วพิมพ์หัวข้อ (บันทึกเป็น # หัวข้อ)";
 "hint.dragSection" = "ลากเพื่อย้ายหมวดนี้";
-"hint.restore" = "คืน /etc/hosts เป็นเวอร์ชันก่อนการบันทึกครั้งล่าสุด กดอีกครั้งเพื่อยกเลิกการคืนค่า";
+"hint.renameSection" = "ดับเบิลคลิกหรือกด Return เพื่อเปลี่ยนชื่อ";
 "hint.system" = "รายการของระบบ — แก้ไขไม่ได้";
+"hint.inlineComment" = "comment นี้อยู่บรรทัดเดียวกับชื่อโฮสต์ macOS จึงนับคำในนั้นเป็นชื่อโฮสต์ด้วย การบันทึกครั้งถัดไปจะย้ายไปไว้บรรทัดของตัวเอง";
 "hint.toggle" = "เปิดหรือปิดรายการนี้";
 "empty.noResults" = "ไม่พบรายการที่ตรงกับ “%@”";
 "confirm.deleteTitle" = "ลบรายการนี้?";
@@ -70,6 +69,13 @@
 "chat.placeholder" = "ถาม AI...";
 "chat.welcome" = "👋 สวัสดีครับ! ผมคือผู้ช่วย AI ถามเรื่องรายการใน hosts ได้เลย";
 "chat.noApiKey" = "⚠️ กรุณาตั้งค่า AI API ใน Settings ก่อน";
+"chat.step.attached" = "แนบ /etc/hosts · %ld บรรทัด";
+"chat.step.waiting" = "รอคำตอบจาก %@";
+"chat.step.thinking" = "กำลังคิด";
+"chat.step.writing" = "กำลังเขียนคำตอบ";
+"chat.thought" = "คิด %ld วินาที";
+"chat.seconds" = "%ld วินาที";
+"btn.stop" = "หยุด";
 "ai.notConfigured" = "ยังไม่ตั้งค่า";
 "settings.title" = "ตั้งค่า AI API";
 "settings.provider" = "ผู้ให้บริการ";
@@ -104,8 +110,8 @@
 "help.system.desc" = "localhost และ broadcasthost มากับ macOS และถูกล็อก 🔒 ไว้เพื่อให้ระบบทำงานปกติ helper จะไม่ยอมบันทึกไฟล์ที่ไม่มี 127.0.0.1 localhost";
 "help.import.title" = "นำเข้า / ส่งออก";
 "help.import.desc" = "นำเข้าไฟล์ hosts ใดก็ได้ — รวม จะเพิ่มเฉพาะรายการใหม่ แทนที่ จะแทนรายการของคุณ (รายการระบบของเครื่องนี้ยังอยู่) ส่งออกจะบันทึกตรงกับที่เห็นใน ดูไฟล์จริง";
-"help.restore.title" = "คืนค่าก่อนหน้า";
-"help.restore.desc" = "ทุกการบันทึกมีสำเนาสำรอง (เก็บ 20 ชุดล่าสุดใน /Library/Application Support/HostsManager/Backups) กด คืนค่าก่อนหน้า เพื่อย้อนการบันทึกล่าสุด กดอีกครั้งเพื่อยกเลิก";
+"help.restore.title" = "ประวัติ";
+"help.restore.desc" = "ทุกการบันทึกเป็นหนึ่งขั้นในประวัติ (30 ขั้นล่าสุด ใหม่สุดอยู่บน) ตั้งชื่อตามสิ่งที่เปลี่ยน ดับเบิลคลิกหรือกดปุ่ม ↩ เพื่อย้อนกลับ การย้อนกลับก็เป็นขั้นใหม่ จึงไม่มีอะไรหาย ปักหมุดเวอร์ชันที่อยากเก็บไว้ได้ ส่วนเวอร์ชันตอนเปิดแอปปักหมุดให้อัตโนมัติ กดถังขยะของขั้นนั้นเพื่อลบออกจากรายการ";
 "help.preview.title" = "ดูไฟล์จริง";
 "help.preview.desc" = "ดูเนื้อหาที่จะถูกเขียนลง /etc/hosts จริง รวมบรรทัด comment ของคุณ คัดลอกด้วย ⇧⌘C";
 "help.ai.title" = "AI Agent";
@@ -115,3 +121,95 @@
 "err.staleFile" = "/etc/hosts ถูกแก้ไขโดยแอปอื่น โหลดใหม่แล้ว กรุณาลองอีกครั้ง";
 "err.invalidContent" = "Helper ปฏิเสธเนื้อหาไฟล์";
 "err.writeFailed" = "เขียน /etc/hosts ไม่สำเร็จ ไฟล์ไม่ถูกเปลี่ยนแปลง";
+
+
+/* History */
+"history.title" = "ประวัติ";
+"history.pinned" = "ปักหมุด";
+"history.recent" = "ล่าสุด";
+"history.opened" = "ตอนเปิดแอป";
+"history.now" = "ตอนนี้";
+"history.restore" = "ย้อนกลับไปเวอร์ชันนี้";
+"history.pin" = "ปักหมุดเวอร์ชันปัจจุบัน";
+"history.pinThis" = "ปักหมุดเวอร์ชันนี้";
+"history.unpin" = "เลิกปักหมุด";
+"history.rename" = "เปลี่ยนชื่อ…";
+"history.renameTitle" = "เปลี่ยนชื่อหมุด";
+"history.pinName" = "ชื่อ";
+"history.pinDefault" = "ปักหมุดเมื่อ %@";
+"history.earliest" = "เวอร์ชันก่อนหน้านั้น";
+"history.turnedOn" = "เปิด %@";
+"history.turnedOff" = "ปิด %@";
+"history.added" = "เพิ่ม %@";
+"history.removed" = "ลบ %@";
+"history.edited" = "แก้ไข %@";
+"history.sectionAdded" = "เพิ่มหมวด %@";
+"history.sectionAddedUntitled" = "เพิ่มหมวด";
+"history.sectionRemoved" = "ลบหมวด %@";
+"history.sectionRemovedUntitled" = "ลบหมวด";
+"history.sectionRenamed" = "ตั้งชื่อหมวด %@";
+"history.moved" = "ย้ายแถว";
+"history.comments" = "แก้หมายเหตุ";
+"history.reverted" = "ย้อนกลับไปเวอร์ชัน %@";
+"history.revertedEarlier" = "ย้อนกลับไปเวอร์ชันก่อนหน้า";
+"history.revertedToPin" = "ย้อนกลับไป “%@”";
+"history.revertedToOpened" = "ย้อนกลับไปตอนเปิดแอป";
+"history.several" = "%@ และอีก %ld อย่าง";
+
+/* v1.1 — look & feel, tool window, rows */
+"theme.accent" = "สีหลัก";
+"theme.gradient" = "ธีมไล่สี";
+"theme.noGradient" = "ไม่ใช้ไล่สี";
+"accent.system" = "ระบบ";
+"accent.followSystem" = "ระบบ (ตาม macOS)";
+"hint.withShortcut" = "%@ (%@)";
+"btn.hide" = "ซ่อน";
+"a11y.hidePanel" = "ซ่อน %@";
+"btn.clear" = "ล้าง";
+"btn.turnOn" = "เปิด";
+"btn.turnOff" = "ปิด";
+"a11y.editNamed" = "แก้ไข %@";
+"a11y.deleteNamed" = "ลบ %@";
+"label.macHeader" = "ส่วนหัวของ macOS";
+"banner.approve.title" = "อนุญาตให้ Hosts Manager แก้ไข /etc/hosts";
+"banner.approve.desc" = "เปิด Hosts Manager ใน Login Items ก่อน จนกว่าจะเปิด ดูรายการได้แต่แก้ไขไม่ได้";
+"banner.missing.title" = "Hosts Manager ยังแก้ไข /etc/hosts ไม่ได้";
+"banner.missing.desc" = "ยังไม่ได้ติดตั้งตัวช่วย ปิดแล้วเปิด Hosts Manager จากโฟลเดอร์ Applications อีกครั้ง";
+"empty.noEntries.title" = "ยังไม่มีรายการ";
+"empty.noEntries.desc" = "เพิ่มรายการเพื่อชี้ชื่อโฮสต์ไปยัง IP บนเครื่องนี้";
+"accent.red" = "แดง";
+"accent.orange" = "ส้ม";
+"accent.amber" = "อำพัน";
+"accent.olive" = "มะกอก";
+"accent.lime" = "เขียวมะนาว";
+"accent.green" = "เขียว";
+"accent.emerald" = "มรกต";
+"accent.teal" = "เขียวหัวเป็ด";
+"accent.cyan" = "ฟ้าน้ำทะเล";
+"accent.blue" = "น้ำเงิน";
+"accent.indigo" = "คราม";
+"accent.violet" = "ม่วงอ่อน";
+"accent.purple" = "ม่วง";
+"accent.magenta" = "บานเย็น";
+"accent.pink" = "ชมพู";
+"accent.graphite" = "กราไฟต์";
+"gradient.none" = "ไม่มี";
+"gradient.ocean" = "มหาสมุทร";
+"gradient.ember" = "ถ่านแดง";
+"gradient.lavender" = "ลาเวนเดอร์";
+"gradient.watermelon" = "แตงโม";
+"gradient.lagoon" = "ลากูน";
+"gradient.meadow" = "ทุ่งหญ้า";
+"gradient.dusk" = "สนธยา";
+"gradient.peach" = "พีช";
+
+/* v1.1 — AI Agent start page, Help menu */
+"chat.intro" = "ถามเรื่องรายการ hosts ของคุณ ไฟล์ /etc/hosts จะถูกส่งไปพร้อมทุกคำถาม";
+"chat.tryAsking" = "ลองถาม";
+"chat.setUp" = "ตั้งค่าผู้ให้บริการ AI…";
+"menu.helpWindow" = "วิธีใช้ Hosts Manager";
+
+/* History remove · Language panel (v1.1) */
+"history.remove" = "ลบออกจากประวัติ";
+"language.search" = "ค้นหาภาษา";
+"language.noResults" = "ไม่พบภาษาที่ตรงกับ “%@”";

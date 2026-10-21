@@ -11,8 +11,12 @@ APP="$ROOT/build/HostsManager.app"
 HELPER_ID="com.hostsmanager.helper"
 
 cd "$ROOT"
-swift build -c "$CONFIG"
-BIN="$(swift build -c "$CONFIG" --show-bin-path)"
+# SwiftPM stamps the binary "sdk 14.0" (the deployment target) whatever SDK compiled it, and macOS 26 then draws it
+# the pre-26 way — no Liquid Glass. Stamp the real SDK; the minimum stays macOS 14 (same fix as git-exclude-manager).
+SDK_VERSION="$(xcrun --show-sdk-version)"
+LINK_SDK=(-Xlinker -platform_version -Xlinker macos -Xlinker 14.0 -Xlinker "$SDK_VERSION")
+swift build -c "$CONFIG" "${LINK_SDK[@]}"
+BIN="$(swift build -c "$CONFIG" "${LINK_SDK[@]}" --show-bin-path)"
 
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources" "$APP/Contents/Library/LaunchDaemons"

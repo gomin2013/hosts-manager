@@ -29,6 +29,33 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(prototypeKeys.subtracting(try keys("en")), [])
     }
 
+    /// Every literal `localized("…")` key in the app's sources exists — a missing one shows the raw key in the UI.
+    /// Keys built at run time (`"accent." + rawValue`, `history.*` titles) are covered by their own tests.
+    func testSourceKeysExist() throws {
+        let sources = Self.root.appendingPathComponent("Sources/HostsManagerApp")
+        let files = try XCTUnwrap(FileManager.default.enumerator(at: sources, includingPropertiesForKeys: nil))
+            .compactMap { $0 as? URL }.filter { $0.pathExtension == "swift" }
+        var used = Set<String>()
+        // Lines that call localized(…): every key-shaped literal on them, ternary branches included
+        for file in files {
+            for line in try String(contentsOf: file, encoding: .utf8).split(separator: "\n")
+            where line.contains("localized(") {
+                let text = String(line).replacing(/system(?:Name|Image): "[^"]*"/, with: "")  // SF Symbol names
+                used.formUnion(text.matches(of: /"([a-z][A-Za-z0-9]*(?:\.[A-Za-z0-9]+)+)"/).map { String($0.output.1) })
+            }
+        }
+        XCTAssertGreaterThan(used.count, 100)
+        XCTAssertEqual(used.subtracting(try keys("en")).sorted(), [])
+    }
+
+    func testDynamicThemeKeysExist() throws {
+        let known = try keys("en")
+        let dynamic = AccentChoice.allCases.map { "accent." + $0.rawValue }
+            + GradientTheme.allCases.map { "gradient." + $0.rawValue }
+            + Appearance.allCases.map { "appearance." + $0.rawValue }
+        XCTAssertEqual(Set(dynamic).subtracting(known).sorted(), [])
+    }
+
     func testHelperErrorKeysExist() throws {
         let english = try keys("en")
         for error in HelperError.allCases {

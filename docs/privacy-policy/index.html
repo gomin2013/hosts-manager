@@ -13,7 +13,7 @@
   <meta property="og:image" content="https://gomin2013.github.io/hosts-manager/assets/img/og-image.png">
   <link rel="icon" type="image/png" href="../favicon.png">
   <link rel="stylesheet" href="../assets/site.css">
-  <script>try{var l=localStorage.getItem("hm.lang")||((navigator.language||"").slice(0,2)==="th"?"th":"en");if(l==="th"){document.documentElement.classList.add("th");document.documentElement.lang="th"}}catch(e){}</script>
+  <script>try{var d=document.documentElement,n=(navigator.language||"").toLowerCase(),l=localStorage.getItem("hm.lang")||(/^zh-(hant|tw|hk|mo)/.test(n)?"zh-Hant":/^zh/.test(n)?"zh-Hans":/^fil/.test(n)?"tl":n.slice(0,2));if("en th ja ko vi id ms tl zh-Hans zh-Hant es ru".split(" ").indexOf(l)<0)l="en";d.lang=l;if(l==="th")d.classList.add("th");else if(l!=="en")d.classList.add("i18n-wait")}catch(e){}</script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -23,14 +23,11 @@
       <a class="brand" href="../"><img src="../assets/img/hm-icon.png" alt="" width="30" height="30">Hosts Manager</a>
       <nav class="nav-links" aria-label="Main">
         <a href="../#features" class="hide-sm"><span class="en">Features</span><span class="th">ฟีเจอร์</span></a>
-        <a href="../download/"><span class="en">Download</span><span class="th">ดาวน์โหลด</span></a>
-        <a href="../about/"><span class="en">About</span><span class="th">เกี่ยวกับ</span></a>
+        <a href="../download/"><i class="ph ph-download-simple" aria-hidden="true"></i><span class="en">Download</span><span class="th">ดาวน์โหลด</span></a>
+        <a href="../about/"><i class="ph ph-info" aria-hidden="true"></i><span class="en">About</span><span class="th">เกี่ยวกับ</span></a>
         <a href="https://github.com/gomin2013/hosts-manager" target="_blank" rel="noopener" class="hide-sm">GitHub</a>
       </nav>
-      <div class="lang" role="group" aria-label="Language">
-        <button type="button" data-lang="en" aria-pressed="true">EN</button>
-        <button type="button" data-lang="th" aria-pressed="false">TH</button>
-      </div>
+      <button type="button" class="lang-btn" data-lang-open aria-haspopup="dialog" aria-label="Language"><i class="ph ph-globe" aria-hidden="true"></i><span class="lang-name">English</span><span class="lang-code">en</span></button>
     </div>
   </header>
 
@@ -44,13 +41,14 @@
 
     <section style="padding-top:0">
       <div class="wrap prose">
-        <p class="updated"><span class="en">Last updated</span><span class="th">อัปเดตล่าสุด</span> 2026-10-17</p>
+        <p class="updated"><span class="en">Last updated</span><span class="th">อัปเดตล่าสุด</span> 2026-10-20</p>
 
         <h2><span class="en">The app</span><span class="th">ตัวแอป</span></h2>
         <ul>
           <li><span class="en"><strong>No accounts, analytics or tracking.</strong> The app has no telemetry, crash reporting or update checks. It does not contact any server of ours, because there isn't one.</span><span class="th"><strong>ไม่มีบัญชีผู้ใช้ ไม่มี analytics ไม่มีการติดตาม</strong> แอปไม่มี telemetry ไม่ส่งรายงาน crash และไม่เช็กอัปเดต ไม่ติดต่อเซิร์ฟเวอร์ของเรา เพราะเราไม่มีเซิร์ฟเวอร์</span></li>
           <li><span class="en"><strong>Your hosts file stays local.</strong> /etc/hosts and its backups (in /Library/Application Support/HostsManager/Backups) never leave your Mac unless you export or send them yourself.</span><span class="th"><strong>ไฟล์ hosts อยู่ในเครื่อง</strong> /etc/hosts และไฟล์สำรอง (ใน /Library/Application Support/HostsManager/Backups) จะไม่ออกจากเครื่อง เว้นแต่คุณ export หรือส่งเอง</span></li>
-          <li><span class="en"><strong>Settings</strong> such as language and appearance are stored in macOS user defaults on your Mac.</span><span class="th"><strong>การตั้งค่า</strong> เช่น ภาษาและธีม เก็บใน user defaults ของ macOS ในเครื่องคุณ</span></li>
+          <li><span class="en"><strong>History pins</strong> (versions you pin, with their names) are saved in ~/Library/Application Support/HostsManager on your Mac. History itself is read from the backups above.</span><span class="th"><strong>เวอร์ชันที่ปักหมุดใน History</strong> (พร้อมชื่อที่ตั้ง) เก็บใน ~/Library/Application Support/HostsManager ในเครื่องคุณ ส่วนรายการ History อ่านจากไฟล์สำรองข้างต้น</span></li>
+          <li><span class="en"><strong>Settings</strong> such as language, appearance, accent colour and the open side panel are stored in macOS user defaults on your Mac.</span><span class="th"><strong>การตั้งค่า</strong> เช่น ภาษา ธีม สี accent และแผงด้านข้างที่เปิดอยู่ เก็บใน user defaults ของ macOS ในเครื่องคุณ</span></li>
         </ul>
 
         <h2><span class="en">AI Agent (optional)</span><span class="th">AI Agent (ไม่บังคับใช้)</span></h2>
