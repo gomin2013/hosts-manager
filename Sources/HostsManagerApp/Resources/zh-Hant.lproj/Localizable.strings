@@ -84,6 +84,7 @@
 "settings.model" = "模型";
 "settings.loadModels" = "載入模型";
 "settings.noModels" = "找不到模型。";
+"settings.recommended" = "推薦";
 "settings.appleNote" = "透過 Apple Intelligence 在裝置上執行（macOS 26 以上）。不需要 API 金鑰或模型。";
 "settings.keychainNote" = "API 金鑰會儲存在你的 macOS 鑰匙圈中。";
 "settings.privacyNote" = "你的問題會包含 /etc/hosts 的內容，並傳送給此提供者。";

@@ -84,6 +84,7 @@
 "settings.model" = "모델";
 "settings.loadModels" = "모델 불러오기";
 "settings.noModels" = "모델을 찾을 수 없습니다.";
+"settings.recommended" = "추천";
 "settings.appleNote" = "Apple Intelligence로 기기에서 실행됩니다(macOS 26 이상). API 키나 모델이 필요하지 않습니다.";
 "settings.keychainNote" = "API 키는 macOS Keychain에 저장됩니다.";
 "settings.privacyNote" = "질문에는 /etc/hosts의 내용이 포함되며, 이 내용은 이 제공자에게 전송됩니다.";

@@ -84,6 +84,7 @@
 "settings.model" = "โมเดล";
 "settings.loadModels" = "โหลดรายชื่อโมเดล";
 "settings.noModels" = "ไม่พบโมเดล";
+"settings.recommended" = "แนะนำ";
 "settings.appleNote" = "ทำงานบนเครื่องด้วย Apple Intelligence (macOS 26 ขึ้นไป) ไม่ต้องใช้ API key หรือเลือกโมเดล";
 "settings.keychainNote" = "API key ถูกเก็บไว้ใน Keychain ของ macOS";
 "settings.privacyNote" = "คำถามของคุณจะแนบเนื้อหา /etc/hosts ไปยังผู้ให้บริการนี้ด้วย";

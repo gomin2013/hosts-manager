@@ -84,6 +84,7 @@
 "settings.model" = "Mô hình";
 "settings.loadModels" = "Tải mô hình";
 "settings.noModels" = "Không tìm thấy mô hình nào.";
+"settings.recommended" = "Đề xuất";
 "settings.appleNote" = "Chạy trên thiết bị với Apple Intelligence (macOS 26 trở lên). Không cần khóa API hay mô hình.";
 "settings.keychainNote" = "Khóa API được lưu trong Keychain trên macOS của bạn.";
 "settings.privacyNote" = "Câu hỏi của bạn bao gồm nội dung của /etc/hosts, và nội dung này được gửi đến nhà cung cấp này.";

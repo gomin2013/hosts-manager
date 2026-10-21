@@ -84,6 +84,7 @@
 "settings.model" = "Модель";
 "settings.loadModels" = "Загрузить модели";
 "settings.noModels" = "Модели не найдены.";
+"settings.recommended" = "Рекомендуется";
 "settings.appleNote" = "Работает на устройстве с Apple Intelligence (macOS 26+). Ключ API и модель не нужны.";
 "settings.keychainNote" = "Ключ API хранится в вашей Связке ключей macOS.";
 "settings.privacyNote" = "Ваши вопросы содержат текст /etc/hosts, который отправляется этому провайдеру.";

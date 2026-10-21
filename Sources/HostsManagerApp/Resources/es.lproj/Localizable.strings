@@ -84,6 +84,7 @@
 "settings.model" = "Modelo";
 "settings.loadModels" = "Cargar modelos";
 "settings.noModels" = "No se encontraron modelos.";
+"settings.recommended" = "Recomendado";
 "settings.appleNote" = "Se ejecuta en el dispositivo con Apple Intelligence (macOS 26 o posterior). No requiere clave de API ni modelo.";
 "settings.keychainNote" = "La clave de API se guarda en el Llavero de tu macOS.";
 "settings.privacyNote" = "Tus preguntas incluyen el contenido de /etc/hosts, que se envía a este proveedor.";
