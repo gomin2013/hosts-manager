@@ -49,7 +49,6 @@
  "The AI never edits the file. Every change goes through you.": "AI không bao giờ tự sửa file. Mọi thay đổi đều phải qua bạn.",
  "Also by the same author": "Cũng của cùng tác giả",
  "The same window and the same ideas, for .git/info/exclude. Hide local files from git status without touching your team's .gitignore.": "Cùng cửa sổ và cùng ý tưởng, dành cho .git/info/exclude. Ẩn các file cục bộ khỏi git status mà không đụng đến .gitignore của nhóm bạn.",
- "Explore Git Exclude Manager": "Khám phá Git Exclude Manager",
  "Get Hosts Manager for your Mac": "Cài Hosts Manager cho máy Mac của bạn",
  "Free and open source. Setup takes about a minute.": "Miễn phí và mã nguồn mở. Cài đặt mất khoảng một phút.",
  "Privacy Policy": "Chính sách quyền riêng tư",
@@ -128,5 +127,6 @@
  "These terms may change with new versions. The date above shows the latest update, and the history is on": "Các điều khoản này có thể thay đổi theo từng phiên bản mới. Ngày ở trên cho biết lần cập nhật gần nhất, và lịch sử thay đổi có trên",
  "This host doesn't resolve.": "Host này không phân giải được.",
  "The page you're looking for isn't here. Maybe it was commented out.": "Trang bạn đang tìm không có ở đây. Có lẽ nó đã bị comment ra.",
- "Back to home": "Về trang chủ"
+ "Back to home": "Về trang chủ",
+ "Website": "Trang web"
 }

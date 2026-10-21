@@ -49,7 +49,6 @@
  "The AI never edits the file. Every change goes through you.": "ИИ никогда не изменяет файл. Каждое изменение проходит через вас.",
  "Also by the same author": "От того же автора",
  "The same window and the same ideas, for .git/info/exclude. Hide local files from git status without touching your team's .gitignore.": "То же окно и те же идеи, но для .git/info/exclude. Скрывайте локальные файлы из git status, не трогая .gitignore вашей команды.",
- "Explore Git Exclude Manager": "Узнать о Git Exclude Manager",
  "Get Hosts Manager for your Mac": "Получите Hosts Manager для вашего Mac",
  "Free and open source. Setup takes about a minute.": "Бесплатно и с открытым кодом. Установка занимает около минуты.",
  "Privacy Policy": "Политика конфиденциальности",
@@ -128,5 +127,6 @@
  "These terms may change with new versions. The date above shows the latest update, and the history is on": "Эти условия могут меняться с выходом новых версий. Дата выше показывает последнее обновление, а история изменений находится на",
  "This host doesn't resolve.": "Этот хост не разрешается.",
  "The page you're looking for isn't here. Maybe it was commented out.": "Страницы, которую вы ищете, здесь нет. Возможно, её закомментировали.",
- "Back to home": "На главную"
+ "Back to home": "На главную",
+ "Website": "Сайт"
 }

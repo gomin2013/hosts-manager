@@ -43,6 +43,7 @@
 "menu.about" = "Hosts Managerについて";
 "menu.help" = "ヘルプ";
 "about.version" = "バージョン%@";
+"about.support" = "Ko-fiで支援する";
 "about.desc" = "/etc/hostsを安全に編集できます。変更はすべて検証され、バックアップされたうえで、特権ヘルパーによって書き込まれます。";
 "helper.notInstalled" = "ヘルパーがインストールされていません";
 "helper.ready" = "ヘルパーの準備ができました";
@@ -84,6 +85,7 @@
 "settings.model" = "モデル";
 "settings.loadModels" = "モデルを読み込む";
 "settings.noModels" = "モデルが見つかりません。";
+"settings.recommended" = "おすすめ";
 "settings.appleNote" = "Apple Intelligenceを使用してデバイス上で実行されます(macOS 26以降)。APIキーやモデルは不要です。";
 "settings.keychainNote" = "APIキーはmacOSのキーチェーンに保存されます。";
 "settings.privacyNote" = "質問には/etc/hostsの内容が含まれ、このプロバイダに送信されます。";

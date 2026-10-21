@@ -43,6 +43,7 @@
 "menu.about" = "Giới thiệu về Hosts Manager";
 "menu.help" = "Trợ giúp";
 "about.version" = "Phiên bản %@";
+"about.support" = "Ủng hộ trên Ko-fi";
 "about.desc" = "Chỉnh sửa /etc/hosts một cách an toàn — mọi thay đổi đều được xác thực, sao lưu và ghi bởi một trình hỗ trợ có đặc quyền.";
 "helper.notInstalled" = "Chưa cài đặt trình hỗ trợ";
 "helper.ready" = "Trình hỗ trợ sẵn sàng";
@@ -84,6 +85,7 @@
 "settings.model" = "Mô hình";
 "settings.loadModels" = "Tải mô hình";
 "settings.noModels" = "Không tìm thấy mô hình nào.";
+"settings.recommended" = "Đề xuất";
 "settings.appleNote" = "Chạy trên thiết bị với Apple Intelligence (macOS 26 trở lên). Không cần khóa API hay mô hình.";
 "settings.keychainNote" = "Khóa API được lưu trong Keychain trên macOS của bạn.";
 "settings.privacyNote" = "Câu hỏi của bạn bao gồm nội dung của /etc/hosts, và nội dung này được gửi đến nhà cung cấp này.";

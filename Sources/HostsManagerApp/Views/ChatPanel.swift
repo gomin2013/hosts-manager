@@ -259,9 +259,9 @@ struct ChatPanel: View {
                 ForEach(models, id: \.self) { model in
                     Button(action: { selectModel(model) }, label: {
                         if model == aiSettings.model {
-                            Label(model, systemImage: "checkmark")
+                            Label(AIService.modelLabel(model, provider: aiSettings.provider), systemImage: "checkmark")
                         } else {
-                            Text(model)
+                            Text(AIService.modelLabel(model, provider: aiSettings.provider))
                         }
                     })
                 }

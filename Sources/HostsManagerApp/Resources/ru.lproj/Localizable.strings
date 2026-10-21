@@ -43,6 +43,7 @@
 "menu.about" = "О приложении Hosts Manager";
 "menu.help" = "Справка";
 "about.version" = "Версия %@";
+"about.support" = "Поддержать на Ko-fi";
 "about.desc" = "Безопасное редактирование /etc/hosts: каждое изменение проверяется, резервируется и записывается привилегированным помощником.";
 "helper.notInstalled" = "Помощник не установлен";
 "helper.ready" = "Помощник готов";
@@ -84,6 +85,7 @@
 "settings.model" = "Модель";
 "settings.loadModels" = "Загрузить модели";
 "settings.noModels" = "Модели не найдены.";
+"settings.recommended" = "Рекомендуется";
 "settings.appleNote" = "Работает на устройстве с Apple Intelligence (macOS 26+). Ключ API и модель не нужны.";
 "settings.keychainNote" = "Ключ API хранится в вашей Связке ключей macOS.";
 "settings.privacyNote" = "Ваши вопросы содержат текст /etc/hosts, который отправляется этому провайдеру.";

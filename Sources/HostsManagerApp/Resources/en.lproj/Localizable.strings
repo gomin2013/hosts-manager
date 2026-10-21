@@ -43,6 +43,7 @@
 "menu.about" = "About Hosts Manager";
 "menu.help" = "Help";
 "about.version" = "Version %@";
+"about.support" = "Support on Ko-fi";
 "about.desc" = "Edit /etc/hosts safely — every change is validated, backed up and written by a privileged helper.";
 "helper.notInstalled" = "Helper not installed";
 "helper.ready" = "Helper ready";
@@ -84,6 +85,7 @@
 "settings.model" = "Model";
 "settings.loadModels" = "Load models";
 "settings.noModels" = "No models found.";
+"settings.recommended" = "Recommended";
 "settings.appleNote" = "Runs on-device with Apple Intelligence (macOS 26+). No API key or model needed.";
 "settings.keychainNote" = "The API key is stored in your macOS Keychain.";
 "settings.privacyNote" = "Your questions include the contents of /etc/hosts, which is sent to this provider.";

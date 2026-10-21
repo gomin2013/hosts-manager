@@ -43,6 +43,7 @@
 "menu.about" = "เกี่ยวกับ Hosts Manager";
 "menu.help" = "วิธีใช้";
 "about.version" = "เวอร์ชัน %@";
+"about.support" = "สนับสนุนผ่าน Ko-fi";
 "about.desc" = "แก้ไข /etc/hosts อย่างปลอดภัย — ทุกการเปลี่ยนแปลงถูกตรวจสอบ สำรอง และเขียนโดย helper ที่มีสิทธิ์";
 "helper.notInstalled" = "ยังไม่ได้ติดตั้ง Helper";
 "helper.ready" = "Helper พร้อมใช้งาน";
@@ -84,6 +85,7 @@
 "settings.model" = "โมเดล";
 "settings.loadModels" = "โหลดรายชื่อโมเดล";
 "settings.noModels" = "ไม่พบโมเดล";
+"settings.recommended" = "แนะนำ";
 "settings.appleNote" = "ทำงานบนเครื่องด้วย Apple Intelligence (macOS 26 ขึ้นไป) ไม่ต้องใช้ API key หรือเลือกโมเดล";
 "settings.keychainNote" = "API key ถูกเก็บไว้ใน Keychain ของ macOS";
 "settings.privacyNote" = "คำถามของคุณจะแนบเนื้อหา /etc/hosts ไปยังผู้ให้บริการนี้ด้วย";

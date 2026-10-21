@@ -143,7 +143,33 @@ enum AIService {
 
     static func listModels(_ provider: AIProvider, apiKey: String) async throws -> [String] {
         guard let request = modelsRequest(provider, apiKey: apiKey) else { return [] }
-        return try parseModels(provider, data: try await send(request)).sorted()
+        return curatedModels(provider, try parseModels(provider, data: try await send(request)))
+    }
+
+    /// Cloud lists run to dozens of IDs (previews, TTS, image, dated snapshots), so the pickers keep only the newest
+    /// model of each cheap-but-good family; the first family is the one marked "(Recommended)". Ollama is left alone —
+    /// it lists only what the user pulled.
+    static let modelFamilies: [AIProvider: [String]] = [
+        .openAI: [#"^gpt-[\d.]+-mini$"#, #"^gpt-[\d.]+-nano$"#],
+        .gemini: [#"^gemini-[\d.]+-flash-lite$"#, #"^gemini-[\d.]+-flash$"#],
+        .claude: [#"^claude-haiku-\d+(-\d+)?(-\d{8})?$"#, #"^claude-sonnet-\d+(-\d+)?(-\d{8})?$"#]
+    ]
+
+    static func curatedModels(_ provider: AIProvider, _ ids: [String]) -> [String] {
+        guard let families = modelFamilies[provider] else { return ids.sorted() }
+        let picks = families.compactMap { pattern in
+            ids.filter { $0.range(of: pattern, options: .regularExpression) != nil }
+                .max { $0.compare($1, options: .numeric) == .orderedAscending }
+        }
+        // ponytail: naming scheme changed and nothing matched — show everything rather than an empty picker
+        return picks.isEmpty ? ids.sorted() : picks
+    }
+
+    @MainActor
+    static func modelLabel(_ model: String, provider: AIProvider) -> String {
+        guard let first = modelFamilies[provider]?.first,
+              model.range(of: first, options: .regularExpression) != nil else { return model }
+        return "\(model) (\(localized("settings.recommended")))"
     }
 
     // MARK: - Request building (pure, unit-tested)

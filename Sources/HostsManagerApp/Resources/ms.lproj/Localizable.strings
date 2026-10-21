@@ -43,6 +43,7 @@
 "menu.about" = "Perihal Hosts Manager";
 "menu.help" = "Bantuan";
 "about.version" = "Versi %@";
+"about.support" = "Sokong di Ko-fi";
 "about.desc" = "Edit /etc/hosts dengan selamat — setiap perubahan disahkan, disandarkan dan ditulis oleh pembantu berkeistimewaan.";
 "helper.notInstalled" = "Pembantu tidak dipasang";
 "helper.ready" = "Pembantu sedia";
@@ -84,6 +85,7 @@
 "settings.model" = "Model";
 "settings.loadModels" = "Muatkan model";
 "settings.noModels" = "Tiada model ditemui.";
+"settings.recommended" = "Disyorkan";
 "settings.appleNote" = "Berjalan pada peranti dengan Apple Intelligence (macOS 26+). Tiada kunci API atau model diperlukan.";
 "settings.keychainNote" = "Kunci API disimpan dalam Keychain macOS anda.";
 "settings.privacyNote" = "Soalan anda termasuk kandungan /etc/hosts, yang dihantar kepada penyedia ini.";

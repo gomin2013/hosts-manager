@@ -49,7 +49,6 @@
  "The AI never edits the file. Every change goes through you.": "AI tidak pernah mengedit fail. Setiap perubahan melalui anda.",
  "Also by the same author": "Juga oleh pengarang yang sama",
  "The same window and the same ideas, for .git/info/exclude. Hide local files from git status without touching your team's .gitignore.": "Tetingkap dan idea yang sama, untuk .git/info/exclude. Sembunyikan fail tempatan daripada git status tanpa mengusik .gitignore pasukan anda.",
- "Explore Git Exclude Manager": "Terokai Git Exclude Manager",
  "Get Hosts Manager for your Mac": "Dapatkan Hosts Manager untuk Mac anda",
  "Free and open source. Setup takes about a minute.": "Percuma dan bersumber terbuka. Pemasangan mengambil masa kira-kira satu minit.",
  "Privacy Policy": "Dasar Privasi",
@@ -128,5 +127,6 @@
  "These terms may change with new versions. The date above shows the latest update, and the history is on": "Terma ini mungkin berubah dengan versi baharu. Tarikh di atas menunjukkan kemas kini terkini, dan sejarahnya terdapat di",
  "This host doesn't resolve.": "Hos ini tidak dapat diselesaikan.",
  "The page you're looking for isn't here. Maybe it was commented out.": "Halaman yang anda cari tiada di sini. Mungkin ia telah dijadikan komen.",
- "Back to home": "Kembali ke laman utama"
+ "Back to home": "Kembali ke laman utama",
+ "Website": "Laman web"
 }
