@@ -43,7 +43,7 @@
 "menu.about" = "Tungkol sa Hosts Manager";
 "menu.help" = "Tulong";
 "about.version" = "Bersyon %@";
-"about.support" = "Suportahan sa Ko-fi";
+"about.support" = "Suportahan sa GitHub Sponsors";
 "about.desc" = "I-edit nang ligtas ang /etc/hosts — bawat pagbabago ay vina-validate, bina-backup, at isinusulat ng isang privileged helper.";
 "helper.notInstalled" = "Hindi naka-install ang helper";
 "helper.ready" = "Handa na ang helper";
