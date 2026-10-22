@@ -1,5 +1,21 @@
 # Changelog
 
+## v1.1.4 — 2026-10-22
+
+### Changed
+
+- **Website: links to the whole Gomin family** — every page's footer now has two rows: this site's pages
+  (Download, About, Privacy, Terms), then Gomin Apps, Git Exclude Manager, SwiftUI Mac Skills (Claude Code skills
+  built from these apps), the developer profile, GitHub and Sponsor — in all 12 languages. The app itself is unchanged.
+
+### Installation
+
+Download `HostsManager-1.1.4.dmg` (and `SHA256SUMS.txt`), drag **Hosts Manager** to **Applications** (replace the
+old copy) and allow the first launch in **System Settings → Privacy & Security → Open Anyway** (or
+`xattr -dr com.apple.quarantine "/Applications/HostsManager.app"`). Updating: macOS may not start the new helper
+until you turn Hosts Manager **off and on again** in **System Settings → General → Login Items & Extensions** — a
+banner tells you when. Requires an Apple silicon Mac with macOS 14 or later; Liquid Glass needs macOS 26.
+
 ## v1.1.3 — 2026-10-22
 
 ### Changed
