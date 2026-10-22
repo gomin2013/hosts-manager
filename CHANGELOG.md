@@ -1,5 +1,21 @@
 # Changelog
 
+## v1.1.3 — 2026-10-22
+
+### Changed
+
+- **Support moved to GitHub Sponsors** — the link in **About** (now with a ♥), the website footer, the README and the
+  repository's **Sponsor** button all go to [github.com/sponsors/gomin2013](https://github.com/sponsors/gomin2013)
+  instead of Ko-fi, in every language. Hosts Manager stays free.
+
+### Installation
+
+Download `HostsManager-1.1.3.dmg` (and `SHA256SUMS.txt`), drag **Hosts Manager** to **Applications** (replace the
+old copy) and allow the first launch in **System Settings → Privacy & Security → Open Anyway** (or
+`xattr -dr com.apple.quarantine "/Applications/HostsManager.app"`). Updating: macOS may not start the new helper
+until you turn Hosts Manager **off and on again** in **System Settings → General → Login Items & Extensions** — a
+banner tells you when. Requires an Apple silicon Mac with macOS 14 or later; Liquid Glass needs macOS 26.
+
 ## v1.1.2 — 2026-10-22
 
 ### Changed
