@@ -128,5 +128,7 @@
  "This host doesn't resolve.": "此主机无法解析。",
  "The page you're looking for isn't here. Maybe it was commented out.": "你要找的页面不在这里，也许它被注释掉了。",
  "Back to home": "返回首页",
- "Website": "网站"
+ "Website": "网站",
+ "Profile": "个人简介",
+ "Sponsor": "赞助"
 }

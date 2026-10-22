@@ -389,6 +389,19 @@ kbd {
 .foot nav a:hover { color: var(--text); }
 .foot small { color: var(--faint); font-size: 13px; width: 100%; }
 
+/* Footer, two rows on product sites: the site's own pages, then the Gomin family (same markup on every site) */
+.foot-links { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; margin-left: auto; }
+.foot-links nav { margin-left: 0; justify-content: flex-end; }
+.foot nav { gap: 8px 0; }
+.foot nav a + a { border-left: 1px solid var(--line); margin-left: 14px; padding-left: 14px; }
+.foot-links, .foot-links nav { min-width: 0; max-width: 100%; }
+/* phones: rows wrap, so a bar would start a line — use plain gaps instead */
+@media (max-width: 720px) {
+  .foot-links { width: 100%; align-items: flex-start; margin-left: 0; }
+  .foot-links nav { justify-content: flex-start; gap: 8px 18px; }
+  .foot-links nav a + a { border-left: 0; margin-left: 0; padding-left: 0; }
+}
+
 /* ── Motion (only when the user hasn't asked for less) ── */
 @media (prefers-reduced-motion: no-preference) {
   .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
