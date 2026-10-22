@@ -43,7 +43,7 @@
 "menu.about" = "О приложении Hosts Manager";
 "menu.help" = "Справка";
 "about.version" = "Версия %@";
-"about.support" = "Поддержать на Ko-fi";
+"about.support" = "Поддержать на GitHub Sponsors";
 "about.desc" = "Безопасное редактирование /etc/hosts: каждое изменение проверяется, резервируется и записывается привилегированным помощником.";
 "helper.notInstalled" = "Помощник не установлен";
 "helper.ready" = "Помощник готов";

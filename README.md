@@ -118,7 +118,7 @@ scripts/gen-strings.js       v1.0 tool (en/th from .prototype) — outdated, run
 
 ## Support
 
-Hosts Manager is free. If it saves you time, you can [buy me a coffee on Ko-fi](https://ko-fi.com/gomin2013).
+Hosts Manager is free. If it saves you time, you can [sponsor me on GitHub](https://github.com/sponsors/gomin2013).
 
 ## License
 

@@ -105,8 +105,8 @@ struct AboutView: View {
                 .foregroundStyle(.secondary)
             Text(localized("about.desc"))
                 .multilineTextAlignment(.center)
-            Link(destination: URL(string: "https://ko-fi.com/gomin2013")!) {
-                Label(localized("about.support"), systemImage: "cup.and.saucer.fill")
+            Link(destination: URL(string: "https://github.com/sponsors/gomin2013")!) {
+                Label(localized("about.support"), systemImage: "heart.fill")
             }
         }
         .padding(24)

@@ -43,7 +43,7 @@
 "menu.about" = "เกี่ยวกับ Hosts Manager";
 "menu.help" = "วิธีใช้";
 "about.version" = "เวอร์ชัน %@";
-"about.support" = "สนับสนุนผ่าน Ko-fi";
+"about.support" = "สนับสนุนผ่าน GitHub Sponsors";
 "about.desc" = "แก้ไข /etc/hosts อย่างปลอดภัย — ทุกการเปลี่ยนแปลงถูกตรวจสอบ สำรอง และเขียนโดย helper ที่มีสิทธิ์";
 "helper.notInstalled" = "ยังไม่ได้ติดตั้ง Helper";
 "helper.ready" = "Helper พร้อมใช้งาน";

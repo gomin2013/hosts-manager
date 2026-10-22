@@ -43,7 +43,7 @@
 "menu.about" = "关于 Hosts Manager";
 "menu.help" = "帮助";
 "about.version" = "版本 %@";
-"about.support" = "在 Ko-fi 上支持";
+"about.support" = "在 GitHub Sponsors 上支持";
 "about.desc" = "安全地编辑 /etc/hosts — 每项更改都会经过验证、备份，并由特权辅助工具写入。";
 "helper.notInstalled" = "辅助工具未安装";
 "helper.ready" = "辅助工具已就绪";
