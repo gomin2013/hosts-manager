@@ -130,5 +130,7 @@
  "Back to home": "홈으로 돌아가기",
  "Website": "웹사이트",
  "Profile": "프로필",
- "Sponsor": "후원하기"
+ "Sponsor": "후원하기",
+ "The same window and the same ideas, for AI voice-overs. Write a script scene by scene, listen free with your Mac's voices, then generate it with Gemini TTS.": "같은 창, 같은 아이디어를 AI 보이스오버에. 대본을 장면별로 쓰고, Mac의 목소리로 무료로 들은 뒤, Gemini TTS로 만드세요.",
+ "AI Voice Manager is the third app in the family. Same window, same side panels, same History and AI Agent, for AI voice-overs instead of a config file.": "AI Voice Manager는 패밀리의 세 번째 앱입니다. 같은 창, 같은 사이드 패널, 같은 History와 AI Agent를 설정 파일이 아니라 AI 보이스오버에 씁니다."
 }
