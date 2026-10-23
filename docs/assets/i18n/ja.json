@@ -130,5 +130,7 @@
  "Back to home": "ホームに戻る",
  "Website": "ウェブサイト",
  "Profile": "プロフィール",
- "Sponsor": "スポンサーになる"
+ "Sponsor": "スポンサーになる",
+ "The same window and the same ideas, for AI voice-overs. Write a script scene by scene, listen free with your Mac's voices, then generate it with Gemini TTS.": "同じウィンドウ、同じ考え方を AI ボイスオーバーに。台本をシーンごとに書き、Mac の声で無料で聞いてから、Gemini TTS で生成します。",
+ "AI Voice Manager is the third app in the family. Same window, same side panels, same History and AI Agent, for AI voice-overs instead of a config file.": "AI Voice Manager はファミリー 3 番目のアプリ。同じウィンドウ、同じサイドパネル、同じ History と AI Agent を、設定ファイルではなく AI ボイスオーバーのために。"
 }
