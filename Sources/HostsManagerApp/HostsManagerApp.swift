@@ -35,9 +35,14 @@ struct HostsManagerApp: App {
                     hostsVM.openDemoEditor()
                     #endif
                 }
+                // Off unless turned on in About; never in `-demo` (an alert would land in screenshots)
+                .task { if !hostsVM.isDemo { await UpdateChecker.checkIfDue() } }
         }
         .windowResizability(.contentMinSize)
         .commands {
+            CommandGroup(after: .appInfo) {
+                Button(localized("update.check")) { Task { await UpdateChecker.check(manual: true) } }
+            }
             // One main window: drop File › New Window so ⌘N belongs to "Add Entry" (on its button in HostsView).
             CommandGroup(replacing: .newItem) {}
             // Help › Hosts Manager Help (⌘?) opens the Help panel instead of an empty Help Book search

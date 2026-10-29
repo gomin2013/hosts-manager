@@ -1,5 +1,28 @@
 # Changelog
 
+## v1.1.6 — 2026-10-29
+
+### Added
+
+- **Check for Updates** — in the app menu (under About) and in the About panel: Hosts Manager asks GitHub for the
+  latest release and either says you're up to date or shows what's new, with a **Download** button that opens the DMG.
+  A daily automatic check can be turned on in About; it is **off** by default.
+
+### Changed
+
+- **Privacy Policy** — instead of "no update checks" it now says what Check for Updates sends (nothing about you;
+  GitHub sees your IP address, as with any web request) and when — in all 12 languages.
+- **README** — Check for Updates in Features and Privacy.
+- **Website: the AI Voice Manager card** shows its current window (v1.1.3).
+
+### Installation
+
+Download `HostsManager-1.1.6.dmg` (and `SHA256SUMS.txt`), drag **Hosts Manager** to **Applications** (replace the
+old copy) and allow the first launch in **System Settings → Privacy & Security → Open Anyway** (or
+`xattr -dr com.apple.quarantine "/Applications/HostsManager.app"`). Updating: macOS may not start the new helper
+until you turn Hosts Manager **off and on again** in **System Settings → General → Login Items & Extensions** — a
+banner tells you when. Requires an Apple silicon Mac with macOS 14 or later; Liquid Glass needs macOS 26.
+
 ## v1.1.5 — 2026-10-24
 
 ### Changed

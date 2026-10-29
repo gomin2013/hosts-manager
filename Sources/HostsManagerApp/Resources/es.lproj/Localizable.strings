@@ -218,3 +218,18 @@
 "history.remove" = "Quitar del historial";
 "language.search" = "Buscar idiomas";
 "language.noResults" = "Ningún idioma coincide con “%@”";
+
+/* Check for Updates (UpdateChecker) */
+"update.check" = "Buscar actualizaciones…";
+"update.upToDate.title" = "¡Estás al día!";
+"update.upToDate.body" = "%@ %@ es la versión más reciente disponible.";
+"update.available.title" = "Hay una nueva versión de %@";
+"update.available.body" = "%@ ya está disponible — tienes la %@.";
+"update.download" = "Descargar";
+"update.later" = "Más tarde";
+"update.skip" = "Omitir esta versión";
+"update.ok" = "Aceptar";
+"update.failed.title" = "No se pudo buscar actualizaciones";
+"update.openReleases" = "Abrir la página de versiones";
+"update.auto" = "Buscar actualizaciones automáticamente";
+"update.auto.help" = "Una vez al día al abrir la app. Solo pregunta a GitHub por la última versión; no se envía nada sobre ti.";
