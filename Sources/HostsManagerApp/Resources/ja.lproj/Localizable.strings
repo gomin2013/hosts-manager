@@ -218,3 +218,18 @@
 "history.remove" = "履歴から削除";
 "language.search" = "言語を検索";
 "language.noResults" = "「%@」に一致する言語はありません";
+
+/* Check for Updates (UpdateChecker) */
+"update.check" = "アップデートを確認…";
+"update.upToDate.title" = "最新の状態です！";
+"update.upToDate.body" = "%@ %@ は現在入手可能な最新バージョンです。";
+"update.available.title" = "%@ の新しいバージョンがあります";
+"update.available.body" = "%@ が利用可能です — 現在のバージョンは %@ です。";
+"update.download" = "ダウンロード";
+"update.later" = "後で";
+"update.skip" = "このバージョンをスキップ";
+"update.ok" = "OK";
+"update.failed.title" = "アップデートを確認できませんでした";
+"update.openReleases" = "リリースページを開く";
+"update.auto" = "アップデートを自動的に確認";
+"update.auto.help" = "起動時に1日1回。GitHub に最新リリースを問い合わせるだけで、あなたの情報は送信されません。";

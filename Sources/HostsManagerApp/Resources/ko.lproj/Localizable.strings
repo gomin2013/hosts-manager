@@ -218,3 +218,18 @@
 "history.remove" = "기록에서 제거";
 "language.search" = "언어 검색";
 "language.noResults" = "“%@”와(과) 일치하는 언어 없음";
+
+/* Check for Updates (UpdateChecker) */
+"update.check" = "업데이트 확인…";
+"update.upToDate.title" = "최신 버전입니다!";
+"update.upToDate.body" = "%@ %@이(가) 현재 최신 버전입니다.";
+"update.available.title" = "%@의 새 버전이 있습니다";
+"update.available.body" = "%@ 버전을 사용할 수 있습니다 — 현재 %@ 버전입니다.";
+"update.download" = "다운로드";
+"update.later" = "나중에";
+"update.skip" = "이 버전 건너뛰기";
+"update.ok" = "확인";
+"update.failed.title" = "업데이트를 확인할 수 없습니다";
+"update.openReleases" = "릴리스 페이지 열기";
+"update.auto" = "자동으로 업데이트 확인";
+"update.auto.help" = "실행 시 하루 한 번. GitHub에 최신 릴리스만 묻고, 사용자 정보는 전송하지 않습니다.";

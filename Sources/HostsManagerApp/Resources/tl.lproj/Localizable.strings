@@ -218,3 +218,18 @@
 "history.remove" = "Alisin sa History";
 "language.search" = "Maghanap ng wika";
 "language.noResults" = "Walang wikang tumutugma sa “%@”";
+
+/* Check for Updates (UpdateChecker) */
+"update.check" = "Tingnan ang mga Update…";
+"update.upToDate.title" = "Pinakabago na ang gamit mo!";
+"update.upToDate.body" = "Ang %@ %@ ang pinakabagong bersyon sa ngayon.";
+"update.available.title" = "May bagong bersyon ng %@";
+"update.available.body" = "Available na ang %@ — %@ ang gamit mo.";
+"update.download" = "I-download";
+"update.later" = "Mamaya";
+"update.skip" = "Laktawan ang Bersyong Ito";
+"update.ok" = "OK";
+"update.failed.title" = "Hindi matingnan ang mga update";
+"update.openReleases" = "Buksan ang Releases Page";
+"update.auto" = "Awtomatikong tingnan ang mga update";
+"update.auto.help" = "Isang beses kada araw pagbukas. Tinatanong lang ng app sa GitHub ang pinakabagong release; walang ipinapadalang impormasyon tungkol sa iyo.";

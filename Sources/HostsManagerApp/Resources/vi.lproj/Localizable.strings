@@ -218,3 +218,18 @@
 "history.remove" = "Xóa khỏi Lịch sử";
 "language.search" = "Tìm ngôn ngữ";
 "language.noResults" = "Không có ngôn ngữ nào khớp với “%@”";
+
+/* Check for Updates (UpdateChecker) */
+"update.check" = "Kiểm tra cập nhật…";
+"update.upToDate.title" = "Bạn đang dùng bản mới nhất!";
+"update.upToDate.body" = "%@ %@ hiện là phiên bản mới nhất.";
+"update.available.title" = "Đã có phiên bản mới của %@";
+"update.available.body" = "Đã có %@ — bạn đang dùng %@.";
+"update.download" = "Tải về";
+"update.later" = "Để sau";
+"update.skip" = "Bỏ qua phiên bản này";
+"update.ok" = "OK";
+"update.failed.title" = "Không thể kiểm tra cập nhật";
+"update.openReleases" = "Mở trang Releases";
+"update.auto" = "Tự động kiểm tra cập nhật";
+"update.auto.help" = "Mỗi ngày một lần khi mở ứng dụng. Ứng dụng chỉ hỏi GitHub bản phát hành mới nhất; không gửi thông tin nào về bạn.";

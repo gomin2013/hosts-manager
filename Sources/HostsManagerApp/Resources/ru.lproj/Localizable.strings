@@ -218,3 +218,18 @@
 "history.remove" = "Удалить из истории";
 "language.search" = "Поиск языков";
 "language.noResults" = "Нет языков, соответствующих «%@»";
+
+/* Check for Updates (UpdateChecker) */
+"update.check" = "Проверить обновления…";
+"update.upToDate.title" = "У вас последняя версия!";
+"update.upToDate.body" = "%@ %@ — самая новая доступная версия.";
+"update.available.title" = "Доступна новая версия %@";
+"update.available.body" = "Доступна версия %@ — у вас %@.";
+"update.download" = "Скачать";
+"update.later" = "Позже";
+"update.skip" = "Пропустить эту версию";
+"update.ok" = "OK";
+"update.failed.title" = "Не удалось проверить обновления";
+"update.openReleases" = "Открыть страницу релизов";
+"update.auto" = "Проверять обновления автоматически";
+"update.auto.help" = "Раз в день при запуске. Приложение лишь спрашивает у GitHub последний релиз; данные о вас не передаются.";

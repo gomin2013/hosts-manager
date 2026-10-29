@@ -218,3 +218,18 @@
 "history.remove" = "從歷史記錄中移除";
 "language.search" = "搜尋語言";
 "language.noResults" = "沒有符合「%@」的語言";
+
+/* Check for Updates (UpdateChecker) */
+"update.check" = "檢查更新…";
+"update.upToDate.title" = "已是最新版本！";
+"update.upToDate.body" = "%@ %@ 是目前可用的最新版本。";
+"update.available.title" = "%@ 有新版本可用";
+"update.available.body" = "%@ 已發布 — 你目前使用的是 %@。";
+"update.download" = "下載";
+"update.later" = "稍後";
+"update.skip" = "略過此版本";
+"update.ok" = "好";
+"update.failed.title" = "無法檢查更新";
+"update.openReleases" = "打開發布頁面";
+"update.auto" = "自動檢查更新";
+"update.auto.help" = "啟動時每天一次。只向 GitHub 查詢最新版本，不會傳送任何關於你的資訊。";

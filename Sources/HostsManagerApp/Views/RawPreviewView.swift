@@ -89,6 +89,8 @@ struct CloseButton: View {
 
 /// Shown in the About panel of the tool window (Settings is split into Language / About for now).
 struct AboutView: View {
+    @AppStorage(UpdateChecker.autoKey) private var autoUpdate = false
+
     private var version: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "dev"
     }
@@ -103,6 +105,10 @@ struct AboutView: View {
             Text(localized("about.version", version))
                 .font(.caption)
                 .foregroundStyle(.secondary)
+            Button(localized("update.check")) { Task { await UpdateChecker.check(manual: true) } }
+            Toggle(localized("update.auto"), isOn: $autoUpdate)
+                .font(.caption)
+                .help(localized("update.auto.help"))
             Text(localized("about.desc"))
                 .multilineTextAlignment(.center)
             Link(destination: URL(string: "https://github.com/sponsors/gomin2013")!) {

@@ -218,3 +218,18 @@
 "history.remove" = "Hapus dari Riwayat";
 "language.search" = "Cari bahasa";
 "language.noResults" = "Tidak ada bahasa yang cocok dengan “%@”";
+
+/* Check for Updates (UpdateChecker) */
+"update.check" = "Periksa Pembaruan…";
+"update.upToDate.title" = "Aplikasi Anda sudah terbaru!";
+"update.upToDate.body" = "%@ %@ adalah versi terbaru yang tersedia saat ini.";
+"update.available.title" = "Versi baru %@ tersedia";
+"update.available.body" = "%@ tersedia — Anda memakai %@.";
+"update.download" = "Unduh";
+"update.later" = "Nanti";
+"update.skip" = "Lewati Versi Ini";
+"update.ok" = "OK";
+"update.failed.title" = "Tidak dapat memeriksa pembaruan";
+"update.openReleases" = "Buka Halaman Rilis";
+"update.auto" = "Periksa pembaruan secara otomatis";
+"update.auto.help" = "Sekali sehari saat dibuka. Aplikasi hanya menanyakan rilis terbaru ke GitHub; tidak ada data Anda yang dikirim.";
