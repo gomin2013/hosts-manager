@@ -36,7 +36,9 @@ you already know the other.
 - **Tool window** — History · AI Agent · Help, plus Appearance · Settings, on an icon rail (⌥⌘1…5), one panel at
   a time; ⌘? opens Help.
 - **Your look** — Liquid Glass on macOS 26, light / dark / system, 16 accent colours and 8 gradient themes,
-  English / Thai.
+  12 languages.
+- **Check for Updates** — from the app menu or About: asks GitHub for the latest release and shows what's new;
+  **Download** opens the DMG. A daily automatic check is optional and off by default.
 - **Keyboard** — ⌘N add, ⌘F search, Space turn on/off, ⌫ delete, Return edit or rename, ⌘W / ⌘Q close and quit.
 
 ## Install
@@ -115,6 +117,14 @@ scripts/gen-strings.js       v1.0 tool (en/th from .prototype) — outdated, run
 
 - macOS 14 Sonoma or later
 - No third-party dependencies
+
+## Privacy
+
+No account with us, no telemetry, no server of ours. The app reads `/etc/hosts` on your Mac and writes it only through
+its helper. With a **cloud** AI provider, the chat sends your hosts entries to that provider; Ollama or Apple
+Foundation Models keep everything on-device. **Check for Updates** asks GitHub for the latest release only when you
+click it (or once a day if you turn that on in About); nothing about you is sent. Details:
+[Privacy Policy](https://gomin2013.github.io/hosts-manager/privacy-policy/).
 
 ## Support
 
